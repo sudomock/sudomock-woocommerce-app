@@ -207,6 +207,28 @@ final class SudoMock_Product_Customizer {
     }
 
     /**
+     * Get a product URL for the WP Customizer preview.
+     * Finds a mapped product or falls back to any published product.
+     */
+    public static function get_customizer_preview_url() {
+        global $wpdb;
+        // Try to find a product with a mapped mockup first
+        $mapped_id = $wpdb->get_var( $wpdb->prepare(
+            "SELECT post_id FROM {$wpdb->postmeta} WHERE meta_key = %s AND meta_value != '' LIMIT 1",
+            '_sudomock_mockup_uuid'
+        ) );
+        if ( $mapped_id ) {
+            return get_permalink( $mapped_id );
+        }
+        // Fallback: any published product
+        $any_product = get_posts( array( 'post_type' => 'product', 'numberposts' => 1, 'fields' => 'ids' ) );
+        if ( $any_product ) {
+            return get_permalink( $any_product[0] );
+        }
+        return home_url( '/' );
+    }
+
+    /**
      * Add Settings link to plugins page.
      *
      * @param array $links Existing links.
@@ -320,4 +342,11 @@ register_deactivation_hook( __FILE__, 'sudomock_deactivate' );
  */
 function sudomock_deactivate() {
     flush_rewrite_rules();
+}
+
+/**
+ * Get a product URL for WP Customizer preview.
+ */
+function sudomock_get_customizer_preview_url() {
+    return SudoMock_Product_Customizer::get_customizer_preview_url();
 }
