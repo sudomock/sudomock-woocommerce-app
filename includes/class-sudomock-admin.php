@@ -55,7 +55,7 @@ final class SudoMock_Admin {
             'manage_woocommerce',
             'sudomock-settings',
             array( $this, 'render_page' ),
-            'data:image/svg+xml;base64,' . base64_encode( '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><rect x="1" y="1" width="22" height="22" rx="5" fill="currentColor"/><path d="M15.2 9.2c-.3-1.5-1.5-2.4-3.2-2.4-2 0-3.3 1-3.3 2.5 0 1.3.9 2 2.8 2.4l1 .2c1.2.3 1.7.7 1.7 1.3 0 .8-.8 1.4-2 1.4-1.2 0-2-.5-2.2-1.5l-.2.1c.3 1.5 1.4 2.5 3.2 2.5 2.1 0 3.4-1 3.4-2.6 0-1.3-.9-2-2.8-2.5l-.9-.2c-1.2-.3-1.8-.6-1.8-1.3 0-.8.8-1.3 1.9-1.3 1.1 0 1.9.5 2.1 1.5z" fill="#23282d"/></svg>' ),
+            'data:image/svg+xml;base64,' . base64_encode( '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"><rect x="2" y="2" width="20" height="20" rx="4" stroke="currentColor" stroke-width="1.5"/><path d="M15.5 9.5c-.3-1.5-1.5-2.5-3.5-2.5-2.2 0-3.5 1.1-3.5 2.7 0 1.4 1 2.1 3 2.6l.8.2c1.3.3 1.9.7 1.9 1.4 0 .9-.9 1.5-2.2 1.5s-2.2-.6-2.4-1.6c.3 1.6 1.5 2.7 3.4 2.7 2.3 0 3.6-1.1 3.6-2.8 0-1.4-1-2.2-3-2.7l-.8-.2c-1.3-.3-2-.7-2-1.4 0-.8.8-1.4 2.1-1.4 1.2 0 2 .6 2.2 1.6z" fill="currentColor"/></svg>' ),
             58
         );
     }
@@ -482,7 +482,7 @@ final class SudoMock_Admin {
                     </div>
                 </div>
 
-                <!-- Sidebar: Resources -->
+                <!-- Sidebar: Resources + Quick Stats -->
                 <div class="sudomock-dashboard-grid__side">
                     <div class="sudomock-card">
                         <div class="sudomock-card__body">
@@ -501,13 +501,7 @@ final class SudoMock_Admin {
                                     <?php esc_html_e( 'Integration Docs', 'sudomock-product-customizer' ); ?>
                                 </a>
                             </div>
-                        </div>
-                    </div>
-
-                    <!-- Quick Stats -->
-                    <div class="sudomock-card">
-                        <div class="sudomock-card__body">
-                            <h3 class="sudomock-card__title"><?php esc_html_e( 'Quick Stats', 'sudomock-product-customizer' ); ?></h3>
+                            <hr class="sudomock-divider" style="margin:12px 0;" />
                             <div class="sudomock-stat-row">
                                 <span class="sudomock-text--muted"><?php esc_html_e( 'Products Mapped', 'sudomock-product-customizer' ); ?></span>
                                 <strong>
