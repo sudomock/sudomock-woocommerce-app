@@ -33,6 +33,9 @@ final class SudoMock_Admin {
         add_action( 'wp_ajax_sudomock_unmap_product', array( $this, 'ajax_unmap_product' ) );
         add_action( 'wp_ajax_sudomock_get_studio_config', array( $this, 'ajax_get_studio_config' ) );
         add_action( 'wp_ajax_sudomock_save_studio_config', array( $this, 'ajax_save_studio_config' ) );
+        add_action( 'wp_ajax_sudomock_submit_support', array( $this, 'ajax_submit_support' ) );
+        add_action( 'wp_ajax_sudomock_dismiss_onboarding', array( $this, 'ajax_dismiss_onboarding' ) );
+        add_action( 'wp_ajax_sudomock_generate_gallery', array( $this, 'ajax_generate_gallery' ) );
     }
 
     public function register_settings() {
@@ -124,6 +127,16 @@ final class SudoMock_Admin {
                 'networkErrorConfig'      => __( 'Network error saving config.', 'sudomock-product-customizer' ),
                 'failedToSave'            => __( 'Failed to save.', 'sudomock-product-customizer' ),
                 'text'                    => __( 'text', 'sudomock-product-customizer' ),
+                // Support form
+                'supportSubjectRequired'  => __( 'Please enter a subject.', 'sudomock-product-customizer' ),
+                'supportMessageRequired'  => __( 'Please enter a message.', 'sudomock-product-customizer' ),
+                'supportSending'          => __( 'Sending...', 'sudomock-product-customizer' ),
+                'supportSent'             => __( 'Your message has been sent. We will get back to you soon.', 'sudomock-product-customizer' ),
+                'supportFailed'           => __( 'Failed to send message. Please try again.', 'sudomock-product-customizer' ),
+                'supportRateLimit'        => __( 'You have reached the limit. Please wait before sending another message.', 'sudomock-product-customizer' ),
+                'submitTicket'            => __( 'Submit', 'sudomock-product-customizer' ),
+                // Onboarding
+                'onboardingDismissed'     => __( 'Onboarding dismissed.', 'sudomock-product-customizer' ),
             ),
         ) );
     }
@@ -544,24 +557,6 @@ final class SudoMock_Admin {
                                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
                                     <?php esc_html_e( 'Integration Docs', 'sudomock-product-customizer' ); ?>
                                 </a>
-                            </div>
-                            <hr class="sudomock-divider" style="margin:12px 0;" />
-                            <div class="sudomock-stat-row">
-                                <span class="sudomock-text--muted"><?php esc_html_e( 'Products Mapped', 'sudomock-product-customizer' ); ?></span>
-                                <strong>
-                                    <?php
-                                    printf(
-                                        /* translators: %1$s: mapped, %2$s: total */
-                                        esc_html__( '%1$s of %2$s', 'sudomock-product-customizer' ),
-                                        number_format_i18n( $d['mapped_count'] ),
-                                        number_format_i18n( $d['total_count'] )
-                                    );
-                                    ?>
-                                </strong>
-                            </div>
-                            <div class="sudomock-stat-row">
-                                <span class="sudomock-text--muted"><?php esc_html_e( 'Connected', 'sudomock-product-customizer' ); ?></span>
-                                <strong><?php echo esc_html( $d['connected_at'] ); ?></strong>
                             </div>
                         </div>
                     </div>
