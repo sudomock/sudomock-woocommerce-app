@@ -55,7 +55,7 @@ final class SudoMock_Admin {
             'manage_woocommerce',
             'sudomock-settings',
             array( $this, 'render_page' ),
-            'data:image/svg+xml;base64,' . base64_encode( '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"><rect x="2" y="2" width="20" height="20" rx="5" stroke="currentColor" stroke-width="1.5"/><text x="12" y="17" font-family="system-ui,sans-serif" font-size="14" font-weight="700" fill="currentColor" text-anchor="middle">S</text></svg>' ),
+            'data:image/svg+xml;base64,' . base64_encode( '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><rect x="1" y="1" width="22" height="22" rx="5" fill="currentColor"/><path d="M15.2 9.2c-.3-1.5-1.5-2.4-3.2-2.4-2 0-3.3 1-3.3 2.5 0 1.3.9 2 2.8 2.4l1 .2c1.2.3 1.7.7 1.7 1.3 0 .8-.8 1.4-2 1.4-1.2 0-2-.5-2.2-1.5l-.2.1c.3 1.5 1.4 2.5 3.2 2.5 2.1 0 3.4-1 3.4-2.6 0-1.3-.9-2-2.8-2.5l-.9-.2c-1.2-.3-1.8-.6-1.8-1.3 0-.8.8-1.3 1.9-1.3 1.1 0 1.9.5 2.1 1.5z" fill="#23282d"/></svg>' ),
             58
         );
     }
@@ -480,39 +480,6 @@ final class SudoMock_Admin {
                             </div>
                         </div>
                     </div>
-
-                    <!-- Display Settings -->
-                    <div class="sudomock-card">
-                        <div class="sudomock-card__body">
-                            <h2 class="sudomock-card__title"><?php esc_html_e( 'Display Settings', 'sudomock-product-customizer' ); ?></h2>
-                            <form method="post" action="options.php">
-                                <?php settings_fields( 'sudomock_settings' ); ?>
-                                <div class="sudomock-form-row">
-                                    <label class="sudomock-form-row__label" for="sudomock_button_label">
-                                        <?php esc_html_e( 'Button Label', 'sudomock-product-customizer' ); ?>
-                                    </label>
-                                    <input type="text" id="sudomock_button_label" name="sudomock_button_label"
-                                        value="<?php echo esc_attr( $d['button_label'] ); ?>" class="sudomock-input" />
-                                </div>
-                                <div class="sudomock-form-row">
-                                    <label class="sudomock-form-row__label" for="sudomock_display_mode">
-                                        <?php esc_html_e( 'Display Mode', 'sudomock-product-customizer' ); ?>
-                                    </label>
-                                    <select id="sudomock_display_mode" name="sudomock_display_mode" class="sudomock-select">
-                                        <option value="iframe" <?php selected( $d['display_mode'], 'iframe' ); ?>>
-                                            <?php esc_html_e( 'Modal (iframe)', 'sudomock-product-customizer' ); ?>
-                                        </option>
-                                        <option value="popup" <?php selected( $d['display_mode'], 'popup' ); ?>>
-                                            <?php esc_html_e( 'Popup Window', 'sudomock-product-customizer' ); ?>
-                                        </option>
-                                    </select>
-                                </div>
-                                <button type="submit" class="sudomock-btn sudomock-btn--primary">
-                                    <?php esc_html_e( 'Save Changes', 'sudomock-product-customizer' ); ?>
-                                </button>
-                            </form>
-                        </div>
-                    </div>
                 </div>
 
                 <!-- Sidebar: Resources -->
@@ -594,13 +561,13 @@ final class SudoMock_Admin {
                     </div>
                     <svg class="sudomock-nav-card__arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7"/><path d="M7 7h10v10"/></svg>
                 </a>
-                <a href="https://sudomock.com/dashboard/billing" target="_blank" rel="noopener" class="sudomock-nav-card">
+                <a href="<?php echo esc_url( admin_url( 'admin.php?page=sudomock-settings&tab=settings' ) ); ?>" class="sudomock-nav-card">
                     <div class="sudomock-nav-card__icon sudomock-nav-card__icon--orange">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
                     </div>
                     <div class="sudomock-nav-card__text">
                         <h4><?php esc_html_e( 'Settings & Billing', 'sudomock-product-customizer' ); ?></h4>
-                        <p><?php esc_html_e( 'Manage plan and credits', 'sudomock-product-customizer' ); ?></p>
+                        <p><?php esc_html_e( 'Studio config and display settings', 'sudomock-product-customizer' ); ?></p>
                     </div>
                     <svg class="sudomock-nav-card__arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7"/><path d="M7 7h10v10"/></svg>
                 </a>
@@ -731,6 +698,7 @@ final class SudoMock_Admin {
                                 if ( ! $product ) continue;
                                 $thumb      = $product->get_image( array( 40, 40 ) );
                                 $mockup_uuid = get_post_meta( $p->ID, '_sudomock_mockup_uuid', true );
+                                $mockup_name = get_post_meta( $p->ID, '_sudomock_mockup_name', true );
                                 $has_mockup  = ! empty( $mockup_uuid );
                                 $status      = $product->get_status();
                             ?>
@@ -747,7 +715,7 @@ final class SudoMock_Admin {
                                 <td>
                                     <?php if ( $has_mockup ) : ?>
                                         <span class="sudomock-badge sudomock-badge--success"><?php esc_html_e( 'Mapped', 'sudomock-product-customizer' ); ?></span>
-                                        <span class="sudomock-text--muted sudomock-text--sm" style="margin-left:4px;font-family:monospace;"><?php echo esc_html( substr( $mockup_uuid, 0, 8 ) ); ?>...</span>
+                                        <span class="sudomock-text--muted sudomock-text--sm" style="margin-left:4px;"><?php echo esc_html( ! empty( $mockup_name ) ? $mockup_name : substr( $mockup_uuid, 0, 8 ) . '...' ); ?></span>
                                     <?php else : ?>
                                         <span class="sudomock-badge" style="background:#f1f5f9;color:#64748b;"><?php esc_html_e( 'Not mapped', 'sudomock-product-customizer' ); ?></span>
                                     <?php endif; ?>
@@ -1140,128 +1108,6 @@ final class SudoMock_Admin {
         <?php
     }
 
-    /* ------------------------------------------------------------------ */
-    /* Storefront Tab                                                      */
-    /* ------------------------------------------------------------------ */
-
-    private function render_storefront_tab() {
-        ?>
-        <div class="sudomock-card">
-            <div class="sudomock-card__body">
-                <h2 class="sudomock-card__title" style="font-size:18px;margin-bottom:4px;"><?php esc_html_e( 'Storefront Integration', 'sudomock-product-customizer' ); ?></h2>
-                <p class="sudomock-text--muted" style="margin-bottom:0;">
-                    <?php esc_html_e( 'The SudoMock Product Customizer automatically adds a "Customize" button to mapped product pages. No theme editing or shortcodes required.', 'sudomock-product-customizer' ); ?>
-                </p>
-            </div>
-        </div>
-
-        <div class="sudomock-dashboard-grid">
-            <div class="sudomock-dashboard-grid__main">
-                <!-- How it works -->
-                <div class="sudomock-card">
-                    <div class="sudomock-card__body" style="padding:0;">
-                        <div style="padding:20px 24px 0;">
-                            <h2 class="sudomock-card__title"><?php esc_html_e( 'How the button appears', 'sudomock-product-customizer' ); ?></h2>
-                        </div>
-                        <?php
-                        $steps = array(
-                            array(
-                                __( 'Customer visits a product page', 'sudomock-product-customizer' ),
-                                __( 'If the product has a mapped mockup and customization is enabled, a "Customize" button appears before the Add to Cart button.', 'sudomock-product-customizer' ),
-                            ),
-                            array(
-                                __( 'Customer clicks Customize', 'sudomock-product-customizer' ),
-                                __( 'The SudoMock Studio opens (as a modal overlay or new window, depending on your Display Mode setting) with the mapped PSD mockup loaded.', 'sudomock-product-customizer' ),
-                            ),
-                            array(
-                                __( 'Customer uploads artwork and previews', 'sudomock-product-customizer' ),
-                                __( 'The customer uploads their artwork, positions it on the mockup smart objects, and sees a real-time preview of the final product.', 'sudomock-product-customizer' ),
-                            ),
-                            array(
-                                __( 'Rendered mockup added to cart', 'sudomock-product-customizer' ),
-                                __( 'When the customer adds to cart from Studio, the rendered mockup image is attached to the cart item and saved with the order for fulfillment.', 'sudomock-product-customizer' ),
-                            ),
-                        );
-                        foreach ( $steps as $i => $step ) :
-                            if ( $i > 0 ) : ?><hr class="sudomock-divider" style="margin:0;" /><?php endif; ?>
-                            <div style="padding:16px 24px;display:flex;gap:12px;align-items:flex-start;">
-                                <div class="sudomock-step__num"><?php echo esc_html( $i + 1 ); ?></div>
-                                <div>
-                                    <h4 style="margin:0 0 4px;font-size:14px;font-weight:600;"><?php echo esc_html( $step[0] ); ?></h4>
-                                    <p class="sudomock-text--muted" style="margin:0;"><?php echo esc_html( $step[1] ); ?></p>
-                                </div>
-                            </div>
-                        <?php endforeach; ?>
-                    </div>
-                </div>
-
-                <!-- Quick Actions -->
-                <div class="sudomock-card">
-                    <div class="sudomock-card__body">
-                        <h2 class="sudomock-card__title"><?php esc_html_e( 'Quick Actions', 'sudomock-product-customizer' ); ?></h2>
-                        <div style="display:flex;gap:12px;flex-wrap:wrap;">
-                            <a href="<?php echo esc_url( admin_url( 'admin.php?page=sudomock-settings&tab=products' ) ); ?>" class="sudomock-btn sudomock-btn--primary">
-                                <?php esc_html_e( 'Map Products', 'sudomock-product-customizer' ); ?>
-                            </a>
-                            <a href="<?php echo esc_url( admin_url( 'customize.php?autofocus[section]=sudomock_button' ) ); ?>" class="sudomock-btn">
-                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
-                                <?php esc_html_e( 'Customize Button', 'sudomock-product-customizer' ); ?>
-                            </a>
-                            <a href="<?php echo esc_url( admin_url( 'admin.php?page=sudomock-settings&tab=settings' ) ); ?>" class="sudomock-btn">
-                                <?php esc_html_e( 'Display Settings', 'sudomock-product-customizer' ); ?>
-                            </a>
-                            <a href="<?php echo esc_url( home_url() ); ?>" target="_blank" rel="noopener" class="sudomock-btn">
-                                <?php esc_html_e( 'View Store', 'sudomock-product-customizer' ); ?>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="sudomock-dashboard-grid__side">
-                <!-- Checklist -->
-                <div class="sudomock-card">
-                    <div class="sudomock-card__body">
-                        <h3 class="sudomock-card__title"><?php esc_html_e( 'Setup Checklist', 'sudomock-product-customizer' ); ?></h3>
-                        <?php
-                        $has_mapped = ! empty( get_option( 'sudomock_api_key' ) );
-                        $checks = array(
-                            array( __( 'Account connected', 'sudomock-product-customizer' ), true ),
-                            array( __( 'PSD mockup uploaded', 'sudomock-product-customizer' ), $has_mapped ),
-                            array( __( 'Product mapped to mockup', 'sudomock-product-customizer' ), $has_mapped ),
-                            array( __( 'Customization enabled on product', 'sudomock-product-customizer' ), $has_mapped ),
-                            array( __( 'Tested on storefront', 'sudomock-product-customizer' ), false ),
-                        );
-                        foreach ( $checks as $check ) :
-                        ?>
-                        <div class="sudomock-checklist__item <?php echo $check[1] ? 'sudomock-checklist__item--done' : ''; ?>" style="margin-bottom:6px;">
-                            <?php if ( $check[1] ) : ?>
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" fill="#10b981"/><path d="M8 12l3 3 5-5" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                            <?php else : ?>
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="#94a3b8" stroke-width="2"/></svg>
-                            <?php endif; ?>
-                            <span class="sudomock-text--sm"><?php echo esc_html( $check[0] ); ?></span>
-                        </div>
-                        <?php endforeach; ?>
-                    </div>
-                </div>
-
-                <!-- Tips -->
-                <div class="sudomock-card">
-                    <div class="sudomock-card__body">
-                        <h3 class="sudomock-card__title"><?php esc_html_e( 'Tips', 'sudomock-product-customizer' ); ?></h3>
-                        <ul style="margin:0;padding-left:16px;">
-                            <li class="sudomock-text--muted" style="margin-bottom:4px;"><?php esc_html_e( 'Works with all WooCommerce-compatible themes', 'sudomock-product-customizer' ); ?></li>
-                            <li class="sudomock-text--muted" style="margin-bottom:4px;"><?php esc_html_e( 'Compatible with Gutenberg blocks checkout', 'sudomock-product-customizer' ); ?></li>
-                            <li class="sudomock-text--muted" style="margin-bottom:4px;"><?php esc_html_e( 'Button only shows on mapped + enabled products', 'sudomock-product-customizer' ); ?></li>
-                            <li class="sudomock-text--muted"><?php esc_html_e( 'No SudoMock branding shown to customers', 'sudomock-product-customizer' ); ?></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <?php
-    }
 
     /* ------------------------------------------------------------------ */
     /* AJAX: Map / Unmap product                                           */
@@ -1275,12 +1121,14 @@ final class SudoMock_Admin {
 
         $product_id  = isset( $_POST['product_id'] ) ? absint( $_POST['product_id'] ) : 0;
         $mockup_uuid = isset( $_POST['mockup_uuid'] ) ? sanitize_text_field( wp_unslash( $_POST['mockup_uuid'] ) ) : '';
+        $mockup_name = isset( $_POST['mockup_name'] ) ? sanitize_text_field( wp_unslash( $_POST['mockup_name'] ) ) : '';
 
         if ( ! $product_id || empty( $mockup_uuid ) ) {
             wp_send_json_error( array( 'message' => __( 'Missing product ID or mockup UUID.', 'sudomock-product-customizer' ) ) );
         }
 
         update_post_meta( $product_id, '_sudomock_mockup_uuid', $mockup_uuid );
+        update_post_meta( $product_id, '_sudomock_mockup_name', $mockup_name );
         update_post_meta( $product_id, '_sudomock_customization_enabled', 'yes' );
 
         wp_send_json_success( array( 'message' => __( 'Mockup mapped successfully.', 'sudomock-product-customizer' ) ) );
@@ -1298,6 +1146,7 @@ final class SudoMock_Admin {
         }
 
         delete_post_meta( $product_id, '_sudomock_mockup_uuid' );
+        delete_post_meta( $product_id, '_sudomock_mockup_name' );
         delete_post_meta( $product_id, '_sudomock_customization_enabled' );
 
         wp_send_json_success( array( 'message' => __( 'Mockup removed.', 'sudomock-product-customizer' ) ) );
