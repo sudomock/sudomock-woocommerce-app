@@ -187,12 +187,23 @@ final class SudoMock_Product {
             SUDOMOCK_PLUGIN_URL . 'assets/js/product.js',
             array(),
             SUDOMOCK_VERSION,
-            true
+            array( 'in_footer' => true, 'strategy' => 'defer' )
         );
 
         $localize_data = array(
             'ajaxUrl' => admin_url( 'admin-ajax.php' ),
             'nonce'   => wp_create_nonce( 'sudomock_admin' ),
+            'i18n'    => array(
+                'loadingMockups' => __( 'Loading mockups...', 'sudomock-product-customizer' ),
+                'failedToLoad'   => __( 'Failed to load mockups.', 'sudomock-product-customizer' ),
+                'noMockupsMatch' => __( 'No mockups match', 'sudomock-product-customizer' ),
+                'noMockupsYet'   => __( 'No mockups yet.', 'sudomock-product-customizer' ),
+                'uploadFirstPsd' => __( 'Upload your first PSD', 'sudomock-product-customizer' ),
+                'networkError'   => __( 'Network error.', 'sudomock-product-customizer' ),
+                'noPreview'      => __( 'No preview', 'sudomock-product-customizer' ),
+                'smartObject'    => __( 'smart object', 'sudomock-product-customizer' ),
+                'smartObjects'   => __( 'smart objects', 'sudomock-product-customizer' ),
+            ),
         );
 
         // Fetch current mockup info from API for thumbnail display

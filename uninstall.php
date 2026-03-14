@@ -34,7 +34,15 @@ foreach ( $options as $option ) {
 // Product meta
 delete_post_meta_by_key( '_sudomock_mockup_uuid' );
 delete_post_meta_by_key( '_sudomock_customization_enabled' );
+delete_post_meta_by_key( '_sudomock_mockup_name' );
+
+// Customizer button options (sudomock_btn_*)
+global $wpdb;
+$wpdb->query( $wpdb->prepare( "DELETE FROM {$wpdb->options} WHERE option_name LIKE %s", 'sudomock_btn_%' ) );
 
 // Clear any transients
-global $wpdb;
-$wpdb->query( "DELETE FROM {$wpdb->options} WHERE option_name LIKE '_transient_sudomock_%' OR option_name LIKE '_transient_timeout_sudomock_%'" );
+$wpdb->query( $wpdb->prepare(
+    "DELETE FROM {$wpdb->options} WHERE option_name LIKE %s OR option_name LIKE %s",
+    '_transient_sudomock_%',
+    '_transient_timeout_sudomock_%'
+) );
