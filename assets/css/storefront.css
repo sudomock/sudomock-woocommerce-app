@@ -1,0 +1,146 @@
+/**
+ * SudoMock Storefront Styles
+ *
+ * @package SudoMock_Product_Customizer
+ * @since   1.0.0
+ */
+
+/* ── Customize Button ────────────────────────────────── */
+.sudomock-customize-btn {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: 8px;
+	padding: 12px 24px;
+	margin: 12px 0;
+	border: 2px solid #0f172a;
+	border-radius: 6px;
+	background: #0f172a;
+	color: #ffffff;
+	font-size: 15px;
+	font-weight: 600;
+	line-height: 1.4;
+	cursor: pointer;
+	transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+	width: 100%;
+	max-width: 360px;
+}
+
+.sudomock-customize-btn:hover,
+.sudomock-customize-btn:focus-visible {
+	background: #ffffff;
+	color: #0f172a;
+	box-shadow: 0 2px 8px rgba(15, 23, 42, 0.15);
+}
+
+.sudomock-customize-btn.sudomock-loading {
+	opacity: 0.7;
+	pointer-events: none;
+}
+
+.sudomock-customize-btn.sudomock-loading::after {
+	content: '';
+	width: 16px;
+	height: 16px;
+	border: 2px solid currentColor;
+	border-top-color: transparent;
+	border-radius: 50%;
+	animation: sudomock-spin 0.6s linear infinite;
+}
+
+@keyframes sudomock-spin {
+	to { transform: rotate(360deg); }
+}
+
+/* ── Studio Overlay ──────────────────────────────────── */
+#sudomock-overlay {
+	position: fixed;
+	inset: 0;
+	z-index: 999999;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background: rgba(0, 0, 0, 0.65);
+	backdrop-filter: blur(4px);
+}
+
+.sudomock-iframe {
+	width: 90vw;
+	height: 90vh;
+	max-width: 1200px;
+	max-height: 800px;
+	border: none;
+	border-radius: 12px;
+	box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+	background: #ffffff;
+}
+
+.sudomock-close {
+	position: absolute;
+	top: max(2vh, 12px);
+	right: max(2vw, 12px);
+	width: 40px;
+	height: 40px;
+	border: none;
+	border-radius: 50%;
+	background: rgba(255, 255, 255, 0.9);
+	color: #0f172a;
+	font-size: 24px;
+	line-height: 1;
+	cursor: pointer;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	transition: background 0.2s, transform 0.2s;
+	z-index: 1;
+}
+
+.sudomock-close:hover {
+	background: #ffffff;
+	transform: scale(1.1);
+}
+
+/* ── Render Preview ──────────────────────────────────── */
+#sudomock-preview {
+	margin: 12px 0;
+}
+
+.sudomock-preview-img {
+	max-width: 100%;
+	height: auto;
+	border: 1px solid #e2e8f0;
+	border-radius: 8px;
+}
+
+/* ── Cart Preview Thumbnail ──────────────────────────── */
+.sudomock-cart-thumb {
+	display: inline-block;
+	margin-top: 6px;
+}
+
+.sudomock-cart-thumb img {
+	max-width: 60px;
+	height: auto;
+	border-radius: 4px;
+	border: 1px solid #e2e8f0;
+}
+
+/* ── Responsive ──────────────────────────────────────── */
+@media (max-width: 768px) {
+	.sudomock-iframe {
+		width: 100vw;
+		height: 100vh;
+		max-width: none;
+		max-height: none;
+		border-radius: 0;
+	}
+
+	.sudomock-close {
+		top: 8px;
+		right: 8px;
+	}
+
+	.sudomock-customize-btn {
+		max-width: 100%;
+	}
+}

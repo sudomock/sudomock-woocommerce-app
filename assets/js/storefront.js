@@ -1,0 +1,215 @@
+/**
+ * SudoMock Storefront — vanilla JS (no jQuery).
+ *
+ * Responsibilities:
+ * 1. "Customize" button click → AJAX create-session → open Studio iframe / popup.
+ * 2. Listen for postMessage from Studio (render complete, close).
+ * 3. Inject render preview + add to cart via AJAX.
+ *
+ * @package SudoMock_Product_Customizer
+ * @since   1.0.0
+ */
+(function () {
+	'use strict';
+
+	var STUDIO_BASE = (window.sudomockStorefront && window.sudomockStorefront.studioBase) || 'https://studio.sudomock.com';
+	var ajaxUrl     = (window.sudomockStorefront && window.sudomockStorefront.ajaxUrl)    || '/wp-admin/admin-ajax.php';
+	var nonce       = (window.sudomockStorefront && window.sudomockStorefront.nonce)      || '';
+
+	/**
+	 * Create a session via WP AJAX (server-to-server, API key never in browser).
+	 *
+	 * @param {string} productId  WooCommerce product ID.
+	 * @param {string} mockupUuid SudoMock mockup UUID.
+	 * @returns {Promise<{token: string, expires_in: number, displayMode: string}>}
+	 */
+	function createSession(productId, mockupUuid) {
+		var body = new FormData();
+		body.append('action', 'sudomock_create_session');
+		body.append('nonce', nonce);
+		body.append('product_id', productId);
+		body.append('mockup_uuid', mockupUuid);
+
+		return fetch(ajaxUrl, { method: 'POST', body: body })
+			.then(function (r) { return r.json(); })
+			.then(function (json) {
+				if (!json.success) {
+					throw new Error(json.data && json.data.message ? json.data.message : 'Session creation failed');
+				}
+				return json.data;
+			});
+	}
+
+	/**
+	 * Open Studio in an iframe overlay.
+	 *
+	 * @param {string} token  Opaque session token (sess_xxx).
+	 */
+	function openStudioIframe(token) {
+		// Overlay
+		var overlay = document.createElement('div');
+		overlay.id = 'sudomock-overlay';
+		overlay.setAttribute('role', 'dialog');
+		overlay.setAttribute('aria-label', 'Product Customizer');
+
+		// Close button
+		var closeBtn = document.createElement('button');
+		closeBtn.className = 'sudomock-close';
+		closeBtn.setAttribute('aria-label', 'Close customizer');
+		closeBtn.innerHTML = '&times;';
+		closeBtn.addEventListener('click', function () { closeStudio(overlay); });
+
+		// Iframe
+		var iframe = document.createElement('iframe');
+		iframe.src = STUDIO_BASE + '/editor?session=' + encodeURIComponent(token);
+		iframe.className = 'sudomock-iframe';
+		iframe.setAttribute('allow', 'clipboard-write');
+
+		overlay.appendChild(closeBtn);
+		overlay.appendChild(iframe);
+		document.body.appendChild(overlay);
+
+		// Prevent background scroll
+		document.body.style.overflow = 'hidden';
+	}
+
+	/**
+	 * Close Studio overlay.
+	 *
+	 * @param {HTMLElement} overlay The overlay element.
+	 */
+	function closeStudio(overlay) {
+		if (overlay && overlay.parentNode) {
+			overlay.parentNode.removeChild(overlay);
+		}
+		document.body.style.overflow = '';
+	}
+
+	/**
+	 * Handle messages from Studio iframe.
+	 *
+	 * @param {MessageEvent} event
+	 */
+	function handleStudioMessage(event) {
+		if (event.origin !== STUDIO_BASE) {
+			return; // Origin validation (B10 security fix)
+		}
+
+		var data = event.data;
+		if (!data || !data.type) {
+			return;
+		}
+
+		switch (data.type) {
+			case 'sudomock:render-complete':
+				onRenderComplete(data);
+				break;
+			case 'sudomock:close':
+				var overlay = document.getElementById('sudomock-overlay');
+				closeStudio(overlay);
+				break;
+		}
+	}
+
+	/**
+	 * Called when Studio reports a completed render.
+	 *
+	 * @param {Object} data  { type, renderUrl, mockupUuid, token }
+	 */
+	function onRenderComplete(data) {
+		if (!data.renderUrl) {
+			return;
+		}
+
+		// Close studio
+		var overlay = document.getElementById('sudomock-overlay');
+		closeStudio(overlay);
+
+		// Show preview
+		showPreview(data.renderUrl);
+
+		// Store data for add-to-cart
+		var form = document.querySelector('form.cart, form.variations_form');
+		if (form) {
+			setHidden(form, 'sudomock_render_url', data.renderUrl);
+			setHidden(form, 'sudomock_mockup_uuid', data.mockupUuid || '');
+			setHidden(form, 'sudomock_session_token', data.session || '');
+		}
+	}
+
+	/**
+	 * Insert or update a hidden input inside a form.
+	 */
+	function setHidden(form, name, value) {
+		var input = form.querySelector('input[name="' + name + '"]');
+		if (!input) {
+			input = document.createElement('input');
+			input.type = 'hidden';
+			input.name = name;
+			form.appendChild(input);
+		}
+		input.value = value;
+	}
+
+	/**
+	 * Display the rendered preview image on the product page.
+	 *
+	 * @param {string} url Render image URL.
+	 */
+	function showPreview(url) {
+		var container = document.getElementById('sudomock-preview');
+		if (!container) {
+			container = document.createElement('div');
+			container.id = 'sudomock-preview';
+			var btn = document.querySelector('.sudomock-customize-btn');
+			if (btn && btn.parentNode) {
+				btn.parentNode.insertBefore(container, btn.nextSibling);
+			}
+		}
+		container.innerHTML = '<img src="' + url + '" alt="Your design" class="sudomock-preview-img" />';
+	}
+
+	/**
+	 * Bind click handlers to all customize buttons.
+	 */
+	function init() {
+		window.addEventListener('message', handleStudioMessage);
+
+		document.addEventListener('click', function (e) {
+			var btn = e.target.closest('.sudomock-customize-btn');
+			if (!btn) return;
+
+			e.preventDefault();
+			var productId = btn.getAttribute('data-product-id');
+			var mockupUuid = btn.getAttribute('data-mockup-uuid');
+
+			if (!productId || !mockupUuid) {
+				console.error('[SudoMock] Missing product-id or mockup-uuid on button.');
+				return;
+			}
+
+			btn.classList.add('sudomock-loading');
+			btn.disabled = true;
+
+			createSession(productId, mockupUuid)
+				.then(function (session) {
+					openStudioIframe(session.session);
+				})
+				.catch(function (err) {
+					console.error('[SudoMock] Session error:', err);
+					alert(err.message || 'Could not open customizer. Please try again.');
+				})
+				.finally(function () {
+					btn.classList.remove('sudomock-loading');
+					btn.disabled = false;
+				});
+		});
+	}
+
+	// Boot
+	if (document.readyState === 'loading') {
+		document.addEventListener('DOMContentLoaded', init);
+	} else {
+		init();
+	}
+})();
