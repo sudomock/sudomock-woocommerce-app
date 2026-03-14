@@ -175,8 +175,15 @@ final class SudoMock_API_Client {
             return array( 'ok' => false, 'error' => $response->get_error_message() );
         }
 
-        if ( ! empty( $response['success'] ) && isset( $response['data'] ) ) {
-            return array( 'ok' => true, 'data' => $response['data'] );
+        // Backend returns {success, config, config_version} - not nested under 'data'
+        if ( ! empty( $response['success'] ) && isset( $response['config'] ) ) {
+            return array(
+                'ok'   => true,
+                'data' => array(
+                    'config'         => $response['config'],
+                    'config_version' => isset( $response['config_version'] ) ? $response['config_version'] : 0,
+                ),
+            );
         }
 
         return array( 'ok' => false, 'error' => __( 'Failed to fetch studio config.', 'sudomock-product-customizer' ) );
@@ -195,8 +202,15 @@ final class SudoMock_API_Client {
             return array( 'ok' => false, 'error' => $response->get_error_message() );
         }
 
+        // Backend returns {success, config, config_version}
         if ( ! empty( $response['success'] ) ) {
-            return array( 'ok' => true, 'data' => isset( $response['data'] ) ? $response['data'] : array() );
+            return array(
+                'ok'   => true,
+                'data' => array(
+                    'config'         => isset( $response['config'] ) ? $response['config'] : array(),
+                    'config_version' => isset( $response['config_version'] ) ? $response['config_version'] : 0,
+                ),
+            );
         }
 
         return array( 'ok' => false, 'error' => __( 'Failed to update studio config.', 'sudomock-product-customizer' ) );
