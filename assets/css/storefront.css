@@ -6,31 +6,20 @@
  */
 
 /* ── Customize Button ────────────────────────────────── */
+/* Inherits theme button styles via WooCommerce .button class */
+/* Merchant can override all colors via WP Customizer > SudoMock section */
 .sudomock-customize-btn {
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
 	gap: 8px;
-	padding: 12px 24px;
-	margin: 12px 0;
-	border: 2px solid #0f172a;
-	border-radius: 6px;
-	background: #0f172a;
-	color: #ffffff;
-	font-size: 15px;
-	font-weight: 600;
-	line-height: 1.4;
 	cursor: pointer;
-	transition: background 0.2s, color 0.2s, box-shadow 0.2s;
 	width: 100%;
-	max-width: 360px;
 }
 
 .sudomock-customize-btn:hover,
 .sudomock-customize-btn:focus-visible {
-	background: #ffffff;
-	color: #0f172a;
-	box-shadow: 0 2px 8px rgba(15, 23, 42, 0.15);
+	opacity: 0.85;
 }
 
 .sudomock-customize-btn.sudomock-loading {
