@@ -55,7 +55,7 @@ final class SudoMock_Admin {
             'manage_woocommerce',
             'sudomock-settings',
             array( $this, 'render_page' ),
-            'data:image/svg+xml;base64,' . base64_encode( '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"><rect x="2" y="2" width="20" height="20" rx="4" stroke="currentColor" stroke-width="1.5"/><rect x="2" y="2" width="20" height="14" rx="4" stroke="currentColor" stroke-width="1.5"/><circle cx="17" cy="19" r="2" fill="currentColor"/><path d="M7 9l3-3 2 2 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>' ),
+            'data:image/svg+xml;base64,' . base64_encode( '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"><rect x="2" y="2" width="20" height="20" rx="5" stroke="currentColor" stroke-width="1.5"/><text x="12" y="17" font-family="system-ui,sans-serif" font-size="14" font-weight="700" fill="currentColor" text-anchor="middle">S</text></svg>' ),
             58
         );
     }
@@ -220,7 +220,6 @@ final class SudoMock_Admin {
             'products'   => __( 'Products', 'sudomock-product-customizer' ),
             'mockups'    => __( 'Mockups', 'sudomock-product-customizer' ),
             'settings'   => __( 'Settings', 'sudomock-product-customizer' ),
-            'storefront' => __( 'Storefront', 'sudomock-product-customizer' ),
         );
 
         if ( ! $is_connected ) {
@@ -277,9 +276,6 @@ final class SudoMock_Admin {
                     break;
                 case 'settings':
                     $this->render_settings_tab( $data );
-                    break;
-                case 'storefront':
-                    $this->render_storefront_tab();
                     break;
                 default:
                     $this->render_dashboard( $data );
@@ -901,27 +897,16 @@ final class SudoMock_Admin {
 
     private function render_settings_tab( $d ) {
         ?>
-        <!-- WP Display Settings (button_label - backwards compatible) -->
+        <!-- Button Appearance - managed via WP Customizer -->
         <div class="sudomock-card">
-            <div class="sudomock-card__body">
-                <h2 class="sudomock-card__title"><?php esc_html_e( 'WooCommerce Display Settings', 'sudomock-product-customizer' ); ?></h2>
-                <p class="sudomock-text--muted" style="margin-bottom:16px;"><?php esc_html_e( 'Configure how the customization button appears on your product pages.', 'sudomock-product-customizer' ); ?></p>
-                <form method="post" action="options.php">
-                    <?php settings_fields( 'sudomock_settings' ); ?>
-                    <div class="sudomock-form-row">
-                        <label class="sudomock-form-row__label" for="sudomock_button_label">
-                            <?php esc_html_e( 'Button Label', 'sudomock-product-customizer' ); ?>
-                        </label>
-                        <input type="text" id="sudomock_button_label" name="sudomock_button_label"
-                            value="<?php echo esc_attr( $d['button_label'] ); ?>" class="sudomock-input" />
-                        <p class="sudomock-text--muted sudomock-text--sm" style="margin-top:4px;">
-                            <?php esc_html_e( 'Text shown on the customization button on product pages.', 'sudomock-product-customizer' ); ?>
-                        </p>
-                    </div>
-                    <button type="submit" class="sudomock-btn sudomock-btn--primary">
-                        <?php esc_html_e( 'Save Changes', 'sudomock-product-customizer' ); ?>
-                    </button>
-                </form>
+            <div class="sudomock-card__body" style="display:flex;align-items:center;justify-content:space-between;">
+                <div>
+                    <h2 class="sudomock-card__title" style="margin-bottom:4px;"><?php esc_html_e( 'Button Appearance', 'sudomock-product-customizer' ); ?></h2>
+                    <p class="sudomock-text--muted"><?php esc_html_e( 'Customize the storefront button colors, text, sizing, and placement in the WordPress Customizer.', 'sudomock-product-customizer' ); ?></p>
+                </div>
+                <a href="<?php echo esc_url( admin_url( 'customize.php?autofocus[section]=sudomock_button' ) ); ?>" class="sudomock-btn sudomock-btn--primary">
+                    <?php esc_html_e( 'Open Customizer', 'sudomock-product-customizer' ); ?>
+                </a>
             </div>
         </div>
 
