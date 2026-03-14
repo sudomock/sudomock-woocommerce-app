@@ -121,22 +121,21 @@
 	 * @param {Object} data  { type, renderUrl, mockupUuid, token }
 	 */
 	function onRenderComplete(data) {
-		if (!data.renderUrl) {
+		// Studio sends: preview_url (not renderUrl), mockup_uuid (not mockupUuid)
+		var previewUrl = data.preview_url || data.renderUrl || '';
+		if (!previewUrl) {
 			return;
 		}
 
-		// Close studio
 		var overlay = document.getElementById('sudomock-overlay');
 		closeStudio(overlay);
 
-		// Show preview
-		showPreview(data.renderUrl);
+		showPreview(previewUrl);
 
-		// Store data for add-to-cart
 		var form = document.querySelector('form.cart, form.variations_form');
 		if (form) {
-			setHidden(form, 'sudomock_render_url', data.renderUrl);
-			setHidden(form, 'sudomock_mockup_uuid', data.mockupUuid || '');
+			setHidden(form, 'sudomock_render_url', previewUrl);
+			setHidden(form, 'sudomock_mockup_uuid', data.mockup_uuid || data.mockupUuid || '');
 			setHidden(form, 'sudomock_session_token', data.session || data.token || '');
 		}
 	}
@@ -148,13 +147,14 @@
 	 * @param {Object} data  { type, renderUrl, mockupUuid, session, productId }
 	 */
 	function onAddToCart(data) {
-		if (!data.renderUrl) {
+		// Studio sends: preview_url (not renderUrl), mockup_uuid (not mockupUuid), product_id (not productId)
+		var previewUrl = data.preview_url || data.renderUrl || '';
+		if (!previewUrl) {
 			return;
 		}
 
-		// Find the product ID from the customize button on the page
 		var btn = document.querySelector('.sudomock-customize-btn');
-		var productId = (data.productId) || (btn && btn.getAttribute('data-product-id')) || '';
+		var productId = data.product_id || data.productId || (btn && btn.getAttribute('data-product-id')) || '';
 
 		if (!productId) {
 			console.error('[SudoMock] Cannot add to cart: no product ID.');
@@ -165,8 +165,8 @@
 		body.append('action', 'sudomock_add_to_cart');
 		body.append('nonce', nonce);
 		body.append('product_id', productId);
-		body.append('mockup_uuid', data.mockupUuid || '');
-		body.append('preview_url', data.renderUrl);
+		body.append('mockup_uuid', data.mockup_uuid || data.mockupUuid || '');
+		body.append('preview_url', previewUrl);
 
 		fetch(ajaxUrl, { method: 'POST', body: body })
 			.then(function (r) { return r.json(); })
@@ -176,8 +176,7 @@
 				closeStudio(overlay);
 
 				if (json.success) {
-					// Show preview
-					showPreview(data.renderUrl);
+					showPreview(previewUrl);
 
 					// Notify Studio iframe of success (if still open)
 					var iframe = overlay && overlay.querySelector('.sudomock-iframe');
