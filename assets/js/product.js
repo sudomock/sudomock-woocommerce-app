@@ -11,6 +11,7 @@
 
 	var ajaxUrl = sudomockProduct.ajaxUrl;
 	var nonce   = sudomockProduct.nonce;
+	var i18n    = sudomockProduct.i18n || {};
 	var selectedUuid = null;
 
 	function init() {
@@ -83,7 +84,7 @@
 		var grid = document.getElementById('sudomock-product-grid');
 		if (!grid) return;
 
-		grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:30px;color:#9ca3af;font-size:13px;">Loading mockups...</div>';
+		grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:30px;color:#9ca3af;font-size:13px;">' + esc(i18n.loadingMockups || 'Loading mockups...') + '</div>';
 
 		var params = 'action=sudomock_list_mockups&nonce=' + encodeURIComponent(nonce) + '&limit=30';
 		if (search) params += '&search=' + encodeURIComponent(search);
@@ -92,21 +93,21 @@
 			.then(function (r) { return r.json(); })
 			.then(function (json) {
 				if (!json.success) {
-					grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:30px;color:#dc2626;font-size:13px;">Failed to load mockups.</div>';
+					grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:30px;color:#dc2626;font-size:13px;">' + esc(i18n.failedToLoad || 'Failed to load mockups.') + '</div>';
 					return;
 				}
 
 				var mockups = json.data.mockups || [];
 				if (mockups.length === 0) {
 					grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:30px;color:#9ca3af;font-size:13px;">' +
-						(search ? 'No mockups match "' + esc(search) + '"' : 'No mockups yet. <a href="https://sudomock.com/dashboard/playground" target="_blank">Upload your first PSD</a>') + '</div>';
+						(search ? esc(i18n.noMockupsMatch || 'No mockups match') + ' "' + esc(search) + '"' : esc(i18n.noMockupsYet || 'No mockups yet.') + ' <a href="https://sudomock.com/dashboard/playground" target="_blank">' + esc(i18n.uploadFirstPsd || 'Upload your first PSD') + '</a>') + '</div>';
 					return;
 				}
 
 				renderGrid(grid, mockups);
 			})
 			.catch(function () {
-				grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:30px;color:#dc2626;font-size:13px;">Network error.</div>';
+				grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:30px;color:#dc2626;font-size:13px;">' + esc(i18n.networkError || 'Network error.') + '</div>';
 			});
 	}
 
@@ -131,11 +132,11 @@
 
 			card.innerHTML =
 				'<div style="width:100%;aspect-ratio:4/3;display:flex;align-items:center;justify-content:center;overflow:hidden;background:#e5e7eb;">' +
-					(thumbUrl ? '<img src="' + esc(thumbUrl) + '" style="max-width:100%;max-height:100%;object-fit:contain;" />' : '<span style="color:#9ca3af;font-size:11px;">No preview</span>') +
+					(thumbUrl ? '<img src="' + esc(thumbUrl) + '" style="max-width:100%;max-height:100%;object-fit:contain;" />' : '<span style="color:#9ca3af;font-size:11px;">' + esc(i18n.noPreview || 'No preview') + '</span>') +
 				'</div>' +
 				'<div style="padding:6px 8px;">' +
 					'<div style="font-size:11px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;" title="' + esc(m.name) + '">' + esc(m.name) + '</div>' +
-					'<div style="font-size:10px;color:#9ca3af;">' + soCount + ' smart object' + (soCount !== 1 ? 's' : '') + '</div>' +
+					'<div style="font-size:10px;color:#9ca3af;">' + soCount + ' ' + (soCount !== 1 ? (i18n.smartObjects || 'smart objects') : (i18n.smartObject || 'smart object')) + '</div>' +
 				'</div>';
 
 			card.addEventListener('mouseenter', function () {

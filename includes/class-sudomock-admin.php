@@ -55,7 +55,7 @@ final class SudoMock_Admin {
             'manage_woocommerce',
             'sudomock-settings',
             array( $this, 'render_page' ),
-            'data:image/svg+xml;base64,' . base64_encode( '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"><rect x="2" y="2" width="20" height="20" rx="4" stroke="currentColor" stroke-width="1.5"/><path d="M15.5 9.5c-.3-1.5-1.5-2.5-3.5-2.5-2.2 0-3.5 1.1-3.5 2.7 0 1.4 1 2.1 3 2.6l.8.2c1.3.3 1.9.7 1.9 1.4 0 .9-.9 1.5-2.2 1.5s-2.2-.6-2.4-1.6c.3 1.6 1.5 2.7 3.4 2.7 2.3 0 3.6-1.1 3.6-2.8 0-1.4-1-2.2-3-2.7l-.8-.2c-1.3-.3-2-.7-2-1.4 0-.8.8-1.4 2.1-1.4 1.2 0 2 .6 2.2 1.6z" fill="currentColor"/></svg>' ),
+            SUDOMOCK_PLUGIN_URL . 'assets/images/icon.svg',
             58
         );
     }
@@ -77,7 +77,7 @@ final class SudoMock_Admin {
             SUDOMOCK_PLUGIN_URL . 'assets/js/admin.js',
             array(),
             SUDOMOCK_VERSION,
-            true
+            array( 'in_footer' => true, 'strategy' => 'defer' )
         );
 
         wp_localize_script( 'sudomock-admin', 'sudomockAdmin', array(
@@ -85,14 +85,45 @@ final class SudoMock_Admin {
             'nonce'      => wp_create_nonce( 'sudomock_admin' ),
             'connectUrl' => 'https://sudomock.com/integrations/woocommerce/connect?site_url=' . rawurlencode( site_url() ) . '&return_url=' . rawurlencode( admin_url( 'admin.php?page=sudomock-settings' ) ),
             'i18n'       => array(
-                'connect'           => __( 'Connect with SudoMock', 'sudomock-product-customizer' ),
-                'connecting'        => __( 'Connecting...', 'sudomock-product-customizer' ),
-                'saving'            => __( 'Saving connection...', 'sudomock-product-customizer' ),
-                'connected'         => __( 'Connected', 'sudomock-product-customizer' ),
-                'error'             => __( 'Connection failed', 'sudomock-product-customizer' ),
+                'connect'                 => __( 'Connect with SudoMock', 'sudomock-product-customizer' ),
+                'connecting'              => __( 'Connecting...', 'sudomock-product-customizer' ),
+                'saving'                  => __( 'Saving connection...', 'sudomock-product-customizer' ),
+                'connected'               => __( 'Connected', 'sudomock-product-customizer' ),
+                'error'                   => __( 'Connection failed', 'sudomock-product-customizer' ),
                 'confirmDisconnect'       => __( 'Are you sure you want to disconnect? Product customizations will stop working.', 'sudomock-product-customizer' ),
                 'confirmDisconnectDetail' => __( 'This will remove all mockup assignments from your products and notify the SudoMock server. Product customization will stop working immediately.', 'sudomock-product-customizer' ),
                 'disconnecting'           => __( 'Disconnecting...', 'sudomock-product-customizer' ),
+                'assigning'               => __( 'Assigning...', 'sudomock-product-customizer' ),
+                'assignMockup'            => __( 'Assign Mockup', 'sudomock-product-customizer' ),
+                'noMockupsFound'          => __( 'No mockups found.', 'sudomock-product-customizer' ),
+                'loadingMockups'          => __( 'Loading mockups...', 'sudomock-product-customizer' ),
+                'failedToLoad'            => __( 'Failed to load mockups.', 'sudomock-product-customizer' ),
+                'failedToMap'             => __( 'Failed to map mockup.', 'sudomock-product-customizer' ),
+                'networkError'            => __( 'Network error. Please try again.', 'sudomock-product-customizer' ),
+                'removeMockupConfirm'     => __( 'Remove mockup mapping from this product?', 'sudomock-product-customizer' ),
+                'assigningTo'             => __( 'Assigning mockup to:', 'sudomock-product-customizer' ),
+                'noPreview'               => __( 'No preview', 'sudomock-product-customizer' ),
+                'smartObject'             => __( 'smart object', 'sudomock-product-customizer' ),
+                'smartObjects'            => __( 'smart objects', 'sudomock-product-customizer' ),
+                'uploadFirstPsd'          => __( 'Upload Your First PSD', 'sudomock-product-customizer' ),
+                'noPsdMockups'            => __( 'No PSD mockups yet', 'sudomock-product-customizer' ),
+                'uploadPsdDesc'           => __( 'Upload PSD mockup files in your SudoMock Dashboard. Mockups with smart objects will appear here automatically.', 'sudomock-product-customizer' ),
+                'noMockupsMatch'          => __( 'No mockups match', 'sudomock-product-customizer' ),
+                'page'                    => __( 'Page', 'sudomock-product-customizer' ),
+                'of'                      => __( 'of', 'sudomock-product-customizer' ),
+                'mockups'                 => __( 'mockups', 'sudomock-product-customizer' ),
+                'mockup'                  => __( 'mockup', 'sudomock-product-customizer' ),
+                'previous'                => __( 'Previous', 'sudomock-product-customizer' ),
+                'next'                    => __( 'Next', 'sudomock-product-customizer' ),
+                'popupBlocked'            => __( 'Popup blocked. Please allow popups for this site.', 'sudomock-product-customizer' ),
+                'configError'             => __( 'Configuration error.', 'sudomock-product-customizer' ),
+                'settingsSaved'           => __( 'Settings saved successfully.', 'sudomock-product-customizer' ),
+                'resetConfirm'            => __( 'Reset all studio settings to defaults?', 'sudomock-product-customizer' ),
+                'changesDiscarded'        => __( 'Changes discarded.', 'sudomock-product-customizer' ),
+                'saveStudioConfig'        => __( 'Save Studio Config', 'sudomock-product-customizer' ),
+                'networkErrorConfig'      => __( 'Network error saving config.', 'sudomock-product-customizer' ),
+                'failedToSave'            => __( 'Failed to save.', 'sudomock-product-customizer' ),
+                'text'                    => __( 'text', 'sudomock-product-customizer' ),
             ),
         ) );
     }
@@ -148,7 +179,10 @@ final class SudoMock_Admin {
         // 2. Notify backend about disconnect (best-effort, ignore errors)
         SudoMock_API_Client::notify_disconnect();
 
-        // 3. Remove all plugin options
+        // 3. Clear cached account data
+        delete_transient( 'sudomock_account_data' );
+
+        // 4. Remove all plugin options
         delete_option( 'sudomock_api_key' );
         delete_option( 'sudomock_account_email' );
         delete_option( 'sudomock_plan_name' );
@@ -197,11 +231,17 @@ final class SudoMock_Admin {
     public function render_page() {
         $is_connected = ! empty( SudoMock_API_Client::get_api_key() );
 
-        // Refresh account data from API on every dashboard load
+        // Refresh account data from API (cached 5 min to reduce API calls)
         if ( $is_connected ) {
-            $result = SudoMock_API_Client::validate_key();
-            if ( $result['ok'] && ! empty( $result['data'] ) ) {
-                $account = $result['data'];
+            $account = get_transient( 'sudomock_account_data' );
+            if ( false === $account ) {
+                $result = SudoMock_API_Client::validate_key();
+                if ( $result['ok'] && ! empty( $result['data'] ) ) {
+                    $account = $result['data'];
+                    set_transient( 'sudomock_account_data', $account, 5 * MINUTE_IN_SECONDS );
+                }
+            }
+            if ( ! empty( $account ) ) {
                 update_option( 'sudomock_account_email', sanitize_email( $account['account']['email'] ) );
                 update_option( 'sudomock_plan_name', sanitize_text_field( $account['subscription']['plan'] ) );
                 update_option( 'sudomock_plan_tier', sanitize_text_field( $account['subscription']['tier'] ) );
@@ -243,7 +283,11 @@ final class SudoMock_Admin {
         $mapped_count = 0;
         global $wpdb;
         $mapped_count = (int) $wpdb->get_var(
-            "SELECT COUNT(DISTINCT post_id) FROM {$wpdb->postmeta} WHERE meta_key = '_sudomock_mockup_uuid' AND meta_value != ''"
+            $wpdb->prepare(
+                "SELECT COUNT(DISTINCT post_id) FROM {$wpdb->postmeta} WHERE meta_key = %s AND meta_value != %s",
+                '_sudomock_mockup_uuid',
+                ''
+            )
         );
 
         $data = compact(
@@ -524,8 +568,8 @@ final class SudoMock_Admin {
                 </div>
             </div>
 
-            <!-- Nav Cards -->
-            <div class="sudomock-nav-cards">
+            <!-- Nav Cards (inside grid flow) -->
+            <div class="sudomock-nav-cards" style="margin-top:0;">
                 <a href="<?php echo esc_url( admin_url( 'edit.php?post_type=product' ) ); ?>" class="sudomock-nav-card">
                     <div class="sudomock-nav-card__icon sudomock-nav-card__icon--green">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83 0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>

@@ -59,12 +59,14 @@ final class SudoMock_Blocks {
 	/**
 	 * Provide custom data for each cart item in the Store API response.
 	 *
+	 * @param array $cart_item Cart item data from WooCommerce.
 	 * @return array
 	 */
-	public function extend_cart_item_data() {
+	public function extend_cart_item_data( $cart_item ) {
+		$data = isset( $cart_item['sudomock_customization'] ) ? $cart_item['sudomock_customization'] : array();
 		return array(
-			'render_url'  => '',
-			'mockup_uuid' => '',
+			'render_url'  => isset( $data['preview_url'] ) ? $data['preview_url'] : '',
+			'mockup_uuid' => isset( $data['mockup_uuid'] ) ? $data['mockup_uuid'] : '',
 		);
 	}
 

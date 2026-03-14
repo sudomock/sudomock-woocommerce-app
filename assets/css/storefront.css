@@ -17,9 +17,14 @@
 	width: 100%;
 }
 
-.sudomock-customize-btn:hover,
+.sudomock-customize-btn:hover {
+	opacity: 0.85;
+}
+
 .sudomock-customize-btn:focus-visible {
 	opacity: 0.85;
+	outline: 2px solid currentColor;
+	outline-offset: 2px;
 }
 
 .sudomock-customize-btn.sudomock-loading {

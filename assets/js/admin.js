@@ -20,11 +20,11 @@
 		if (!btn) return;
 
 		btn.addEventListener('click', function () {
-			if (!connectUrl) { showFeedback('error', 'Configuration error.'); return; }
+			if (!connectUrl) { showFeedback('error', i18n.configError || 'Configuration error.'); return; }
 			var w = 500, h = 700;
 			var popup = window.open(connectUrl, 'sudomock_connect',
 				'width=' + w + ',height=' + h + ',left=' + (screen.width - w) / 2 + ',top=' + (screen.height - h) / 2 + ',toolbar=no,menubar=no');
-			if (!popup) { showFeedback('error', 'Popup blocked. Please allow popups for this site.'); return; }
+			if (!popup) { showFeedback('error', i18n.popupBlocked || 'Popup blocked. Please allow popups for this site.'); return; }
 			btn.disabled = true;
 			btn.textContent = i18n.connecting || 'Connecting...';
 		});
@@ -96,7 +96,7 @@
 				currentProductId = btn.getAttribute('data-product-id');
 				var name = btn.getAttribute('data-product-name');
 				var info = modal.querySelector('.sudomock-modal__product-info');
-				if (info) info.textContent = 'Assigning mockup to: ' + name;
+				if (info) info.textContent = (i18n.assigningTo || 'Assigning mockup to:') + ' ' + name;
 				selectedMockup = null;
 				selectedMockupName = null;
 				updateAssignBtn();
@@ -107,7 +107,7 @@
 			var unmap = e.target.closest('[data-action="unmap"]');
 			if (unmap) {
 				var pid = unmap.getAttribute('data-product-id');
-				if (!confirm('Remove mockup mapping from this product?')) return;
+				if (!confirm(i18n.removeMockupConfirm || 'Remove mockup mapping from this product?')) return;
 				unmapProduct(pid, unmap);
 			}
 		});
@@ -153,7 +153,7 @@
 	function loadModalMockups(search) {
 		var grid = document.getElementById('sudomock-modal-grid');
 		if (!grid) return;
-		grid.innerHTML = '<div style="text-align:center;padding:40px;color:#616161;grid-column:1/-1;">Loading mockups...</div>';
+		grid.innerHTML = '<div style="text-align:center;padding:40px;color:#616161;grid-column:1/-1;">' + escapeHtml(i18n.loadingMockups || 'Loading mockups...') + '</div>';
 
 		var params = 'action=sudomock_list_mockups&nonce=' + encodeURIComponent(nonce);
 		if (search) params += '&search=' + encodeURIComponent(search);
@@ -163,19 +163,19 @@
 			.then(function (r) { return r.json(); })
 			.then(function (json) {
 				if (!json.success) {
-					grid.innerHTML = '<div style="text-align:center;padding:40px;color:#616161;grid-column:1/-1;">Failed to load mockups.</div>';
+					grid.innerHTML = '<div style="text-align:center;padding:40px;color:#616161;grid-column:1/-1;">' + escapeHtml(i18n.failedToLoad || 'Failed to load mockups.') + '</div>';
 					return;
 				}
 				var mockups = json.data.mockups || [];
 				if (mockups.length === 0) {
-					grid.innerHTML = '<div style="text-align:center;padding:40px;color:#616161;grid-column:1/-1;">No mockups found.' +
-						(search ? '' : ' <a href="https://sudomock.com/dashboard/playground" target="_blank" rel="noopener">Upload your first PSD</a>') + '</div>';
+					grid.innerHTML = '<div style="text-align:center;padding:40px;color:#616161;grid-column:1/-1;">' + escapeHtml(i18n.noMockupsFound || 'No mockups found.') +
+						(search ? '' : ' <a href="https://sudomock.com/dashboard/playground" target="_blank" rel="noopener">' + escapeHtml(i18n.uploadFirstPsd || 'Upload your first PSD') + '</a>') + '</div>';
 					return;
 				}
 				renderMockupGrid(grid, mockups);
 			})
 			.catch(function () {
-				grid.innerHTML = '<div style="text-align:center;padding:40px;color:#c00;grid-column:1/-1;">Network error loading mockups.</div>';
+				grid.innerHTML = '<div style="text-align:center;padding:40px;color:#c00;grid-column:1/-1;">' + escapeHtml(i18n.networkError || 'Network error. Please try again.') + '</div>';
 			});
 	}
 
@@ -238,7 +238,7 @@
 
 	function mapProduct(productId, mockupUuid) {
 		var btn = document.getElementById('sudomock-modal-assign');
-		if (btn) { btn.disabled = true; btn.textContent = 'Assigning...'; }
+		if (btn) { btn.disabled = true; btn.textContent = i18n.assigning || 'Assigning...'; }
 
 		var body = new FormData();
 		body.append('action', 'sudomock_map_product');
@@ -254,13 +254,13 @@
 					closeModal();
 					window.location.reload();
 				} else {
-					alert((json.data && json.data.message) || 'Failed to map mockup.');
-					if (btn) { btn.disabled = false; btn.textContent = 'Assign Mockup'; }
+					alert((json.data && json.data.message) || (i18n.failedToMap || 'Failed to map mockup.'));
+					if (btn) { btn.disabled = false; btn.textContent = i18n.assignMockup || 'Assign Mockup'; }
 				}
 			})
 			.catch(function () {
-				alert('Network error.');
-				if (btn) { btn.disabled = false; btn.textContent = 'Assign Mockup'; }
+				alert(i18n.networkError || 'Network error. Please try again.');
+				if (btn) { btn.disabled = false; btn.textContent = i18n.assignMockup || 'Assign Mockup'; }
 			});
 	}
 
@@ -309,7 +309,7 @@
 		var pag = document.getElementById('sudomock-mockups-pagination');
 		if (!grid) return;
 
-		grid.innerHTML = '<div style="text-align:center;padding:40px;color:#616161;grid-column:1/-1;">Loading mockups...</div>';
+		grid.innerHTML = '<div style="text-align:center;padding:40px;color:#616161;grid-column:1/-1;">' + escapeHtml(i18n.loadingMockups || 'Loading mockups...') + '</div>';
 
 		var offset = (mockupsPage - 1) * mockupsPerPage;
 		var params = 'action=sudomock_list_mockups&nonce=' + encodeURIComponent(nonce);
@@ -320,7 +320,7 @@
 			.then(function (r) { return r.json(); })
 			.then(function (json) {
 				if (!json.success) {
-					grid.innerHTML = '<div style="text-align:center;padding:40px;color:#c00;grid-column:1/-1;">' + ((json.data && json.data.message) || 'Failed to load.') + '</div>';
+					grid.innerHTML = '<div style="text-align:center;padding:40px;color:#c00;grid-column:1/-1;">' + escapeHtml((json.data && json.data.message) || (i18n.failedToLoad || 'Failed to load mockups.')) + '</div>';
 					return;
 				}
 				var mockups = json.data.mockups || [];
@@ -353,7 +353,7 @@
 						emptyDiv.appendChild(iconWrap);
 						var msgP = document.createElement('p');
 						msgP.className = 'sudomock-empty-state__desc';
-						msgP.textContent = 'No mockups match "' + mockupsSearch + '"';
+						msgP.textContent = (i18n.noMockupsMatch || 'No mockups match') + ' "' + mockupsSearch + '"';
 						emptyDiv.appendChild(msgP);
 					} else {
 						var svgNs2 = 'http://www.w3.org/2000/svg';
@@ -381,18 +381,18 @@
 						emptyDiv.appendChild(iconWrap2);
 						var h3 = document.createElement('h3');
 						h3.className = 'sudomock-empty-state__title';
-						h3.textContent = 'No PSD mockups yet';
+						h3.textContent = i18n.noPsdMockups || 'No PSD mockups yet';
 						emptyDiv.appendChild(h3);
 						var desc = document.createElement('p');
 						desc.className = 'sudomock-empty-state__desc';
-						desc.textContent = 'Upload PSD mockup files in your SudoMock Dashboard. Mockups with smart objects will appear here automatically.';
+						desc.textContent = i18n.uploadPsdDesc || 'Upload PSD mockup files in your SudoMock Dashboard. Mockups with smart objects will appear here automatically.';
 						emptyDiv.appendChild(desc);
 						var cta = document.createElement('a');
 						cta.href = 'https://sudomock.com/dashboard/playground';
 						cta.target = '_blank';
 						cta.rel = 'noopener';
 						cta.className = 'sudomock-btn sudomock-btn--primary';
-						cta.textContent = 'Upload Your First PSD';
+						cta.textContent = i18n.uploadFirstPsd || 'Upload Your First PSD';
 						emptyDiv.appendChild(cta);
 					}
 					grid.appendChild(emptyDiv);
@@ -502,25 +502,25 @@
 				if (pag) {
 					var totalPages = Math.ceil(total / mockupsPerPage);
 					if (totalPages <= 1) {
-						pag.innerHTML = '<span class="sudomock-text--muted sudomock-text--sm">' + total + ' mockup' + (total !== 1 ? 's' : '') + '</span>';
+						pag.innerHTML = '<span class="sudomock-text--muted sudomock-text--sm">' + total + ' ' + (total !== 1 ? (i18n.mockups || 'mockups') : (i18n.mockup || 'mockup')) + '</span>';
 					} else {
 						pag.innerHTML = '';
 						if (mockupsPage > 1) {
 							var prev = document.createElement('button');
 							prev.className = 'sudomock-btn sudomock-btn--sm';
-							prev.textContent = '← Previous';
+							prev.textContent = '\u2190 ' + (i18n.previous || 'Previous');
 							prev.addEventListener('click', function () { mockupsPage--; loadMockupsTab(); });
 							pag.appendChild(prev);
 						}
 						var info = document.createElement('span');
 						info.className = 'sudomock-text--muted sudomock-text--sm';
 						info.style.margin = '0 12px';
-						info.textContent = 'Page ' + mockupsPage + ' of ' + totalPages + ' (' + total + ' mockups)';
+						info.textContent = (i18n.page || 'Page') + ' ' + mockupsPage + ' ' + (i18n.of || 'of') + ' ' + totalPages + ' (' + total + ' ' + (i18n.mockups || 'mockups') + ')';
 						pag.appendChild(info);
 						if (mockupsPage < totalPages) {
 							var next = document.createElement('button');
 							next.className = 'sudomock-btn sudomock-btn--sm';
-							next.textContent = 'Next →';
+							next.textContent = (i18n.next || 'Next') + ' \u2192';
 							next.addEventListener('click', function () { mockupsPage++; loadMockupsTab(); });
 							pag.appendChild(next);
 						}
@@ -528,7 +528,7 @@
 				}
 			})
 			.catch(function () {
-				grid.innerHTML = '<div style="text-align:center;padding:40px;color:#c00;grid-column:1/-1;">Network error loading mockups.</div>';
+				grid.innerHTML = '<div style="text-align:center;padding:40px;color:#c00;grid-column:1/-1;">' + escapeHtml(i18n.networkError || 'Network error. Please try again.') + '</div>';
 			});
 	}
 
@@ -542,7 +542,7 @@
 			if (wrap) {
 				var banner = document.createElement('div');
 				banner.className = 'sudomock-banner sudomock-banner--success';
-				banner.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg> Settings saved successfully.';
+				banner.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg> ' + escapeHtml(i18n.settingsSaved || 'Settings saved successfully.');
 				wrap.insertBefore(banner, wrap.querySelector('.sudomock-tabs') ? wrap.querySelector('.sudomock-tabs').nextSibling : wrap.firstChild);
 				setTimeout(function () { banner.style.opacity = '0'; banner.style.transition = 'opacity 0.3s'; setTimeout(function () { banner.remove(); }, 400); }, 3000);
 			}
@@ -588,7 +588,7 @@
 		// Reset defaults button
 		var resetBtn = document.getElementById('sudomock-config-reset');
 		if (resetBtn) resetBtn.addEventListener('click', function () {
-			if (!confirm('Reset all studio settings to defaults?')) return;
+			if (!confirm(i18n.resetConfirm || 'Reset all studio settings to defaults?')) return;
 			currentConfig = JSON.parse(JSON.stringify(DEFAULTS));
 			populateForm(currentConfig);
 			markDirty();
@@ -796,13 +796,13 @@
 					if (discardBtn) discardBtn.style.display = 'none';
 					showConfigBanner('success', json.data.message || 'Studio config saved.');
 				} else {
-					showConfigBanner('error', (json.data && json.data.message) || 'Failed to save.');
+					showConfigBanner('error', (json.data && json.data.message) || (i18n.failedToSave || 'Failed to save.'));
 				}
-				if (saveBtn) { saveBtn.disabled = false; saveBtn.textContent = 'Save Studio Config'; }
+				if (saveBtn) { saveBtn.disabled = false; saveBtn.textContent = i18n.saveStudioConfig || 'Save Studio Config'; }
 			})
 			.catch(function () {
-				showConfigBanner('error', 'Network error saving config.');
-				if (saveBtn) { saveBtn.disabled = false; saveBtn.textContent = 'Save Studio Config'; }
+				showConfigBanner('error', i18n.networkErrorConfig || 'Network error saving config.');
+				if (saveBtn) { saveBtn.disabled = false; saveBtn.textContent = i18n.saveStudioConfig || 'Save Studio Config'; }
 			});
 	}
 
@@ -813,7 +813,7 @@
 		configDirty = false;
 		var discardBtn = document.getElementById('sudomock-config-discard');
 		if (discardBtn) discardBtn.style.display = 'none';
-		showConfigBanner('info', 'Changes discarded.');
+		showConfigBanner('info', i18n.changesDiscarded || 'Changes discarded.');
 	}
 
 	function showConfigBanner(type, msg) {

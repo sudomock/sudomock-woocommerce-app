@@ -15,6 +15,7 @@
 	var STUDIO_BASE = (window.sudomockStorefront && window.sudomockStorefront.studioBase) || 'https://studio.sudomock.com';
 	var ajaxUrl     = (window.sudomockStorefront && window.sudomockStorefront.ajaxUrl)    || '/wp-admin/admin-ajax.php';
 	var nonce       = (window.sudomockStorefront && window.sudomockStorefront.nonce)      || '';
+	var i18n        = (window.sudomockStorefront && window.sudomockStorefront.i18n)       || {};
 
 	/**
 	 * Create a session via WP AJAX (server-to-server, API key never in browser).
@@ -189,13 +190,13 @@
 						window.location.href = json.data.cart_url;
 					}
 				} else {
-					alert((json.data && json.data.message) || 'Failed to add to cart.');
+					alert((json.data && json.data.message) || (i18n.cartError || 'Failed to add to cart. Please try again.'));
 				}
 			})
 			.catch(function () {
 				var overlay = document.getElementById('sudomock-overlay');
 				closeStudio(overlay);
-				alert('Network error adding to cart.');
+				alert(i18n.networkCartError || 'Network error adding to cart.');
 			});
 	}
 
@@ -259,7 +260,7 @@
 				})
 				.catch(function (err) {
 					console.error('[SudoMock] Session error:', err);
-					alert(err.message || 'Could not open customizer. Please try again.');
+					alert(err.message || (i18n.sessionError || 'Could not open customizer. Please try again.'));
 				})
 				.finally(function () {
 					btn.classList.remove('sudomock-loading');

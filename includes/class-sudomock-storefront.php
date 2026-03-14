@@ -95,11 +95,11 @@ final class SudoMock_Storefront {
 
         // Icon SVGs
         $icons = array(
-            'pencil'  => '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.83 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/></svg>',
-            'palette' => '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="13.5" cy="6.5" r=".5" fill="currentColor"/><circle cx="17.5" cy="10.5" r=".5" fill="currentColor"/><circle cx="8.5" cy="7.5" r=".5" fill="currentColor"/><circle cx="6.5" cy="12.5" r=".5" fill="currentColor"/><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.93 0 1.5-.67 1.5-1.5 0-.39-.14-.74-.39-1.04-.24-.3-.39-.65-.39-1.04 0-.83.67-1.5 1.5-1.5H16c3.31 0 6-2.69 6-6 0-5.52-4.48-9.96-10-9.96z"/></svg>',
-            'wand'    => '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 4-1 1 4 4 1-1a2.83 2.83 0 1 0-4-4z"/><path d="m13 6-8.5 8.5a2.12 2.12 0 1 0 3 3L16 9"/><path d="m8 2 1 4-4 1"/><path d="m2 8 4-1 1-4"/></svg>',
-            'brush'   => '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9.06 11.9 8.07-8.06a2.85 2.85 0 1 1 4.03 4.03l-8.06 8.08"/><path d="M7.07 14.94c-1.66 0-3 1.35-3 3.02 0 1.33-2.5 1.52-2 2.02 1.08 1.1 2.49 2.02 4 2.02 2.2 0 4-1.8 4-4.04a3.01 3.01 0 0 0-3-3.02z"/></svg>',
-            'sparkle' => '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3Z"/></svg>',
+            'pencil'  => '<svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.83 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/></svg>',
+            'palette' => '<svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="13.5" cy="6.5" r=".5" fill="currentColor"/><circle cx="17.5" cy="10.5" r=".5" fill="currentColor"/><circle cx="8.5" cy="7.5" r=".5" fill="currentColor"/><circle cx="6.5" cy="12.5" r=".5" fill="currentColor"/><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.93 0 1.5-.67 1.5-1.5 0-.39-.14-.74-.39-1.04-.24-.3-.39-.65-.39-1.04 0-.83.67-1.5 1.5-1.5H16c3.31 0 6-2.69 6-6 0-5.52-4.48-9.96-10-9.96z"/></svg>',
+            'wand'    => '<svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 4-1 1 4 4 1-1a2.83 2.83 0 1 0-4-4z"/><path d="m13 6-8.5 8.5a2.12 2.12 0 1 0 3 3L16 9"/><path d="m8 2 1 4-4 1"/><path d="m2 8 4-1 1-4"/></svg>',
+            'brush'   => '<svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9.06 11.9 8.07-8.06a2.85 2.85 0 1 1 4.03 4.03l-8.06 8.08"/><path d="M7.07 14.94c-1.66 0-3 1.35-3 3.02 0 1.33-2.5 1.52-2 2.02 1.08 1.1 2.49 2.02 4 2.02 2.2 0 4-1.8 4-4.04a3.01 3.01 0 0 0-3-3.02z"/></svg>',
+            'sparkle' => '<svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3Z"/></svg>',
         );
 
         $icon_html = '';
@@ -153,10 +153,10 @@ final class SudoMock_Storefront {
             <?php endif; ?>
 
             <button type="button"
-                    class="sudomock-customize-btn"
+                    class="sudomock-customize-btn button"
                     data-product-id="<?php echo esc_attr( $product->get_id() ); ?>"
                     data-mockup-uuid="<?php echo esc_attr( $mockup_uuid ); ?>"
-                    style="<?php echo $btn_style; ?>"
+                    style="<?php echo esc_attr( $btn_style ); ?>"
                     onmouseover="this.style.cssText=this.style.cssText.replace(/background:[^;]+/,'background:<?php echo esc_js( $opts['hover_bg_color'] ); ?>').replace(/color:[^;]+/,'color:<?php echo esc_js( $opts['hover_text_color'] ); ?>');"
                     onmouseout="this.style.cssText=this.style.cssText.replace(/background:[^;]+/,'background:<?php echo esc_js( $opts['bg_color'] ); ?>').replace(/color:[^;]+/,'color:<?php echo esc_js( $opts['text_color'] ); ?>');"
             >
@@ -207,7 +207,7 @@ final class SudoMock_Storefront {
             SUDOMOCK_PLUGIN_URL . 'assets/js/storefront.js',
             array(),  // No jQuery — vanilla JS only
             SUDOMOCK_VERSION,
-            true
+            array( 'in_footer' => true, 'strategy' => 'defer' )
         );
 
         wp_localize_script( 'sudomock-storefront', 'sudomockStorefront', array(
@@ -216,10 +216,14 @@ final class SudoMock_Storefront {
             'studioBase'  => SUDOMOCK_STUDIO_BASE,
             'displayMode' => get_option( 'sudomock_display_mode', 'iframe' ),
             'i18n'        => array(
-                'loading'     => __( 'Loading...', 'sudomock-product-customizer' ),
-                'unavailable' => __( 'Customizer is temporarily unavailable. Please try again.', 'sudomock-product-customizer' ),
-                'addedToCart' => __( 'Added to cart!', 'sudomock-product-customizer' ),
-                'cartError'   => __( 'Failed to add to cart. Please try again.', 'sudomock-product-customizer' ),
+                'loading'          => __( 'Loading...', 'sudomock-product-customizer' ),
+                'unavailable'      => __( 'Customizer is temporarily unavailable. Please try again.', 'sudomock-product-customizer' ),
+                'addedToCart'       => __( 'Added to cart!', 'sudomock-product-customizer' ),
+                'cartError'        => __( 'Failed to add to cart. Please try again.', 'sudomock-product-customizer' ),
+                'sessionError'     => __( 'Could not open customizer. Please try again.', 'sudomock-product-customizer' ),
+                'networkCartError' => __( 'Network error adding to cart.', 'sudomock-product-customizer' ),
+                'noProduct'        => __( 'Cannot add to cart: no product ID.', 'sudomock-product-customizer' ),
+                'missingData'      => __( 'Missing product-id or mockup-uuid on button.', 'sudomock-product-customizer' ),
             ),
         ) );
     }

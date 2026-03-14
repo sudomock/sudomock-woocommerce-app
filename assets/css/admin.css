@@ -444,8 +444,7 @@
 .sudomock-nav-cards {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 16px;
-    margin-top: 0;
+    gap: 12px;
 }
 
 @media (max-width: 768px) {
