@@ -104,6 +104,9 @@
 			case 'sudomock:render-complete':
 				onRenderComplete(data);
 				break;
+			case 'sudomock:add-to-cart':
+				onAddToCart(data);
+				break;
 			case 'sudomock:close':
 				var overlay = document.getElementById('sudomock-overlay');
 				closeStudio(overlay);
@@ -133,8 +136,67 @@
 		if (form) {
 			setHidden(form, 'sudomock_render_url', data.renderUrl);
 			setHidden(form, 'sudomock_mockup_uuid', data.mockupUuid || '');
-			setHidden(form, 'sudomock_session_token', data.session || '');
+			setHidden(form, 'sudomock_session_token', data.session || data.token || '');
 		}
+	}
+
+	/**
+	 * Called when Studio sends an add-to-cart message.
+	 * Posts to WP AJAX, closes studio, and notifies Studio iframe of result.
+	 *
+	 * @param {Object} data  { type, renderUrl, mockupUuid, session, productId }
+	 */
+	function onAddToCart(data) {
+		if (!data.renderUrl) {
+			return;
+		}
+
+		// Find the product ID from the customize button on the page
+		var btn = document.querySelector('.sudomock-customize-btn');
+		var productId = (data.productId) || (btn && btn.getAttribute('data-product-id')) || '';
+
+		if (!productId) {
+			console.error('[SudoMock] Cannot add to cart: no product ID.');
+			return;
+		}
+
+		var body = new FormData();
+		body.append('action', 'sudomock_add_to_cart');
+		body.append('nonce', nonce);
+		body.append('product_id', productId);
+		body.append('mockup_uuid', data.mockupUuid || '');
+		body.append('preview_url', data.renderUrl);
+
+		fetch(ajaxUrl, { method: 'POST', body: body })
+			.then(function (r) { return r.json(); })
+			.then(function (json) {
+				// Close studio
+				var overlay = document.getElementById('sudomock-overlay');
+				closeStudio(overlay);
+
+				if (json.success) {
+					// Show preview
+					showPreview(data.renderUrl);
+
+					// Notify Studio iframe of success (if still open)
+					var iframe = overlay && overlay.querySelector('.sudomock-iframe');
+					if (iframe && iframe.contentWindow) {
+						iframe.contentWindow.postMessage({ type: 'sudomock:cart-success', cartUrl: json.data.cart_url }, STUDIO_BASE);
+					}
+
+					// Redirect to cart or show success
+					if (json.data && json.data.cart_url) {
+						window.location.href = json.data.cart_url;
+					}
+				} else {
+					alert((json.data && json.data.message) || 'Failed to add to cart.');
+				}
+			})
+			.catch(function () {
+				var overlay = document.getElementById('sudomock-overlay');
+				closeStudio(overlay);
+				alert('Network error adding to cart.');
+			});
 	}
 
 	/**

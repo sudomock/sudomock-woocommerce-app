@@ -82,6 +82,7 @@
 	 * ──────────────────────────────────────────── */
 	var modal = null;
 	var selectedMockup = null;
+	var selectedMockupName = null;
 	var currentProductId = null;
 
 	function initMockupModal() {
@@ -97,6 +98,7 @@
 				var info = modal.querySelector('.sudomock-modal__product-info');
 				if (info) info.textContent = 'Assigning mockup to: ' + name;
 				selectedMockup = null;
+				selectedMockupName = null;
 				updateAssignBtn();
 				openModal();
 				loadModalMockups('');
@@ -144,6 +146,7 @@
 	function closeModal() {
 		if (modal) modal.style.display = 'none';
 		selectedMockup = null;
+		selectedMockupName = null;
 		currentProductId = null;
 	}
 
@@ -220,6 +223,7 @@
 				check.textContent = '✓';
 				card.appendChild(check);
 				selectedMockup = m.uuid;
+				selectedMockupName = m.name || '';
 				updateAssignBtn();
 			});
 
@@ -241,6 +245,7 @@
 		body.append('nonce', nonce);
 		body.append('product_id', productId);
 		body.append('mockup_uuid', mockupUuid);
+		body.append('mockup_name', selectedMockupName || '');
 
 		fetch(ajaxUrl, { method: 'POST', body: body })
 			.then(function (r) { return r.json(); })
