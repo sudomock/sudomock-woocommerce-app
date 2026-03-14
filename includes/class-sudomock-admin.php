@@ -814,9 +814,45 @@ final class SudoMock_Admin {
                                     </span>
                                 </td>
                                 <td>
-                                    <?php if ( $has_mockup ) : ?>
-                                        <span class="sudomock-badge sudomock-badge--success"><?php esc_html_e( 'Mapped', 'sudomock-product-customizer' ); ?></span>
-                                        <span class="sudomock-text--muted sudomock-text--sm" style="margin-left:4px;"><?php echo esc_html( ! empty( $mockup_name ) ? $mockup_name : substr( $mockup_uuid, 0, 8 ) . '...' ); ?></span>
+                                    <?php if ( $has_mockup ) :
+                                        // Get mockup thumbnail from API (cached via transient)
+                                        $cache_key = 'sudomock_thumb_' . md5( $mockup_uuid );
+                                        $thumb_url = get_transient( $cache_key );
+                                        $display_name = $mockup_name;
+                                        if ( false === $thumb_url ) {
+                                            $m_result = SudoMock_API_Client::get_mockup( $mockup_uuid );
+                                            if ( $m_result['ok'] && ! empty( $m_result['data'] ) ) {
+                                                $m_data = $m_result['data'];
+                                                $thumb_url = ! empty( $m_data['thumbnail'] ) ? $m_data['thumbnail'] : '';
+                                                if ( ! empty( $m_data['thumbnails'] ) ) {
+                                                    foreach ( $m_data['thumbnails'] as $t ) {
+                                                        if ( ( isset( $t['label'] ) && '240' === $t['label'] ) || ( isset( $t['width'] ) && 240 === (int) $t['width'] ) ) {
+                                                            $thumb_url = $t['url'];
+                                                            break;
+                                                        }
+                                                    }
+                                                }
+                                                if ( empty( $display_name ) && ! empty( $m_data['name'] ) ) {
+                                                    $display_name = $m_data['name'];
+                                                    update_post_meta( $p->ID, '_sudomock_mockup_name', sanitize_text_field( $display_name ) );
+                                                }
+                                                set_transient( $cache_key, $thumb_url ?: 'none', 5 * MINUTE_IN_SECONDS );
+                                            } else {
+                                                $thumb_url = '';
+                                                set_transient( $cache_key, 'none', MINUTE_IN_SECONDS );
+                                            }
+                                        }
+                                        if ( 'none' === $thumb_url ) $thumb_url = '';
+                                    ?>
+                                        <div style="display:flex;align-items:center;gap:8px;">
+                                            <?php if ( $thumb_url ) : ?>
+                                                <img src="<?php echo esc_url( $thumb_url ); ?>" alt="" style="width:36px;height:36px;object-fit:contain;border-radius:4px;border:1px solid #e2e8f0;background:#f8fafc;" />
+                                            <?php endif; ?>
+                                            <div>
+                                                <span class="sudomock-badge sudomock-badge--success"><?php esc_html_e( 'Mapped', 'sudomock-product-customizer' ); ?></span>
+                                                <div class="sudomock-text--muted sudomock-text--sm" style="margin-top:2px;"><?php echo esc_html( ! empty( $display_name ) ? $display_name : substr( $mockup_uuid, 0, 12 ) . '...' ); ?></div>
+                                            </div>
+                                        </div>
                                     <?php else : ?>
                                         <span class="sudomock-badge" style="background:#f1f5f9;color:#64748b;"><?php esc_html_e( 'Not mapped', 'sudomock-product-customizer' ); ?></span>
                                     <?php endif; ?>
