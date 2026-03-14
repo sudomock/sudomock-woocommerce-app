@@ -58,7 +58,7 @@ final class SudoMock_Admin {
             'manage_woocommerce',
             'sudomock-settings',
             array( $this, 'render_page' ),
-            'dashicons-layout',
+            'dashicons-screenoptions',
             58
         );
     }
