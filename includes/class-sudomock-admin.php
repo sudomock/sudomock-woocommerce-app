@@ -58,7 +58,7 @@ final class SudoMock_Admin {
             'manage_woocommerce',
             'sudomock-settings',
             array( $this, 'render_page' ),
-            SUDOMOCK_PLUGIN_URL . 'assets/images/icon-20.svg',
+            SUDOMOCK_PLUGIN_URL . 'assets/images/icon-20.png',
             58
         );
     }
