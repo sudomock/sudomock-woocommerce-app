@@ -1,0 +1,8 @@
+node_modules/
+vendor/
+.DS_Store
+*.log
+.idea/
+.vscode/
+.bg-shell/
+docker-compose.yml

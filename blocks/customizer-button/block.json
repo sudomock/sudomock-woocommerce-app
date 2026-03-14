@@ -1,0 +1,110 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "sudomock/customizer-button",
+	"version": "1.0.0",
+	"title": "Product Customizer",
+	"category": "woocommerce",
+	"icon": "art",
+	"description": "Adds a customize button that opens the SudoMock design studio. Only visible on products with a mapped PSD mockup.",
+	"keywords": [ "sudomock", "customizer", "mockup", "psd", "design" ],
+	"supports": {
+		"html": false,
+		"align": [ "wide", "full" ],
+		"spacing": {
+			"margin": true,
+			"padding": true
+		}
+	},
+	"usesContext": [ "postId", "postType" ],
+	"attributes": {
+		"label": {
+			"type": "string",
+			"default": "Customize This Product"
+		},
+		"showIcon": {
+			"type": "boolean",
+			"default": true
+		},
+		"iconStyle": {
+			"type": "string",
+			"default": "pencil",
+			"enum": [ "pencil", "palette", "wand", "brush", "sparkle" ]
+		},
+		"iconPosition": {
+			"type": "string",
+			"default": "left",
+			"enum": [ "left", "right" ]
+		},
+		"fullWidth": {
+			"type": "boolean",
+			"default": true
+		},
+		"bgColor": {
+			"type": "string",
+			"default": "#0f172a"
+		},
+		"textColor": {
+			"type": "string",
+			"default": "#ffffff"
+		},
+		"borderColor": {
+			"type": "string",
+			"default": "#0f172a"
+		},
+		"hoverBgColor": {
+			"type": "string",
+			"default": "#ffffff"
+		},
+		"hoverTextColor": {
+			"type": "string",
+			"default": "#0f172a"
+		},
+		"fontSize": {
+			"type": "number",
+			"default": 15
+		},
+		"paddingY": {
+			"type": "number",
+			"default": 14
+		},
+		"paddingX": {
+			"type": "number",
+			"default": 24
+		},
+		"borderRadius": {
+			"type": "number",
+			"default": 6
+		},
+		"borderWidth": {
+			"type": "number",
+			"default": 2
+		},
+		"fontWeight": {
+			"type": "string",
+			"default": "600"
+		},
+		"textTransform": {
+			"type": "string",
+			"default": "none"
+		},
+		"shadow": {
+			"type": "boolean",
+			"default": false
+		},
+		"heading": {
+			"type": "string",
+			"default": ""
+		},
+		"subtext": {
+			"type": "string",
+			"default": ""
+		},
+		"bottomText": {
+			"type": "string",
+			"default": ""
+		}
+	},
+	"editorScript": "file:./editor.js",
+	"render": "file:./render.php"
+}
