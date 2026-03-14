@@ -127,6 +127,23 @@ final class SudoMock_Product {
                         <div id="sudomock-product-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;max-height:320px;overflow-y:auto;padding:2px;"></div>
                     </div>
                 </div>
+
+                <?php if ( ! empty( $mockup_uuid ) ) : ?>
+                <!-- Generate Product Image -->
+                <div class="form-field" style="margin-top:16px;padding-top:16px;border-top:1px solid #e1e3e5;">
+                    <p style="margin:0 0 8px;"><strong><?php esc_html_e( 'Product Image Generator', 'sudomock-product-customizer' ); ?></strong></p>
+                    <p style="margin:0 0 12px;font-size:12px;color:#616161;">
+                        <?php esc_html_e( 'Generate a product image from this mockup and set it as the featured image. Uses 1 render credit.', 'sudomock-product-customizer' ); ?>
+                    </p>
+                    <div id="sudomock-gallery-feedback" style="display:none;margin-bottom:10px;"></div>
+                    <button type="button" id="sudomock-generate-gallery" class="button button-primary"
+                        data-product-id="<?php echo esc_attr( $product_id ); ?>"
+                        data-mockup-uuid="<?php echo esc_attr( $mockup_uuid ); ?>">
+                        <span class="dashicons dashicons-format-image" style="vertical-align:middle;margin-right:4px;"></span>
+                        <?php esc_html_e( 'Generate Product Image', 'sudomock-product-customizer' ); ?>
+                    </button>
+                </div>
+                <?php endif; ?>
             <?php endif; ?>
         </div>
         <?php
@@ -200,9 +217,14 @@ final class SudoMock_Product {
                 'noMockupsYet'   => __( 'No mockups yet.', 'sudomock-product-customizer' ),
                 'uploadFirstPsd' => __( 'Upload your first PSD', 'sudomock-product-customizer' ),
                 'networkError'   => __( 'Network error.', 'sudomock-product-customizer' ),
-                'noPreview'      => __( 'No preview', 'sudomock-product-customizer' ),
-                'smartObject'    => __( 'smart object', 'sudomock-product-customizer' ),
-                'smartObjects'   => __( 'smart objects', 'sudomock-product-customizer' ),
+                'noPreview'           => __( 'No preview', 'sudomock-product-customizer' ),
+                'smartObject'         => __( 'smart object', 'sudomock-product-customizer' ),
+                'smartObjects'        => __( 'smart objects', 'sudomock-product-customizer' ),
+                'generating'          => __( 'Generating image...', 'sudomock-product-customizer' ),
+                'generateSuccess'     => __( 'Product image generated and set as featured image.', 'sudomock-product-customizer' ),
+                'generateFailed'      => __( 'Failed to generate image.', 'sudomock-product-customizer' ),
+                'generateBtn'         => __( 'Generate Product Image', 'sudomock-product-customizer' ),
+                'networkError'        => __( 'Network error.', 'sudomock-product-customizer' ),
             ),
         );
 

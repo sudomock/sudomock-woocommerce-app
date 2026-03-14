@@ -58,7 +58,7 @@ final class SudoMock_Admin {
             'manage_woocommerce',
             'sudomock-settings',
             array( $this, 'render_page' ),
-            SUDOMOCK_PLUGIN_URL . 'assets/images/icon.svg',
+            SUDOMOCK_PLUGIN_URL . 'assets/images/icon-20.png',
             58
         );
     }
@@ -204,6 +204,7 @@ final class SudoMock_Admin {
         delete_option( 'sudomock_credits_limit' );
         delete_option( 'sudomock_credits_remaining' );
         delete_option( 'sudomock_connected_at' );
+        delete_option( 'sudomock_onboarding_dismissed' );
 
         wp_send_json_success( array( 'message' => __( 'Disconnected.', 'sudomock-product-customizer' ) ) );
     }
@@ -476,6 +477,73 @@ final class SudoMock_Admin {
                     </div>
                 </div>
             </div>
+
+            <?php
+            // Onboarding: show only if connected + not dismissed
+            $onboarding_dismissed = get_option( 'sudomock_onboarding_dismissed', false );
+            if ( ! $onboarding_dismissed ) :
+            ?>
+            <div id="sudomock-onboarding" class="sudomock-card">
+                <div class="sudomock-card__body">
+                    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
+                        <div style="display:flex;align-items:center;gap:10px;">
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0f172a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                            <h2 class="sudomock-card__title" style="margin-bottom:0;"><?php esc_html_e( 'Get Started', 'sudomock-product-customizer' ); ?></h2>
+                        </div>
+                        <button type="button" id="sudomock-onboarding-dismiss" class="sudomock-btn sudomock-btn--sm">
+                            <?php esc_html_e( 'Dismiss', 'sudomock-product-customizer' ); ?>
+                        </button>
+                    </div>
+                    <p class="sudomock-text--muted" style="margin-bottom:20px;">
+                        <?php esc_html_e( 'Complete these 3 steps to start offering product customization to your customers.', 'sudomock-product-customizer' ); ?>
+                    </p>
+                    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;">
+                        <!-- Step 1 -->
+                        <div style="background:#f8fafc;border:1px solid #e1e3e5;border-radius:10px;padding:20px;">
+                            <div class="sudomock-step__num" style="margin-bottom:12px;">1</div>
+                            <h4 style="font-size:14px;font-weight:600;margin:0 0 6px;color:#1a1a1a;">
+                                <?php esc_html_e( 'Upload your PSD mockups', 'sudomock-product-customizer' ); ?>
+                            </h4>
+                            <p class="sudomock-text--muted" style="margin:0 0 12px;font-size:12px;line-height:1.5;">
+                                <?php esc_html_e( 'Upload your Photoshop mockup files with smart object layers in the SudoMock Dashboard.', 'sudomock-product-customizer' ); ?>
+                            </p>
+                            <a href="https://sudomock.com/dashboard/playground" target="_blank" rel="noopener" class="sudomock-btn sudomock-btn--sm sudomock-btn--primary">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                                <?php esc_html_e( 'Open Dashboard', 'sudomock-product-customizer' ); ?>
+                            </a>
+                        </div>
+                        <!-- Step 2 -->
+                        <div style="background:#f8fafc;border:1px solid #e1e3e5;border-radius:10px;padding:20px;">
+                            <div class="sudomock-step__num" style="margin-bottom:12px;">2</div>
+                            <h4 style="font-size:14px;font-weight:600;margin:0 0 6px;color:#1a1a1a;">
+                                <?php esc_html_e( 'Map mockups to products', 'sudomock-product-customizer' ); ?>
+                            </h4>
+                            <p class="sudomock-text--muted" style="margin:0 0 12px;font-size:12px;line-height:1.5;">
+                                <?php esc_html_e( 'Assign a PSD mockup to each WooCommerce product you want to offer customization for.', 'sudomock-product-customizer' ); ?>
+                            </p>
+                            <a href="<?php echo esc_url( admin_url( 'admin.php?page=sudomock-settings&tab=products' ) ); ?>" class="sudomock-btn sudomock-btn--sm sudomock-btn--primary">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83 0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
+                                <?php esc_html_e( 'Products Tab', 'sudomock-product-customizer' ); ?>
+                            </a>
+                        </div>
+                        <!-- Step 3 -->
+                        <div style="background:#f8fafc;border:1px solid #e1e3e5;border-radius:10px;padding:20px;">
+                            <div class="sudomock-step__num" style="margin-bottom:12px;">3</div>
+                            <h4 style="font-size:14px;font-weight:600;margin:0 0 6px;color:#1a1a1a;">
+                                <?php esc_html_e( 'Customize button appearance', 'sudomock-product-customizer' ); ?>
+                            </h4>
+                            <p class="sudomock-text--muted" style="margin:0 0 12px;font-size:12px;line-height:1.5;">
+                                <?php esc_html_e( 'Style the "Customize" button on product pages to match your store theme.', 'sudomock-product-customizer' ); ?>
+                            </p>
+                            <a href="<?php echo esc_url( admin_url( 'customize.php?autofocus[section]=sudomock_button' ) ); ?>" class="sudomock-btn sudomock-btn--sm sudomock-btn--primary">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9"/></svg>
+                                <?php esc_html_e( 'Open Customizer', 'sudomock-product-customizer' ); ?>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <?php endif; ?>
 
             <?php if ( $d['credits_percent'] > 80 ) : ?>
             <div class="sudomock-banner sudomock-banner--warning">
@@ -1138,6 +1206,37 @@ final class SudoMock_Admin {
                 </div>
             </div>
         </div>
+
+        <!-- Need Help? Support Form -->
+        <div class="sudomock-card" style="margin-top:16px;">
+            <div class="sudomock-card__body">
+                <div style="display:flex;align-items:center;gap:10px;margin-bottom:4px;">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0f172a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                    <h2 class="sudomock-card__title" style="margin-bottom:0;"><?php esc_html_e( 'Need Help?', 'sudomock-product-customizer' ); ?></h2>
+                </div>
+                <p class="sudomock-text--muted" style="margin-bottom:16px;">
+                    <?php esc_html_e( 'Send us a message and we will get back to you as soon as possible.', 'sudomock-product-customizer' ); ?>
+                </p>
+                <div id="sudomock-support-banner"></div>
+                <div class="sudomock-form-row">
+                    <label class="sudomock-form-row__label" for="sudomock-support-subject">
+                        <?php esc_html_e( 'Subject', 'sudomock-product-customizer' ); ?>
+                    </label>
+                    <input type="text" id="sudomock-support-subject" class="sudomock-input" style="max-width:100%;"
+                        placeholder="<?php esc_attr_e( 'e.g. Issue with mockup rendering', 'sudomock-product-customizer' ); ?>" />
+                </div>
+                <div class="sudomock-form-row">
+                    <label class="sudomock-form-row__label" for="sudomock-support-message">
+                        <?php esc_html_e( 'Message', 'sudomock-product-customizer' ); ?>
+                    </label>
+                    <textarea id="sudomock-support-message" class="sudomock-input" rows="5" style="max-width:100%;resize:vertical;"
+                        placeholder="<?php esc_attr_e( 'Describe your issue or question in detail...', 'sudomock-product-customizer' ); ?>"></textarea>
+                </div>
+                <button type="button" id="sudomock-support-submit" class="sudomock-btn sudomock-btn--primary">
+                    <?php esc_html_e( 'Submit', 'sudomock-product-customizer' ); ?>
+                </button>
+            </div>
+        </div>
         <?php
     }
 
@@ -1281,6 +1380,217 @@ final class SudoMock_Admin {
         wp_send_json_success( array(
             'message'        => __( 'Studio config saved.', 'sudomock-product-customizer' ),
             'config_version' => isset( $result['data']['config_version'] ) ? $result['data']['config_version'] : 0,
+        ) );
+    }
+
+    /* ------------------------------------------------------------------ */
+    /* AJAX: Submit Support Ticket                                         */
+    /* ------------------------------------------------------------------ */
+
+    public function ajax_submit_support() {
+        check_ajax_referer( 'sudomock_admin', 'nonce' );
+        if ( ! current_user_can( 'manage_woocommerce' ) ) {
+            wp_send_json_error( array( 'message' => __( 'Permission denied.', 'sudomock-product-customizer' ) ), 403 );
+        }
+
+        // Rate limit: max 3 messages per hour via transient.
+        $transient_key = 'sudomock_support_count_' . get_current_user_id();
+        $count         = (int) get_transient( $transient_key );
+        if ( $count >= 3 ) {
+            wp_send_json_error( array( 'message' => __( 'You have reached the limit of 3 messages per hour. Please wait before sending another message.', 'sudomock-product-customizer' ) ) );
+        }
+
+        $subject = isset( $_POST['subject'] ) ? sanitize_text_field( wp_unslash( $_POST['subject'] ) ) : '';
+        $message = isset( $_POST['message'] ) ? sanitize_textarea_field( wp_unslash( $_POST['message'] ) ) : '';
+
+        if ( empty( $subject ) ) {
+            wp_send_json_error( array( 'message' => __( 'Please enter a subject.', 'sudomock-product-customizer' ) ) );
+        }
+        if ( empty( $message ) ) {
+            wp_send_json_error( array( 'message' => __( 'Please enter a message.', 'sudomock-product-customizer' ) ) );
+        }
+
+        $sent = false;
+
+        // Try API endpoint first.
+        $api_key = SudoMock_API_Client::get_api_key();
+        if ( $api_key ) {
+            $url  = SUDOMOCK_API_BASE . '/api/v1/support/ticket';
+            $args = array(
+                'method'  => 'POST',
+                'timeout' => 15,
+                'headers' => array(
+                    'Content-Type' => 'application/json',
+                    'x-api-key'   => $api_key,
+                    'User-Agent'  => 'SudoMock-WooCommerce/' . SUDOMOCK_VERSION,
+                ),
+                'body'    => wp_json_encode( array(
+                    'subject' => $subject,
+                    'message' => $message,
+                    'site'    => site_url(),
+                    'email'   => get_option( 'sudomock_account_email', '' ),
+                ) ),
+            );
+
+            $response = wp_remote_request( $url, $args );
+            if ( ! is_wp_error( $response ) ) {
+                $code = wp_remote_retrieve_response_code( $response );
+                if ( $code >= 200 && $code < 300 ) {
+                    $sent = true;
+                }
+            }
+        }
+
+        // Fallback: wp_mail if API not available or failed.
+        if ( ! $sent ) {
+            $email   = get_option( 'sudomock_account_email', get_option( 'admin_email' ) );
+            $headers = array( 'Reply-To: ' . $email );
+            $body    = sprintf(
+                "Site: %s\nEmail: %s\n\n%s",
+                site_url(),
+                $email,
+                $message
+            );
+            $sent = wp_mail( 'support@sudomock.com', '[WooCommerce Support] ' . $subject, $body, $headers );
+        }
+
+        if ( ! $sent ) {
+            wp_send_json_error( array( 'message' => __( 'Failed to send message. Please try again later.', 'sudomock-product-customizer' ) ) );
+        }
+
+        // Increment rate limit counter.
+        set_transient( $transient_key, $count + 1, HOUR_IN_SECONDS );
+
+        wp_send_json_success( array(
+            'message' => __( 'Your message has been sent. We will get back to you soon.', 'sudomock-product-customizer' ),
+        ) );
+    }
+
+    /* ------------------------------------------------------------------ */
+    /* AJAX: Dismiss Onboarding                                            */
+    /* ------------------------------------------------------------------ */
+
+    public function ajax_dismiss_onboarding() {
+        check_ajax_referer( 'sudomock_admin', 'nonce' );
+        if ( ! current_user_can( 'manage_woocommerce' ) ) {
+            wp_send_json_error( array( 'message' => __( 'Permission denied.', 'sudomock-product-customizer' ) ), 403 );
+        }
+
+        update_option( 'sudomock_onboarding_dismissed', true );
+
+        wp_send_json_success( array(
+            'message' => __( 'Onboarding dismissed.', 'sudomock-product-customizer' ),
+        ) );
+    }
+
+    /* ------------------------------------------------------------------ */
+    /* AJAX: Generate Product Gallery Image                                */
+    /* ------------------------------------------------------------------ */
+
+    public function ajax_generate_gallery() {
+        check_ajax_referer( 'sudomock_admin', 'nonce' );
+        if ( ! current_user_can( 'manage_woocommerce' ) ) {
+            wp_send_json_error( array( 'message' => __( 'Permission denied.', 'sudomock-product-customizer' ) ), 403 );
+        }
+
+        $product_id  = isset( $_POST['product_id'] ) ? absint( $_POST['product_id'] ) : 0;
+        $mockup_uuid = isset( $_POST['mockup_uuid'] ) ? sanitize_text_field( wp_unslash( $_POST['mockup_uuid'] ) ) : '';
+
+        if ( ! $product_id || empty( $mockup_uuid ) ) {
+            wp_send_json_error( array( 'message' => __( 'Missing product ID or mockup UUID.', 'sudomock-product-customizer' ) ) );
+        }
+
+        $product = wc_get_product( $product_id );
+        if ( ! $product ) {
+            wp_send_json_error( array( 'message' => __( 'Product not found.', 'sudomock-product-customizer' ) ) );
+        }
+
+        $api_key = SudoMock_API_Client::get_api_key();
+        if ( empty( $api_key ) ) {
+            wp_send_json_error( array( 'message' => __( 'API key not configured.', 'sudomock-product-customizer' ) ) );
+        }
+
+        // Request render from the backend (empty smart objects = default appearance).
+        $url  = SUDOMOCK_API_BASE . '/api/v1/renders';
+        $args = array(
+            'method'  => 'POST',
+            'timeout' => 60, // Renders can take time.
+            'headers' => array(
+                'Content-Type' => 'application/json',
+                'x-api-key'   => $api_key,
+                'User-Agent'  => 'SudoMock-WooCommerce/' . SUDOMOCK_VERSION,
+            ),
+            'body'    => wp_json_encode( array(
+                'mockup_uuid'   => $mockup_uuid,
+                'smart_objects' => array(), // Empty = default/preview render.
+                'format'        => 'png',
+            ) ),
+        );
+
+        $response = wp_remote_request( $url, $args );
+
+        if ( is_wp_error( $response ) ) {
+            wp_send_json_error( array( 'message' => $response->get_error_message() ) );
+        }
+
+        $code = wp_remote_retrieve_response_code( $response );
+        $body = json_decode( wp_remote_retrieve_body( $response ), true );
+
+        if ( $code >= 400 ) {
+            $error = isset( $body['detail'] ) ? $body['detail'] : sprintf(
+                /* translators: %d: HTTP status code */
+                __( 'Render API error (HTTP %d)', 'sudomock-product-customizer' ),
+                $code
+            );
+            wp_send_json_error( array( 'message' => $error ) );
+        }
+
+        // Extract render URL from response.
+        $render_url = '';
+        if ( ! empty( $body['data']['render_url'] ) ) {
+            $render_url = $body['data']['render_url'];
+        } elseif ( ! empty( $body['render_url'] ) ) {
+            $render_url = $body['render_url'];
+        } elseif ( ! empty( $body['data']['url'] ) ) {
+            $render_url = $body['data']['url'];
+        } elseif ( ! empty( $body['url'] ) ) {
+            $render_url = $body['url'];
+        }
+
+        if ( empty( $render_url ) ) {
+            wp_send_json_error( array( 'message' => __( 'No render URL returned from the API.', 'sudomock-product-customizer' ) ) );
+        }
+
+        // Download image and attach to Media Library.
+        require_once ABSPATH . 'wp-admin/includes/file.php';
+        require_once ABSPATH . 'wp-admin/includes/media.php';
+        require_once ABSPATH . 'wp-admin/includes/image.php';
+
+        $tmp = download_url( $render_url, 60 );
+        if ( is_wp_error( $tmp ) ) {
+            wp_send_json_error( array( 'message' => $tmp->get_error_message() ) );
+        }
+
+        $product_name = sanitize_file_name( $product->get_name() );
+        $file_array   = array(
+            'name'     => $product_name . '-sudomock-render.png',
+            'tmp_name' => $tmp,
+        );
+
+        $attachment_id = media_handle_sideload( $file_array, $product_id );
+
+        if ( is_wp_error( $attachment_id ) ) {
+            @unlink( $tmp ); // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
+            wp_send_json_error( array( 'message' => $attachment_id->get_error_message() ) );
+        }
+
+        // Set as product featured image.
+        set_post_thumbnail( $product_id, $attachment_id );
+
+        wp_send_json_success( array(
+            'message'       => __( 'Product image generated and set as featured image.', 'sudomock-product-customizer' ),
+            'attachment_id' => $attachment_id,
+            'image_url'     => wp_get_attachment_url( $attachment_id ),
         ) );
     }
 }

@@ -828,6 +828,107 @@
 	}
 
 	/* ────────────────────────────────────────────
+	 * 7) Support Form (Settings tab)
+	 * ──────────────────────────────────────────── */
+	function initSupportForm() {
+		var submitBtn = document.getElementById('sudomock-support-submit');
+		if (!submitBtn) return;
+
+		submitBtn.addEventListener('click', function () {
+			var subjectInput = document.getElementById('sudomock-support-subject');
+			var messageInput = document.getElementById('sudomock-support-message');
+			var subject = (subjectInput ? subjectInput.value : '').trim();
+			var message = (messageInput ? messageInput.value : '').trim();
+
+			if (!subject) {
+				showSupportBanner('error', i18n.supportSubjectRequired || 'Please enter a subject.');
+				return;
+			}
+			if (!message) {
+				showSupportBanner('error', i18n.supportMessageRequired || 'Please enter a message.');
+				return;
+			}
+
+			submitBtn.disabled = true;
+			submitBtn.textContent = i18n.supportSending || 'Sending...';
+
+			var body = new FormData();
+			body.append('action', 'sudomock_submit_support');
+			body.append('nonce', nonce);
+			body.append('subject', subject);
+			body.append('message', message);
+
+			fetch(ajaxUrl, { method: 'POST', body: body })
+				.then(function (r) { return r.json(); })
+				.then(function (json) {
+					if (json.success) {
+						showSupportBanner('success', json.data.message || (i18n.supportSent || 'Your message has been sent.'));
+						if (subjectInput) subjectInput.value = '';
+						if (messageInput) messageInput.value = '';
+					} else {
+						var msg = (json.data && json.data.message) || (i18n.supportFailed || 'Failed to send message.');
+						showSupportBanner('error', msg);
+					}
+					submitBtn.disabled = false;
+					submitBtn.textContent = i18n.submitTicket || 'Submit';
+				})
+				.catch(function () {
+					showSupportBanner('error', i18n.supportFailed || 'Failed to send message. Please try again.');
+					submitBtn.disabled = false;
+					submitBtn.textContent = i18n.submitTicket || 'Submit';
+				});
+		});
+	}
+
+	function showSupportBanner(type, msg) {
+		var container = document.getElementById('sudomock-support-banner');
+		if (!container) return;
+		var cls = 'sudomock-banner';
+		if (type === 'success') cls += ' sudomock-banner--success';
+		else if (type === 'error') cls += ' sudomock-banner--error';
+		else cls += ' sudomock-banner--info';
+		container.innerHTML = '<div class="' + cls + '">' + escapeHtml(msg) + '</div>';
+		setTimeout(function () { container.innerHTML = ''; }, 8000);
+	}
+
+	/* ────────────────────────────────────────────
+	 * 8) Onboarding Dismiss (Dashboard)
+	 * ──────────────────────────────────────────── */
+	function initOnboarding() {
+		var dismissBtn = document.getElementById('sudomock-onboarding-dismiss');
+		if (!dismissBtn) return;
+
+		dismissBtn.addEventListener('click', function () {
+			var card = document.getElementById('sudomock-onboarding');
+
+			dismissBtn.disabled = true;
+			dismissBtn.textContent = '...';
+
+			var body = new FormData();
+			body.append('action', 'sudomock_dismiss_onboarding');
+			body.append('nonce', nonce);
+
+			fetch(ajaxUrl, { method: 'POST', body: body })
+				.then(function (r) { return r.json(); })
+				.then(function (json) {
+					if (json.success && card) {
+						card.style.transition = 'opacity 0.3s, max-height 0.3s';
+						card.style.opacity = '0';
+						card.style.maxHeight = '0';
+						card.style.overflow = 'hidden';
+						card.style.marginBottom = '0';
+						card.style.padding = '0';
+						setTimeout(function () { card.remove(); }, 400);
+					}
+				})
+				.catch(function () {
+					// Silently fail, dismiss on next load anyway.
+					if (card) card.remove();
+				});
+		});
+	}
+
+	/* ────────────────────────────────────────────
 	 * Helpers
 	 * ──────────────────────────────────────────── */
 	function showFeedback(type, msg) {
@@ -854,6 +955,8 @@
 		initMockupsTab();
 		initSettingsFeedback();
 		initStudioConfig();
+		initSupportForm();
+		initOnboarding();
 	}
 
 	if (document.readyState === 'loading') {

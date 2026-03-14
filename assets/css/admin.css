@@ -1356,6 +1356,41 @@
     font-family: monospace;
 }
 
+/* ------------------------------------------------------------------ */
+/* Onboarding Steps (responsive)                                       */
+/* ------------------------------------------------------------------ */
+
+@media (max-width: 768px) {
+    #sudomock-onboarding .sudomock-card__body > div[style*="grid-template-columns"] {
+        display: grid !important;
+        grid-template-columns: 1fr !important;
+    }
+}
+
+/* ------------------------------------------------------------------ */
+/* Support Form textarea                                               */
+/* ------------------------------------------------------------------ */
+
+textarea.sudomock-input {
+    width: 100%;
+    max-width: 100%;
+    padding: 8px 12px;
+    border: 1px solid #c9cccf;
+    border-radius: 8px;
+    font-size: 14px;
+    color: #1a1a1a;
+    background: #fff;
+    transition: border-color 0.15s;
+    font-family: inherit;
+    line-height: 1.5;
+}
+
+textarea.sudomock-input:focus {
+    border-color: #0f172a;
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(15, 23, 42, 0.1);
+}
+
 /* Banner variants for config */
 .sudomock-banner--success {
     background: #dcfce7;
