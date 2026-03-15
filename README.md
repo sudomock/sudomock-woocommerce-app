@@ -45,12 +45,14 @@ Let customers personalize products with professional PSD mockup designs in real-
 
 Free to install. Pay only for renders:
 
-| Plan | Credits/mo | Price | Per Render |
-|------|-----------|-------|-----------|
-| Free | 500 | $0 | Free |
-| Starter | 5K–100K | From $17.49 | $0.0018–$0.0035 |
-| Pro | 5K–100K | From $27.49 | $0.0019–$0.0055 |
-| Scale | 5K–100K | From $52.49 | $0.0021–$0.0105 |
+| Plan | Credits | Price/mo | Parallel Renders |
+|------|---------|----------|-----------------|
+| Free | 500 one-time | $0 | 1 |
+| Starter | 5K–100K/mo | $17.49–$179.99 | 3 |
+| Pro | 5K–100K/mo | $27.49–$189.99 | 10 |
+| Scale | 5K–100K/mo | $52.49–$214.99 | 25 |
+
+Renders start at **$0.002 each** on higher volume plans. Dashboard and playground are free and unlimited.
 
 [View full pricing →](https://sudomock.com/pricing)
 
