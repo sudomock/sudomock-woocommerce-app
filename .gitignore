@@ -5,4 +5,8 @@ vendor/
 .idea/
 .vscode/
 .bg-shell/
+.claude/
+.artifacts/
+.serena/
 docker-compose.yml
+screenshots/
