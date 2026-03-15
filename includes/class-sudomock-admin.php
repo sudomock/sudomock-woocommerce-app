@@ -185,12 +185,9 @@ final class SudoMock_Admin {
 
         // 1. Remove all product mockup meta data
         global $wpdb;
-        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
-        $wpdb->delete( $wpdb->postmeta, array( 'meta_key' => '_sudomock_mockup_uuid' ) );       // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key
-        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
-        $wpdb->delete( $wpdb->postmeta, array( 'meta_key' => '_sudomock_customization_enabled' ) ); // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key
-        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
-        $wpdb->delete( $wpdb->postmeta, array( 'meta_key' => '_sudomock_mockup_name' ) );        // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key
+        $wpdb->delete( $wpdb->postmeta, array( 'meta_key' => '_sudomock_mockup_uuid' ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.SlowDBQuery.slow_db_query_meta_key
+        $wpdb->delete( $wpdb->postmeta, array( 'meta_key' => '_sudomock_customization_enabled' ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.SlowDBQuery.slow_db_query_meta_key
+        $wpdb->delete( $wpdb->postmeta, array( 'meta_key' => '_sudomock_mockup_name' ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.SlowDBQuery.slow_db_query_meta_key
 
         // 2. Notify backend about disconnect (best-effort, ignore errors)
         SudoMock_API_Client::notify_disconnect();
@@ -269,7 +266,7 @@ final class SudoMock_Admin {
         }
 
         // Tab routing
-        $current_tab = isset( $_GET['tab'] ) ? sanitize_text_field( wp_unslash( $_GET['tab'] ) ) : 'dashboard';
+        $current_tab = isset( $_GET['tab'] ) ? sanitize_text_field( wp_unslash( $_GET['tab'] ) ) : 'dashboard'; // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Tab navigation, no state change
         $base_url    = admin_url( 'admin.php?page=sudomock-settings' );
 
         $tabs = array(
@@ -299,14 +296,18 @@ final class SudoMock_Admin {
         $total_count  = (int) wp_count_posts( 'product' )->publish;
         $mapped_count = 0;
         global $wpdb;
-        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
-        $mapped_count = (int) $wpdb->get_var(
+        $cache_key    = 'sudomock_mapped_count';
+        $mapped_count = wp_cache_get( $cache_key );
+        if ( false === $mapped_count ) {
+            $mapped_count = (int) $wpdb->get_var( // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery
             $wpdb->prepare(
                 "SELECT COUNT(DISTINCT post_id) FROM {$wpdb->postmeta} WHERE meta_key = %s AND meta_value != %s",
                 '_sudomock_mockup_uuid',
                 ''
             )
-        );
+            );
+            wp_cache_set( $cache_key, $mapped_count, '', 300 );
+        }
 
         $data = compact(
             'email', 'plan', 'plan_tier', 'credits_used', 'credits_limit', 'credits_percent',
@@ -685,9 +686,9 @@ final class SudoMock_Admin {
     /* ------------------------------------------------------------------ */
 
     private function render_products_tab( $d ) {
-        $search = isset( $_GET['s'] ) ? sanitize_text_field( wp_unslash( $_GET['s'] ) ) : '';
-        $filter = isset( $_GET['filter'] ) ? sanitize_text_field( wp_unslash( $_GET['filter'] ) ) : 'all';
-        $paged  = isset( $_GET['paged'] ) ? absint( $_GET['paged'] ) : 1;
+        $search = isset( $_GET['s'] ) ? sanitize_text_field( wp_unslash( $_GET['s'] ) ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Read-only search filter
+        $filter = isset( $_GET['filter'] ) ? sanitize_text_field( wp_unslash( $_GET['filter'] ) ) : 'all'; // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Read-only filter
+        $paged  = isset( $_GET['paged'] ) ? absint( $_GET['paged'] ) : 1; // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Pagination
 
         $args = array(
             'post_type'      => 'product',
@@ -703,13 +704,13 @@ final class SudoMock_Admin {
         }
 
         if ( 'mapped' === $filter ) {
-            $args['meta_query'] = array( array(
+            $args['meta_query'] = array( array( // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query -- Required for product filtering
                 'key'     => '_sudomock_mockup_uuid',
                 'value'   => '',
                 'compare' => '!=',
             ) );
         } elseif ( 'unmapped' === $filter ) {
-            $args['meta_query'] = array(
+            $args['meta_query'] = array( // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query -- Required for product filtering
                 'relation' => 'OR',
                 array( 'key' => '_sudomock_mockup_uuid', 'compare' => 'NOT EXISTS' ),
                 array( 'key' => '_sudomock_mockup_uuid', 'value' => '' ),
@@ -900,12 +901,14 @@ final class SudoMock_Admin {
                         <?php endif; ?>
                         <span class="sudomock-text--muted sudomock-text--sm">
                             <?php
-                            /* translators: %1$d: current page, %2$d: total pages, %3$d: total items */
-                            printf(
-                                esc_html__( 'Page %1$d of %2$d (%3$d products)', 'sudomock-product-customizer' ),
-                                esc_html( $paged ),
-                                esc_html( $total_pages ),
-                                esc_html( $total )
+                            echo esc_html(
+                                sprintf(
+                                    /* translators: 1: current page number, 2: total number of pages, 3: total number of products */
+                                    __( 'Page %1$d of %2$d (%3$d products)', 'sudomock-product-customizer' ),
+                                    $paged,
+                                    $total_pages,
+                                    $total
+                                )
                             );
                             ?>
                         </span>
@@ -1358,7 +1361,7 @@ final class SudoMock_Admin {
             wp_send_json_error( array( 'message' => __( 'Permission denied.', 'sudomock-product-customizer' ) ), 403 );
         }
 
-        $raw = isset( $_POST['config'] ) ? wp_unslash( $_POST['config'] ) : '';
+        $raw = isset( $_POST['config'] ) ? sanitize_text_field( wp_unslash( $_POST['config'] ) ) : ''; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- JSON string, parsed and whitelisted below
         $parsed = json_decode( $raw, true );
         if ( ! is_array( $parsed ) ) {
             wp_send_json_error( array( 'message' => __( 'Invalid config data.', 'sudomock-product-customizer' ) ) );
