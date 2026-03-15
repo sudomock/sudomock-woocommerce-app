@@ -3,7 +3,7 @@
 	"apiVersion": 3,
 	"name": "sudomock/customizer-button",
 	"version": "1.0.0",
-	"title": "Product Customizer",
+	"title": "SudoMock Product Customizer",
 	"category": "woocommerce",
 	"icon": "art",
 	"description": "Adds a customize button that opens the SudoMock design studio. Only visible on products with a mapped PSD mockup.",
