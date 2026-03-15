@@ -260,7 +260,12 @@
 				btn.parentNode.insertBefore(container, btn.nextSibling);
 			}
 		}
-		container.innerHTML = '<img src="' + url + '" alt="Your design" class="sudomock-preview-img" />';
+		container.textContent = '';
+		var img = document.createElement('img');
+		img.src = url;
+		img.alt = 'Your design';
+		img.className = 'sudomock-preview-img';
+		container.appendChild(img);
 	}
 
 	/**
