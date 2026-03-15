@@ -26,19 +26,22 @@ final class SudoMock_Storefront {
     }
 
     private function __construct() {
-        // Button placement hook — configurable via Customizer
-        $position = SudoMock_Customizer::get( 'position' );
-        if ( 'shortcode' !== $position ) {
-            $hook = 'woocommerce_after_add_to_cart_button';
-            $priority = 20;
-            if ( 'before_add_to_cart' === $position ) {
-                $hook = 'woocommerce_before_add_to_cart_button';
-                $priority = 10;
-            } elseif ( 'after_summary' === $position ) {
-                $hook = 'woocommerce_after_single_product_summary';
-                $priority = 5;
+        // Block themes use Site Editor block, classic themes use PHP hook + Customizer.
+        // Skip PHP hook registration for block themes to avoid duplicate buttons.
+        if ( ! function_exists( 'wp_is_block_theme' ) || ! wp_is_block_theme() ) {
+            $position = SudoMock_Customizer::get( 'position' );
+            if ( 'shortcode' !== $position ) {
+                $hook = 'woocommerce_after_add_to_cart_button';
+                $priority = 20;
+                if ( 'before_add_to_cart' === $position ) {
+                    $hook = 'woocommerce_before_add_to_cart_button';
+                    $priority = 10;
+                } elseif ( 'after_summary' === $position ) {
+                    $hook = 'woocommerce_after_single_product_summary';
+                    $priority = 5;
+                }
+                add_action( $hook, array( $this, 'render_button' ), $priority );
             }
-            add_action( $hook, array( $this, 'render_button' ), $priority );
         }
 
         // Shortcode always available for manual placement

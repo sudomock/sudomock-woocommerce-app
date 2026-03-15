@@ -124,8 +124,10 @@ final class SudoMock_Product_Customizer {
         // Load translations
         add_action( 'init', array( $this, 'load_textdomain' ) );
 
-        // Customizer always loads (Appearance → Customize)
-        SudoMock_Customizer::get_instance();
+        // Customizer loads only for classic themes (block themes use Site Editor block)
+        if ( ! function_exists( 'wp_is_block_theme' ) || ! wp_is_block_theme() ) {
+            SudoMock_Customizer::get_instance();
+        }
 
         // Admin menu must register early — not inside woocommerce_loaded
         if ( is_admin() ) {

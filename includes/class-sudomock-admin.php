@@ -1002,16 +1002,26 @@ final class SudoMock_Admin {
 
     private function render_settings_tab( $d ) {
         ?>
-        <!-- Button Appearance - managed via WP Customizer -->
+        <!-- Button Appearance -->
         <div class="sudomock-card">
             <div class="sudomock-card__body" style="display:flex;align-items:center;justify-content:space-between;">
                 <div>
                     <h2 class="sudomock-card__title" style="margin-bottom:4px;"><?php esc_html_e( 'Button Appearance', 'sudomock-product-customizer' ); ?></h2>
-                    <p class="sudomock-text--muted"><?php esc_html_e( 'Customize the storefront button colors, text, sizing, and placement in the WordPress Customizer.', 'sudomock-product-customizer' ); ?></p>
+                    <?php if ( function_exists( 'wp_is_block_theme' ) && wp_is_block_theme() ) : ?>
+                        <p class="sudomock-text--muted"><?php esc_html_e( 'Add and customize the SudoMock Product Customizer block in the Site Editor on your Single Product template.', 'sudomock-product-customizer' ); ?></p>
+                    <?php else : ?>
+                        <p class="sudomock-text--muted"><?php esc_html_e( 'Customize the storefront button colors, text, sizing, and placement in the WordPress Customizer.', 'sudomock-product-customizer' ); ?></p>
+                    <?php endif; ?>
                 </div>
-                <a href="<?php echo esc_url( admin_url( 'customize.php?autofocus[section]=sudomock_button&url=' . rawurlencode( sudomock_get_customizer_preview_url() ) ) ); ?>" class="sudomock-btn sudomock-btn--primary">
-                    <?php esc_html_e( 'Open Customizer', 'sudomock-product-customizer' ); ?>
-                </a>
+                <?php if ( function_exists( 'wp_is_block_theme' ) && wp_is_block_theme() ) : ?>
+                    <a href="<?php echo esc_url( admin_url( 'site-editor.php?p=%2Fwp_template%2F' . rawurlencode( get_stylesheet() ) . '%2F%2Fsingle-product&canvas=edit' ) ); ?>" class="sudomock-btn sudomock-btn--primary">
+                        <?php esc_html_e( 'Open Site Editor', 'sudomock-product-customizer' ); ?>
+                    </a>
+                <?php else : ?>
+                    <a href="<?php echo esc_url( admin_url( 'customize.php?autofocus[section]=sudomock_button&url=' . rawurlencode( sudomock_get_customizer_preview_url() ) ) ); ?>" class="sudomock-btn sudomock-btn--primary">
+                        <?php esc_html_e( 'Open Customizer', 'sudomock-product-customizer' ); ?>
+                    </a>
+                <?php endif; ?>
             </div>
         </div>
 
