@@ -2,7 +2,7 @@
 
 Let customers personalize products with professional PSD mockup designs in real-time. Upload your Photoshop mockups, map them to WooCommerce products, and offer a white-label customization experience on your storefront.
 
-![SudoMock Studio - Customer customizing a product](assets/images/hero-screenshot.png)
+![SudoMock Studio - Customer customizing a product](https://sudomock.com/images/integrations/woocommerce/desktop/08-studio.png)
 
 ## Features
 
