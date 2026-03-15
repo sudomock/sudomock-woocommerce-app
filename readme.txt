@@ -74,6 +74,20 @@ All prices net. No hidden fees. No transaction percentages.
 * PHP 7.4 or later
 * A SudoMock account ([free signup](https://sudomock.com/register))
 
+= External Services =
+
+This plugin connects to the **SudoMock API** ([sudomock.com](https://sudomock.com)) to provide PSD mockup rendering functionality. No data is transmitted until the store admin explicitly connects their account.
+
+**Services used:**
+
+1. **api.sudomock.com** — Server-to-server API calls (via `wp_remote_request`) for account verification, mockup listing, session creation, and render processing. Called only when the admin connects their account or a customer clicks the Customize button. The store's API key is stored encrypted (AES-256-CBC) and never exposed to the browser.
+2. **studio.sudomock.com** — The mockup design editor, loaded in an iframe on the frontend only when a customer clicks the "Customize" button on a product page. Customer-uploaded images are transmitted to the SudoMock rendering service to generate previews.
+
+**No data is collected or transmitted in the background.** All external communication requires explicit user action (admin connecting account, or customer clicking the customize button).
+
+* [SudoMock Terms of Service](https://sudomock.com/legal/terms)
+* [SudoMock Privacy Policy](https://sudomock.com/legal/privacy)
+
 == Installation ==
 
 1. Upload the plugin files to `/wp-content/plugins/sudomock-product-customizer/` or install through the WordPress plugins screen.
