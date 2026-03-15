@@ -198,7 +198,7 @@ final class SudoMock_Storefront {
 
         global $product; // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound -- WooCommerce standard global
         if ( ! $product ) {
-            $product = wc_get_product( get_the_ID() );
+            $product = wc_get_product( get_the_ID() ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
         }
 
         if ( ! $product || ! SudoMock_Product::is_customizable( $product->get_id() ) ) {
