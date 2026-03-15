@@ -42,23 +42,23 @@
 		},
 		"bgColor": {
 			"type": "string",
-			"default": "#0f172a"
+			"default": "#ffffff"
 		},
 		"textColor": {
 			"type": "string",
-			"default": "#ffffff"
+			"default": "#121212"
 		},
 		"borderColor": {
 			"type": "string",
-			"default": "#0f172a"
+			"default": "#121212"
 		},
 		"hoverBgColor": {
 			"type": "string",
-			"default": "#ffffff"
+			"default": "#121212"
 		},
 		"hoverTextColor": {
 			"type": "string",
-			"default": "#0f172a"
+			"default": "#ffffff"
 		},
 		"fontSize": {
 			"type": "number",
