@@ -163,9 +163,16 @@ final class SudoMock_Storefront {
                     onmouseover="this.style.cssText=this.style.cssText.replace(/background:[^;]+/,'background:<?php echo esc_js( $opts['hover_bg_color'] ); ?>').replace(/color:[^;]+/,'color:<?php echo esc_js( $opts['hover_text_color'] ); ?>');"
                     onmouseout="this.style.cssText=this.style.cssText.replace(/background:[^;]+/,'background:<?php echo esc_js( $opts['bg_color'] ); ?>').replace(/color:[^;]+/,'color:<?php echo esc_js( $opts['text_color'] ); ?>');"
             >
-                <?php if ( $opts['show_icon'] && 'left' === $opts['icon_position'] ) echo $icon_html; ?>
+                <?php
+                $sudomock_svg_allowed = array(
+                    'svg'    => array( 'aria-hidden' => true, 'width' => true, 'height' => true, 'viewBox' => true, 'fill' => true, 'stroke' => true, 'stroke-width' => true, 'stroke-linecap' => true, 'stroke-linejoin' => true ),
+                    'path'   => array( 'd' => true, 'fill' => true, 'stroke' => true ),
+                    'circle' => array( 'cx' => true, 'cy' => true, 'r' => true, 'fill' => true ),
+                );
+                if ( $opts['show_icon'] && 'left' === $opts['icon_position'] ) echo wp_kses( $icon_html, $sudomock_svg_allowed );
+                ?>
                 <?php echo esc_html( $opts['label'] ); ?>
-                <?php if ( $opts['show_icon'] && 'right' === $opts['icon_position'] ) echo $icon_html; ?>
+                <?php if ( $opts['show_icon'] && 'right' === $opts['icon_position'] ) echo wp_kses( $icon_html, $sudomock_svg_allowed ); ?>
             </button>
 
             <?php if ( ! empty( $opts['bottom_text'] ) ) : ?>
@@ -189,7 +196,7 @@ final class SudoMock_Storefront {
             return;
         }
 
-        global $product;
+        global $product; // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound -- WooCommerce standard global
         if ( ! $product ) {
             $product = wc_get_product( get_the_ID() );
         }

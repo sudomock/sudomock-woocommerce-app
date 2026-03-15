@@ -181,13 +181,13 @@ final class SudoMock_Product_Customizer {
 
     /**
      * Load plugin textdomain for translations.
+     *
+     * Since WordPress 4.6, translations are automatically loaded from
+     * wp-content/languages/plugins/ so load_plugin_textdomain() is not needed.
+     * Kept as a no-op hook target for backwards compatibility.
      */
     public function load_textdomain() {
-        load_plugin_textdomain(
-            'sudomock-product-customizer',
-            false,
-            dirname( SUDOMOCK_PLUGIN_BASENAME ) . '/languages'
-        );
+        // Intentionally empty. WordPress 4.6+ loads translations automatically.
     }
 
     /**
@@ -215,7 +215,7 @@ final class SudoMock_Product_Customizer {
     public static function get_customizer_preview_url() {
         global $wpdb;
         // Try to find a product with a mapped mockup first
-        $mapped_id = $wpdb->get_var( $wpdb->prepare(
+        $mapped_id = $wpdb->get_var( $wpdb->prepare( // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
             "SELECT post_id FROM {$wpdb->postmeta} WHERE meta_key = %s AND meta_value != '' LIMIT 1",
             '_sudomock_mockup_uuid'
         ) );
@@ -298,7 +298,7 @@ final class SudoMock_Product_Customizer {
                 printf(
                     /* translators: %s: Required PHP version */
                     esc_html__( 'SudoMock Product Customizer requires PHP %s or higher.', 'sudomock-product-customizer' ),
-                    SUDOMOCK_MIN_PHP
+                    esc_html( SUDOMOCK_MIN_PHP )
                 );
                 ?>
             </p>
@@ -323,7 +323,7 @@ function sudomock_activate() {
             sprintf(
                 /* translators: %s: Required PHP version */
                 esc_html__( 'SudoMock Product Customizer requires PHP %s or higher.', 'sudomock-product-customizer' ),
-                SUDOMOCK_MIN_PHP
+                esc_html( SUDOMOCK_MIN_PHP )
             )
         );
     }

@@ -185,8 +185,11 @@ final class SudoMock_Admin {
 
         // 1. Remove all product mockup meta data
         global $wpdb;
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
         $wpdb->delete( $wpdb->postmeta, array( 'meta_key' => '_sudomock_mockup_uuid' ) );       // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
         $wpdb->delete( $wpdb->postmeta, array( 'meta_key' => '_sudomock_customization_enabled' ) ); // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
         $wpdb->delete( $wpdb->postmeta, array( 'meta_key' => '_sudomock_mockup_name' ) );        // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key
 
         // 2. Notify backend about disconnect (best-effort, ignore errors)
@@ -266,7 +269,7 @@ final class SudoMock_Admin {
         }
 
         // Tab routing
-        $current_tab = isset( $_GET['tab'] ) ? sanitize_text_field( $_GET['tab'] ) : 'dashboard';
+        $current_tab = isset( $_GET['tab'] ) ? sanitize_text_field( wp_unslash( $_GET['tab'] ) ) : 'dashboard';
         $base_url    = admin_url( 'admin.php?page=sudomock-settings' );
 
         $tabs = array(
@@ -296,6 +299,7 @@ final class SudoMock_Admin {
         $total_count  = (int) wp_count_posts( 'product' )->publish;
         $mapped_count = 0;
         global $wpdb;
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
         $mapped_count = (int) $wpdb->get_var(
             $wpdb->prepare(
                 "SELECT COUNT(DISTINCT post_id) FROM {$wpdb->postmeta} WHERE meta_key = %s AND meta_value != %s",
@@ -469,8 +473,8 @@ final class SudoMock_Admin {
                             printf(
                                 /* translators: %1$s: used credits, %2$s: total credits */
                                 esc_html__( '%1$s / %2$s credits', 'sudomock-product-customizer' ),
-                                number_format_i18n( $d['credits_used'] ),
-                                number_format_i18n( $d['credits_limit'] )
+                                esc_html( number_format_i18n( $d['credits_used'] ) ),
+                                esc_html( number_format_i18n( $d['credits_limit'] ) )
                             );
                             ?>
                         </span>
@@ -552,7 +556,7 @@ final class SudoMock_Admin {
                 printf(
                     /* translators: %d: percentage of credits used */
                     esc_html__( 'You have used %d%% of your monthly credits.', 'sudomock-product-customizer' ),
-                    $d['credits_percent']
+                    esc_attr( $d['credits_percent'] )
                 );
                 ?>
                 <a href="https://sudomock.com/dashboard/billing" target="_blank" rel="noopener" class="sudomock-btn sudomock-btn--sm"><?php esc_html_e( 'Upgrade', 'sudomock-product-customizer' ); ?></a>
@@ -577,8 +581,8 @@ final class SudoMock_Admin {
                                     printf(
                                         /* translators: %1$d: done, %2$d: total */
                                         esc_html__( '%1$d of %2$d', 'sudomock-product-customizer' ),
-                                        $steps_done,
-                                        $steps_total
+                                        esc_html( $steps_done ),
+                                        esc_html( $steps_total )
                                     );
                                     ?>
                                 </span>
@@ -644,8 +648,8 @@ final class SudoMock_Admin {
                             printf(
                                 /* translators: %1$d: mapped, %2$d: total */
                                 esc_html__( '%1$d of %2$d mapped', 'sudomock-product-customizer' ),
-                                $d['mapped_count'],
-                                $d['total_count']
+                                esc_html( $d['mapped_count'] ),
+                                esc_html( $d['total_count'] )
                             );
                             ?>
                         </p>
@@ -681,8 +685,8 @@ final class SudoMock_Admin {
     /* ------------------------------------------------------------------ */
 
     private function render_products_tab( $d ) {
-        $search = isset( $_GET['s'] ) ? sanitize_text_field( $_GET['s'] ) : '';
-        $filter = isset( $_GET['filter'] ) ? sanitize_text_field( $_GET['filter'] ) : 'all';
+        $search = isset( $_GET['s'] ) ? sanitize_text_field( wp_unslash( $_GET['s'] ) ) : '';
+        $filter = isset( $_GET['filter'] ) ? sanitize_text_field( wp_unslash( $_GET['filter'] ) ) : 'all';
         $paged  = isset( $_GET['paged'] ) ? absint( $_GET['paged'] ) : 1;
 
         $args = array(
@@ -736,19 +740,19 @@ final class SudoMock_Admin {
                class="sudomock-filter-tab <?php echo 'all' === $filter ? 'sudomock-filter-tab--active' : ''; ?>">
                 <?php
                 /* translators: %d: total product count */
-                printf( esc_html__( 'All (%d)', 'sudomock-product-customizer' ), $d['total_count'] ); ?>
+                printf( esc_html__( 'All (%d)', 'sudomock-product-customizer' ), esc_html( $d['total_count'] ) ); ?>
             </a>
             <a href="<?php echo esc_url( add_query_arg( 'filter', 'mapped', $base_url ) ); ?>"
                class="sudomock-filter-tab <?php echo 'mapped' === $filter ? 'sudomock-filter-tab--active' : ''; ?>">
                 <?php
                 /* translators: %d: mapped product count */
-                printf( esc_html__( 'Mapped (%d)', 'sudomock-product-customizer' ), $d['mapped_count'] ); ?>
+                printf( esc_html__( 'Mapped (%d)', 'sudomock-product-customizer' ), esc_html( $d['mapped_count'] ) ); ?>
             </a>
             <a href="<?php echo esc_url( add_query_arg( 'filter', 'unmapped', $base_url ) ); ?>"
                class="sudomock-filter-tab <?php echo 'unmapped' === $filter ? 'sudomock-filter-tab--active' : ''; ?>">
                 <?php
                 /* translators: %d: unmapped product count */
-                printf( esc_html__( 'Unmapped (%d)', 'sudomock-product-customizer' ), $d['total_count'] - $d['mapped_count'] ); ?>
+                printf( esc_html__( 'Unmapped (%d)', 'sudomock-product-customizer' ), esc_html( $d['total_count'] - $d['mapped_count'] ) ); ?>
             </a>
         </div>
 
@@ -896,12 +900,12 @@ final class SudoMock_Admin {
                         <?php endif; ?>
                         <span class="sudomock-text--muted sudomock-text--sm">
                             <?php
-                            /* translators: 1: current page, 2: total pages, 3: total products */
+                            /* translators: %1$d: current page, %2$d: total pages, %3$d: total items */
                             printf(
                                 esc_html__( 'Page %1$d of %2$d (%3$d products)', 'sudomock-product-customizer' ),
-                                $paged,
-                                $total_pages,
-                                $total
+                                esc_html( $paged ),
+                                esc_html( $total_pages ),
+                                esc_html( $total )
                             );
                             ?>
                         </span>
@@ -1626,7 +1630,7 @@ final class SudoMock_Admin {
         $attachment_id = media_handle_sideload( $file_array, $product_id );
 
         if ( is_wp_error( $attachment_id ) ) {
-            @unlink( $tmp ); // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
+            wp_delete_file( $tmp );
             wp_send_json_error( array( 'message' => $attachment_id->get_error_message() ) );
         }
 
