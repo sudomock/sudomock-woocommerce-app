@@ -75,6 +75,38 @@
 	}
 
 	/**
+	 * Open Studio in a popup window.
+	 *
+	 * @param {string} token  Opaque session token (sess_xxx).
+	 */
+	function openStudioPopup(token) {
+		var url = STUDIO_BASE + '/editor?session=' + encodeURIComponent(token);
+		var w = Math.min(1200, screen.width - 100);
+		var h = Math.min(800, screen.height - 100);
+		var left = (screen.width - w) / 2;
+		var top = (screen.height - h) / 2;
+		var popup = window.open(url, 'sudomock-studio',
+			'width=' + w + ',height=' + h + ',left=' + left + ',top=' + top +
+			',menubar=no,toolbar=no,location=no,status=no,resizable=yes,scrollbars=no'
+		);
+
+		// Poll for popup close
+		var pollTimer = setInterval(function () {
+			if (popup && popup.closed) {
+				clearInterval(pollTimer);
+				window.removeEventListener('message', handleStudioMessage);
+				var activeBtn = document.querySelector('.sudomock-customize-btn');
+				if (activeBtn) {
+					activeBtn.classList.remove('sudomock-loading');
+					activeBtn.disabled = false;
+				}
+			}
+		}, 500);
+
+		window.addEventListener('message', handleStudioMessage);
+	}
+
+	/**
 	 * Close Studio overlay.
 	 *
 	 * @param {HTMLElement} overlay The overlay element.
@@ -255,7 +287,12 @@
 
 			createSession(productId, mockupUuid)
 				.then(function (session) {
-					openStudioIframe(session.session);
+					var mode = session.displayMode || 'iframe';
+					if (mode === 'popup') {
+						openStudioPopup(session.session);
+					} else {
+						openStudioIframe(session.session);
+					}
 				})
 				.catch(function (err) {
 					console.error('[SudoMock] Session error:', err);
