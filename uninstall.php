@@ -25,6 +25,8 @@ $sudomock_options = array(
     'sudomock_connected_at',
     'sudomock_button_label',
     'sudomock_display_mode',
+    'sudomock_credits_warning_dismissed',
+    'sudomock_onboarding_dismissed',
 );
 
 foreach ( $sudomock_options as $sudomock_option ) {
