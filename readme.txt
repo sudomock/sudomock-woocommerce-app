@@ -10,26 +10,17 @@ Stable tag: 1.0.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-Turn WooCommerce products into customizable experiences. Customers upload artwork, preview it on your real PSD mockups, and buy - all in real time.
+Connect WooCommerce products to the SudoMock PSD rendering engine. Customers upload artwork, preview it on your PSD mockups, and buy.
 
 == Description ==
 
-**SudoMock Product Customizer** transforms your WooCommerce store into a product personalization platform. Customers upload their artwork, logos, or text and instantly see it rendered onto your real PSD mockup templates - not flat overlays, but actual Photoshop Smart Object replacement.
+**SudoMock Product Customizer** connects your WooCommerce store to the SudoMock PSD rendering engine. Customers upload their artwork, logos, or text and see it rendered onto your PSD mockup templates using Photoshop Smart Object replacement.
 
-= The Problem =
+= Features =
 
-Generic product customizers use 2D overlays that look fake. Customers cannot visualize their artwork on your actual product, leading to cart abandonment and returns.
-
-= The Solution =
-
-SudoMock renders customer artwork INTO your real Photoshop mockups using Smart Object replacement. The preview matches your physical product exactly - curves, textures, shadows, and all.
-
-= Why SudoMock? =
-
-* **Real PSD Rendering** - Actual Photoshop Smart Object replacement, not SVG overlays. 27 blend modes, CMYK support, up to 8000px output resolution
-* **White-Label** - Zero SudoMock branding shown to customers. Customize every label, button text, and color
-* **No Transaction Fees** - $0.002 per render. No per-order costs. No percentage-based fees
-* **Instant Setup** - Connect account, map mockups to products, done. No code required
+* **PSD Rendering** - Photoshop Smart Object replacement with 27 blend modes, CMYK support, and up to 8000px output resolution
+* **White-Label** - Fully customizable labels, button text, and colors. No third-party branding shown to customers
+* **Pay Per Render** - $0.002 per render from your credit balance
 * **Cart Integration** - Rendered mockup preview automatically attaches to cart and order
 * **HPOS Compatible** - Built for WooCommerce High-Performance Order Storage
 * **Blocks Compatible** - Works with both classic checkout and WooCommerce Blocks checkout
@@ -38,10 +29,10 @@ SudoMock renders customer artwork INTO your real Photoshop mockups using Smart O
 
 = How It Works =
 
-1. **Upload** PSD mockups to your free SudoMock account
+1. **Upload** PSD mockups to your SudoMock account
 2. **Map** mockups to WooCommerce products in one click
 3. **Customers** see a "Customize" button on product pages
-4. **Preview** - customers upload artwork and see real-time mockup rendering
+4. **Preview** - customers upload artwork and see the mockup rendering
 5. **Buy** - rendered mockup image attaches to cart and order automatically
 
 = Who Is It For? =
@@ -52,21 +43,11 @@ SudoMock renders customer artwork INTO your real Photoshop mockups using Smart O
 * Brand merchandise with strict visual guidelines
 * Any WooCommerce store selling customizable products
 
-= Pricing =
-
-* **Free:** 500 one-time render credits. No credit card required
-* **Starter:** From $17.49/month (5,000 credits, 3 parallel renders)
-* **Pro:** From $27.49/month (5,000 credits, 10 parallel renders)
-* **Scale:** From $52.49/month (5,000 credits, 25 parallel renders)
-
-All prices net. No hidden fees. No transaction percentages.
-
 = Integrations =
 
 * n8n, Zapier, Make automation workflows
 * Printful, Printify POD fulfillment
 * REST API for custom integrations
-* Shopify app also available for multi-platform sellers
 
 = Requirements =
 
@@ -101,15 +82,11 @@ This plugin connects to the **SudoMock API** ([sudomock.com](https://sudomock.co
 
 = Do I need a SudoMock account? =
 
-Yes. Sign up for free at [sudomock.com/register](https://sudomock.com/register). The free plan includes 500 render credits with no credit card required. Dashboard usage is completely free and unlimited forever.
+Yes. Sign up for free at [sudomock.com/register](https://sudomock.com/register). The free plan includes 500 render credits with no credit card required.
 
 = Is the product customizer white-labeled? =
 
 Yes. No SudoMock branding is visible to your customers. You can customize the button label, colors, display mode, and all customer-facing text in the Settings tab.
-
-= How does SudoMock compare to other WooCommerce product customizers? =
-
-SudoMock uses actual PSD rendering with Photoshop Smart Object replacement, not flat SVG overlays. The result is photorealistic previews that match your physical product exactly. At $0.002/render with zero transaction fees, it is also significantly more affordable than alternatives charging per-order percentages.
 
 = Does it work with WooCommerce Blocks checkout? =
 
@@ -129,7 +106,7 @@ Yes. The plugin includes full data export and erasure handlers for customer pers
 
 = Can I use my own PSD mockup templates? =
 
-Yes. Upload your own PSD files with Smart Object layers. You are not limited to a template library. If you have a PSD, it works. The AI Mockup Studio is also available for generating mockup templates without Photoshop.
+Yes. Upload your own PSD files with Smart Object layers. You are not limited to a template library.
 
 = Does it support batch processing for Print on Demand? =
 
@@ -138,10 +115,6 @@ Yes. Use the REST API or automation integrations (n8n, Zapier, Make) to process 
 = Is there a limit on the number of products I can customize? =
 
 No product limit. Map as many products as you want to mockup templates. The only limit is render credits per billing period, which you control by selecting a credit pack.
-
-= Can I use SudoMock on both Shopify and WooCommerce? =
-
-Yes. SudoMock has native plugins for both Shopify and WooCommerce. Your mockup library, credits, and account settings are shared across platforms.
 
 == Screenshots ==
 
@@ -173,4 +146,4 @@ Yes. SudoMock has native plugins for both Shopify and WooCommerce. Your mockup l
 == Upgrade Notice ==
 
 = 1.0.0 =
-Initial release. Install, connect your free SudoMock account, and start customizing products in minutes.
+Initial release. Install, connect your SudoMock account, and start customizing products.

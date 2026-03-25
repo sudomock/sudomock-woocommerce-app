@@ -35,6 +35,7 @@ final class SudoMock_Admin {
         add_action( 'wp_ajax_sudomock_save_studio_config', array( $this, 'ajax_save_studio_config' ) );
         add_action( 'wp_ajax_sudomock_submit_support', array( $this, 'ajax_submit_support' ) );
         add_action( 'wp_ajax_sudomock_dismiss_onboarding', array( $this, 'ajax_dismiss_onboarding' ) );
+        add_action( 'wp_ajax_sudomock_dismiss_credits_warning', array( $this, 'ajax_dismiss_credits_warning' ) );
         add_action( 'wp_ajax_sudomock_generate_gallery', array( $this, 'ajax_generate_gallery' ) );
     }
 
@@ -259,9 +260,15 @@ final class SudoMock_Admin {
                 update_option( 'sudomock_account_email', sanitize_email( $account['account']['email'] ) );
                 update_option( 'sudomock_plan_name', sanitize_text_field( $account['subscription']['plan'] ) );
                 update_option( 'sudomock_plan_tier', sanitize_text_field( $account['subscription']['tier'] ) );
-                update_option( 'sudomock_credits_used', absint( $account['usage']['credits_used_this_month'] ) );
+                $new_used = absint( $account['usage']['credits_used_this_month'] );
+                $old_used = (int) get_option( 'sudomock_credits_used', 0 );
+                update_option( 'sudomock_credits_used', $new_used );
                 update_option( 'sudomock_credits_limit', absint( $account['usage']['credits_limit'] ) );
                 update_option( 'sudomock_credits_remaining', absint( $account['usage']['credits_remaining'] ) );
+                // Reset credits warning dismiss when a new billing period starts (usage drops)
+                if ( $new_used < $old_used ) {
+                    delete_option( 'sudomock_credits_warning_dismissed' );
+                }
             }
         }
 
@@ -550,8 +557,8 @@ final class SudoMock_Admin {
             </div>
             <?php endif; ?>
 
-            <?php if ( $d['credits_percent'] > 80 ) : ?>
-            <div class="sudomock-banner sudomock-banner--warning">
+            <?php if ( $d['credits_percent'] > 80 && ! get_option( 'sudomock_credits_warning_dismissed' ) ) : ?>
+            <div class="sudomock-banner sudomock-banner--warning" id="sudomock-credits-warning">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
                 <?php
                 printf(
@@ -560,7 +567,8 @@ final class SudoMock_Admin {
                     esc_attr( $d['credits_percent'] )
                 );
                 ?>
-                <a href="https://sudomock.com/dashboard/billing" target="_blank" rel="noopener" class="sudomock-btn sudomock-btn--sm"><?php esc_html_e( 'Upgrade', 'sudomock-product-customizer' ); ?></a>
+                <a href="https://sudomock.com/dashboard/billing" target="_blank" rel="noopener" class="sudomock-btn sudomock-btn--sm"><?php esc_html_e( 'Manage Plan', 'sudomock-product-customizer' ); ?></a>
+                <button type="button" class="sudomock-banner__dismiss" id="sudomock-dismiss-credits-warning" aria-label="<?php esc_attr_e( 'Dismiss', 'sudomock-product-customizer' ); ?>">&times;</button>
             </div>
             <?php endif; ?>
 
@@ -1164,6 +1172,7 @@ final class SudoMock_Admin {
                                 'showPosition'      => array( __( 'Position Controls', 'sudomock-product-customizer' ), __( 'X, Y position fields for precise placement', 'sudomock-product-customizer' ) ),
                                 'showSize'          => array( __( 'Size Controls', 'sudomock-product-customizer' ), __( 'Width, height fields with aspect ratio lock', 'sudomock-product-customizer' ) ),
                                 'showRotation'      => array( __( 'Rotation', 'sudomock-product-customizer' ), __( 'Rotation slider for uploaded images', 'sudomock-product-customizer' ) ),
+                                'showFlip'          => array( __( 'Flip', 'sudomock-product-customizer' ), __( 'Flip horizontal/vertical buttons for uploaded images', 'sudomock-product-customizer' ) ),
                                 'showExportOptions' => array( __( 'Export Options', 'sudomock-product-customizer' ), __( 'Output format, size, and quality controls', 'sudomock-product-customizer' ) ),
                                 'showZoomControls'  => array( __( 'Zoom Controls', 'sudomock-product-customizer' ), __( 'Zoom in/out and percentage on canvas toolbar', 'sudomock-product-customizer' ) ),
                                 'showUndoRedo'      => array( __( 'Undo / Redo', 'sudomock-product-customizer' ), __( 'Undo and redo buttons with keyboard shortcuts', 'sudomock-product-customizer' ) ),
@@ -1374,7 +1383,7 @@ final class SudoMock_Admin {
             'buttonText', 'renderButtonText', 'uploadText', 'headerText',
             'addingText', 'successText',
             'showAdjustments', 'showColorOverlay', 'showFitMode', 'showPosition',
-            'showSize', 'showRotation', 'showExportOptions', 'showZoomControls', 'showUndoRedo',
+            'showSize', 'showRotation', 'showFlip', 'showExportOptions', 'showZoomControls', 'showUndoRedo',
             'theme', 'layout', 'displayMode', 'autoRender', 'autoRenderDelay', 'maxFileSize',
         );
         $config = array();
@@ -1411,7 +1420,7 @@ final class SudoMock_Admin {
         // Sanitize boolean fields
         $bool_keys = array(
             'showAdjustments', 'showColorOverlay', 'showFitMode', 'showPosition',
-            'showSize', 'showRotation', 'showExportOptions', 'showZoomControls', 'showUndoRedo',
+            'showSize', 'showRotation', 'showFlip', 'showExportOptions', 'showZoomControls', 'showUndoRedo',
             'autoRender',
         );
         foreach ( $bool_keys as $key ) {
@@ -1534,6 +1543,21 @@ final class SudoMock_Admin {
         wp_send_json_success( array(
             'message' => __( 'Onboarding dismissed.', 'sudomock-product-customizer' ),
         ) );
+    }
+
+    /* ------------------------------------------------------------------ */
+    /* AJAX: Dismiss Credits Warning                                       */
+    /* ------------------------------------------------------------------ */
+
+    public function ajax_dismiss_credits_warning() {
+        check_ajax_referer( 'sudomock_admin', 'nonce' );
+        if ( ! current_user_can( 'manage_woocommerce' ) ) {
+            wp_send_json_error( array( 'message' => __( 'Permission denied.', 'sudomock-product-customizer' ) ), 403 );
+        }
+
+        update_option( 'sudomock_credits_warning_dismissed', true );
+
+        wp_send_json_success();
     }
 
     /* ------------------------------------------------------------------ */

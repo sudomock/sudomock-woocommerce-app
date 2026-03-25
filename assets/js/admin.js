@@ -560,7 +560,7 @@
 		renderButtonText: 'Render Preview', uploadText: 'Drop image or click to upload',
 		headerText: 'Customize Your Design',
 		showAdjustments: true, showColorOverlay: true, showFitMode: true,
-		showPosition: true, showSize: true, showRotation: true,
+		showPosition: true, showSize: true, showRotation: true, showFlip: true,
 		showExportOptions: true, showZoomControls: true, showUndoRedo: true,
 		displayMode: 'iframe', layout: 'full', autoRender: true,
 		autoRenderDelay: 800, maxFileSize: 15
@@ -764,7 +764,7 @@
 
 	function updateToggleCount() {
 		var toggleKeys = ['showAdjustments', 'showColorOverlay', 'showFitMode', 'showPosition',
-			'showSize', 'showRotation', 'showExportOptions', 'showZoomControls', 'showUndoRedo'];
+			'showSize', 'showRotation', 'showFlip', 'showExportOptions', 'showZoomControls', 'showUndoRedo'];
 		var active = 0;
 		toggleKeys.forEach(function (k) { if (currentConfig && currentConfig[k]) active++; });
 		var el = document.getElementById('sudomock-toggle-count');
@@ -929,6 +929,33 @@
 	}
 
 	/* ────────────────────────────────────────────
+	 * 8) Dismiss Credits Warning
+	 * ──────────────────────────────────────────── */
+	function initCreditsWarningDismiss() {
+		var btn = document.getElementById('sudomock-dismiss-credits-warning');
+		if (!btn) return;
+
+		btn.addEventListener('click', function () {
+			var banner = document.getElementById('sudomock-credits-warning');
+			var body = new FormData();
+			body.append('action', 'sudomock_dismiss_credits_warning');
+			body.append('nonce', nonce);
+
+			fetch(ajaxUrl, { method: 'POST', body: body })
+				.then(function () {
+					if (banner) {
+						banner.style.transition = 'opacity 0.3s';
+						banner.style.opacity = '0';
+						setTimeout(function () { banner.remove(); }, 300);
+					}
+				})
+				.catch(function () {
+					if (banner) banner.remove();
+				});
+		});
+	}
+
+	/* ────────────────────────────────────────────
 	 * Helpers
 	 * ──────────────────────────────────────────── */
 	function showFeedback(type, msg) {
@@ -957,6 +984,7 @@
 		initStudioConfig();
 		initSupportForm();
 		initOnboarding();
+		initCreditsWarningDismiss();
 	}
 
 	if (document.readyState === 'loading') {
