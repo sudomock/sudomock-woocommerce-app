@@ -59,8 +59,8 @@ final class SudoMock_Admin {
             'manage_woocommerce',
             'sudomock-settings',
             array( $this, 'render_page' ),
-            'dashicons-art',
-            null
+            SUDOMOCK_PLUGIN_URL . 'assets/images/icon.svg',
+            58
         );
     }
 
