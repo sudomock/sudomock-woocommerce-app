@@ -334,6 +334,9 @@ function sudomock_activate() {
     add_option( 'sudomock_version', SUDOMOCK_VERSION );
     add_option( 'sudomock_button_label', __( 'Customize This Product', 'sudomock-product-customizer' ) );
     add_option( 'sudomock_display_mode', 'iframe' );
+
+    // Flush rewrite rules
+    flush_rewrite_rules();
 }
 
 // Deactivation hook
@@ -343,9 +346,7 @@ register_deactivation_hook( __FILE__, 'sudomock_deactivate' );
  * Plugin deactivation — clean up plugin-specific options that should not persist.
  */
 function sudomock_deactivate() {
-    // No custom post types or rewrite rules to flush.
-    // Transient cleanup for fresh start on re-activation.
-    delete_transient( 'sudomock_account_data' );
+    flush_rewrite_rules();
 }
 
 /**
