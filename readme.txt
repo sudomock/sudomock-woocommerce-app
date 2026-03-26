@@ -16,11 +16,13 @@ Connect WooCommerce products to the SudoMock PSD rendering engine. Customers upl
 
 **SudoMock Product Customizer** connects your WooCommerce store to the SudoMock PSD rendering engine. Customers upload their artwork, logos, or text and see it rendered onto your PSD mockup templates using Photoshop Smart Object replacement.
 
+https://www.youtube.com/watch?v=nmD0ePncAm4
+
 = Features =
 
 * **PSD Rendering** - Photoshop Smart Object replacement with 27 blend modes, CMYK support, and up to 8000px output resolution
 * **White-Label** - Fully customizable labels, button text, and colors. No third-party branding shown to customers
-* **Pay Per Render** - $0.002 per render from your credit balance
+* **Pay Per Render** - Credit-based rendering, pay only for what you use
 * **Cart Integration** - Rendered mockup preview automatically attaches to cart and order
 * **HPOS Compatible** - Built for WooCommerce High-Performance Order Storage
 * **Blocks Compatible** - Works with both classic checkout and WooCommerce Blocks checkout
@@ -68,7 +70,7 @@ Connect WooCommerce products to the SudoMock PSD rendering engine. Customers upl
 
 = Do I need a SudoMock account? =
 
-Yes. Sign up for free at [sudomock.com/register](https://sudomock.com/register). The free plan includes 500 render credits with no credit card required.
+Yes. Sign up at [sudomock.com/register](https://sudomock.com/register). A free tier is available with no credit card required.
 
 = Is the product customizer white-labeled? =
 
@@ -100,7 +102,7 @@ Yes. Use the REST API or automation integrations (n8n, Zapier, Make) to process 
 
 = Is there a limit on the number of products I can customize? =
 
-No product limit. Map as many products as you want to mockup templates. The only limit is render credits per billing period, which you control by selecting a credit pack.
+No product limit. Map as many products as you want to mockup templates.
 
 == Screenshots ==
 
