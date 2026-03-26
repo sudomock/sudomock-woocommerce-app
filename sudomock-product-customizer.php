@@ -181,13 +181,13 @@ final class SudoMock_Product_Customizer {
 
     /**
      * Load plugin textdomain for translations.
+     *
+     * Since WordPress 4.6, translations are automatically loaded from
+     * wp-content/languages/plugins/ for plugins hosted on WordPress.org,
+     * so load_plugin_textdomain() is not needed.
      */
     public function load_textdomain() {
-        load_plugin_textdomain(
-            'sudomock-product-customizer',
-            false,
-            dirname( SUDOMOCK_PLUGIN_BASENAME ) . '/languages'
-        );
+        // Intentionally empty — WordPress 4.6+ loads translations automatically.
     }
 
     /**
