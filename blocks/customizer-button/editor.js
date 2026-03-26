@@ -44,7 +44,7 @@
 		el('path', { d: 'M633 460c30 8 75 50 110 76l140 110c34 27 74 54 88 79 25 40 2 99-43 111-56 13-77-22-133-63L602 622c-28-23-62-47-62-87-3-49 48-88 91-76z' })
 	);
 
-	registerBlockType('sudomock/customizer-button', {
+	registerBlockType({ name: 'sudomock/customizer-button' }, {
 		icon: sudomockIcon,
 		edit: function (props) {
 			var a = props.attributes;
