@@ -57,7 +57,7 @@
 		var closeBtn = document.createElement('button');
 		closeBtn.className = 'sudomock-close';
 		closeBtn.setAttribute('aria-label', 'Close customizer');
-		closeBtn.innerHTML = '&times;';
+		closeBtn.textContent = '\u00D7';
 		closeBtn.addEventListener('click', function () { closeStudio(overlay); });
 
 		// Iframe

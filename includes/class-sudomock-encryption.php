@@ -31,8 +31,10 @@ final class SudoMock_Encryption {
         }
 
         if ( ! function_exists( 'openssl_encrypt' ) ) {
-            // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
-            error_log( 'SudoMock: OpenSSL extension is required for API key encryption. Please enable php-openssl.' );
+            if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+                // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
+                error_log( 'SudoMock: OpenSSL extension is required for API key encryption. Please enable php-openssl.' );
+            }
             wp_die(
                 esc_html__( 'SudoMock requires the PHP OpenSSL extension to securely store your API key. Please contact your hosting provider to enable it.', 'sudomock-product-customizer' ),
                 esc_html__( 'SudoMock — Missing Requirement', 'sudomock-product-customizer' ),
@@ -46,8 +48,10 @@ final class SudoMock_Encryption {
         $encrypted = openssl_encrypt( $value, self::$cipher, $key, 0, $iv );
 
         if ( false === $encrypted ) {
-            // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
-            error_log( 'SudoMock: openssl_encrypt() failed. Check OpenSSL configuration.' );
+            if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+                // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
+                error_log( 'SudoMock: openssl_encrypt() failed. Check OpenSSL configuration.' );
+            }
             return '';
         }
 

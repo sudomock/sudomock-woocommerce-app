@@ -102,7 +102,7 @@ final class SudoMock_Product {
                     <input type="hidden" id="sudomock_mockup_uuid" name="<?php echo esc_attr( self::META_MOCKUP_UUID ); ?>" value="<?php echo esc_attr( $mockup_uuid ); ?>" />
                     <input type="hidden" id="sudomock_mockup_name" name="_sudomock_mockup_name" value="<?php echo esc_attr( $mockup_name ); ?>" />
 
-                    <div id="sudomock-selected-mockup" style="<?php echo empty( $mockup_uuid ) ? 'display:none;' : ''; ?>margin-bottom:10px;">
+                    <div id="sudomock-selected-mockup" style="<?php echo esc_attr( ( empty( $mockup_uuid ) ? 'display:none;' : '' ) . 'margin-bottom:10px;' ); ?>">
                         <div style="display:flex;align-items:center;gap:12px;padding:10px;background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;">
                             <div id="sudomock-selected-thumb" style="width:60px;height:60px;border-radius:6px;overflow:hidden;background:#e5e7eb;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
                                 <span style="color:#9ca3af;font-size:11px;">PSD</span>
@@ -121,7 +121,7 @@ final class SudoMock_Product {
                     </div>
 
                     <!-- Mockup Picker (shown when no mockup or when changing) -->
-                    <div id="sudomock-mockup-picker" style="<?php echo ! empty( $mockup_uuid ) ? 'display:none;' : ''; ?>">
+                    <div id="sudomock-mockup-picker" style="<?php echo esc_attr( ! empty( $mockup_uuid ) ? 'display:none;' : '' ); ?>">
                         <input type="text" id="sudomock-product-search" class="regular-text" style="width:100%;margin-bottom:8px;"
                             placeholder="<?php esc_attr_e( 'Search mockups by name...', 'sudomock-product-customizer' ); ?>" />
                         <div id="sudomock-product-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;max-height:320px;overflow-y:auto;padding:2px;"></div>
@@ -140,7 +140,11 @@ final class SudoMock_Product {
      */
     public function save_product_meta( $product_id ) {
         if ( ! isset( $_POST['sudomock_product_nonce'] ) ||
-             ! wp_verify_nonce( $_POST['sudomock_product_nonce'], 'sudomock_product_meta' ) ) { // phpcs:ignore
+             ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['sudomock_product_nonce'] ) ), 'sudomock_product_meta' ) ) {
+            return;
+        }
+
+        if ( ! current_user_can( 'edit_post', $product_id ) ) {
             return;
         }
 
@@ -208,7 +212,6 @@ final class SudoMock_Product {
                 'generateSuccess'     => __( 'Product image generated and set as featured image.', 'sudomock-product-customizer' ),
                 'generateFailed'      => __( 'Failed to generate image.', 'sudomock-product-customizer' ),
                 'generateBtn'         => __( 'Generate Product Image', 'sudomock-product-customizer' ),
-                'networkError'        => __( 'Network error.', 'sudomock-product-customizer' ),
             ),
         );
 

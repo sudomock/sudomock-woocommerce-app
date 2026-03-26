@@ -181,13 +181,13 @@ final class SudoMock_Product_Customizer {
 
     /**
      * Load plugin textdomain for translations.
-     *
-     * Since WordPress 4.6, translations are automatically loaded from
-     * wp-content/languages/plugins/ so load_plugin_textdomain() is not needed.
-     * Kept as a no-op hook target for backwards compatibility.
      */
     public function load_textdomain() {
-        // Intentionally empty. WordPress 4.6+ loads translations automatically.
+        load_plugin_textdomain(
+            'sudomock-product-customizer',
+            false,
+            dirname( SUDOMOCK_PLUGIN_BASENAME ) . '/languages'
+        );
     }
 
     /**
@@ -275,11 +275,14 @@ final class SudoMock_Product_Customizer {
         <div class="notice notice-error">
             <p>
                 <?php
-                printf(
-                    /* translators: %s: WooCommerce plugin name */
-                    esc_html__( '%1$s requires %2$s to be installed and active.', 'sudomock-product-customizer' ),
-                    '<strong>SudoMock Product Customizer</strong>',
-                    '<strong>WooCommerce</strong>'
+                echo wp_kses(
+                    sprintf(
+                        /* translators: %1$s: plugin name, %2$s: required plugin name */
+                        __( '%1$s requires %2$s to be installed and active.', 'sudomock-product-customizer' ),
+                        '<strong>SudoMock Product Customizer</strong>',
+                        '<strong>WooCommerce</strong>'
+                    ),
+                    array( 'strong' => array() )
                 );
                 ?>
             </p>
@@ -331,19 +334,18 @@ function sudomock_activate() {
     add_option( 'sudomock_version', SUDOMOCK_VERSION );
     add_option( 'sudomock_button_label', __( 'Customize This Product', 'sudomock-product-customizer' ) );
     add_option( 'sudomock_display_mode', 'iframe' );
-
-    // Flush rewrite rules
-    flush_rewrite_rules();
 }
 
 // Deactivation hook
 register_deactivation_hook( __FILE__, 'sudomock_deactivate' );
 
 /**
- * Plugin deactivation.
+ * Plugin deactivation — clean up plugin-specific options that should not persist.
  */
 function sudomock_deactivate() {
-    flush_rewrite_rules();
+    // No custom post types or rewrite rules to flush.
+    // Transient cleanup for fresh start on re-activation.
+    delete_transient( 'sudomock_account_data' );
 }
 
 /**
