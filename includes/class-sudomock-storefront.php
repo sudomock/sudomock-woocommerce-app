@@ -110,6 +110,15 @@ final class SudoMock_Storefront {
             $icon_html = $icons[ $opts['icon_style'] ];
         }
 
+        // Whitelist CSS values to prevent injection.
+        $sudomock_allowed_weights   = array( '500', '600', '700' );
+        $sudomock_allowed_transform = array( 'none', 'uppercase' );
+        $sudomock_allowed_align     = array( 'left', 'center', 'right' );
+
+        $sudomock_font_weight   = in_array( $opts['font_weight'], $sudomock_allowed_weights, true ) ? $opts['font_weight'] : '600';
+        $sudomock_text_transform = in_array( $opts['text_transform'], $sudomock_allowed_transform, true ) ? $opts['text_transform'] : 'none';
+        $sudomock_alignment     = in_array( $opts['alignment'], $sudomock_allowed_align, true ) ? $opts['alignment'] : 'center';
+
         $btn_style = sprintf(
             'display:inline-flex;align-items:center;justify-content:center;gap:8px;'
             . 'width:%s;min-height:48px;box-sizing:border-box;'
@@ -121,23 +130,17 @@ final class SudoMock_Storefront {
             . 'text-transform:%s;-webkit-font-smoothing:antialiased;'
             . '%s',
             $opts['full_width'] ? '100%' : 'auto',
-            $opts['padding_y'], $opts['padding_x'],
-            $opts['font_size'], $opts['font_weight'],
-            $opts['border_width'], esc_attr( $opts['border_color'] ),
-            $opts['border_radius'],
+            absint( $opts['padding_y'] ), absint( $opts['padding_x'] ),
+            absint( $opts['font_size'] ), $sudomock_font_weight,
+            absint( $opts['border_width'] ), esc_attr( $opts['border_color'] ),
+            absint( $opts['border_radius'] ),
             esc_attr( $opts['bg_color'] ), esc_attr( $opts['text_color'] ),
-            $opts['text_transform'],
+            $sudomock_text_transform,
             $opts['shadow'] ? 'box-shadow:0 2px 8px rgba(0,0,0,0.12);' : ''
         );
 
-        $hover_style = sprintf(
-            'background:%s;color:%s;opacity:1;',
-            esc_attr( $opts['hover_bg_color'] ),
-            esc_attr( $opts['hover_text_color'] )
-        );
-
         ?>
-        <div class="sudomock-customizer-root" style="margin:<?php echo intval( $opts['margin_top'] ); ?>px 0 <?php echo intval( $opts['margin_bottom'] ); ?>px;text-align:<?php echo esc_attr( $opts['alignment'] ); ?>;">
+        <div class="sudomock-customizer-root" style="margin:<?php echo intval( $opts['margin_top'] ); ?>px 0 <?php echo intval( $opts['margin_bottom'] ); ?>px;text-align:<?php echo esc_attr( $sudomock_alignment ); ?>;">
 
             <?php if ( $opts['divider_top'] ) : ?>
                 <hr class="sudomock-divider-top" style="border:none;border-top:1px solid <?php echo esc_attr( $opts['divider_color'] ); ?>;margin:0 0 <?php echo intval( $opts['margin_top'] ); ?>px;">
@@ -160,8 +163,6 @@ final class SudoMock_Storefront {
                     data-product-id="<?php echo esc_attr( $product->get_id() ); ?>"
                     data-mockup-uuid="<?php echo esc_attr( $mockup_uuid ); ?>"
                     style="<?php echo esc_attr( $btn_style ); ?>"
-                    onmouseover="this.style.cssText=this.style.cssText.replace(/background:[^;]+/,'background:<?php echo esc_js( $opts['hover_bg_color'] ); ?>').replace(/color:[^;]+/,'color:<?php echo esc_js( $opts['hover_text_color'] ); ?>');"
-                    onmouseout="this.style.cssText=this.style.cssText.replace(/background:[^;]+/,'background:<?php echo esc_js( $opts['bg_color'] ); ?>').replace(/color:[^;]+/,'color:<?php echo esc_js( $opts['text_color'] ); ?>');"
             >
                 <?php
                 $sudomock_svg_allowed = array(
@@ -211,6 +212,14 @@ final class SudoMock_Storefront {
             array(),
             SUDOMOCK_VERSION
         );
+
+        // Add dynamic hover styles via wp_add_inline_style (avoids inline <style> tags).
+        $sudomock_opts       = SudoMock_Customizer::get_all();
+        $sudomock_hover_css  = '.sudomock-customize-btn:hover {';
+        $sudomock_hover_css .= 'background:' . esc_attr( $sudomock_opts['hover_bg_color'] ) . ' !important;';
+        $sudomock_hover_css .= 'color:' . esc_attr( $sudomock_opts['hover_text_color'] ) . ' !important;';
+        $sudomock_hover_css .= '}';
+        wp_add_inline_style( 'sudomock-storefront', $sudomock_hover_css );
 
         wp_enqueue_script(
             'sudomock-storefront',

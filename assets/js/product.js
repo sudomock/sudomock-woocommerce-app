@@ -168,7 +168,11 @@
 				// Update thumbnail in selected display
 				var thumbSrc = card.querySelector('img');
 				if (selThumb && thumbSrc) {
-					selThumb.innerHTML = '<img src="' + thumbSrc.src + '" style="width:100%;height:100%;object-fit:contain;" />';
+					selThumb.textContent = '';
+					var thumbImg = document.createElement('img');
+					thumbImg.src = thumbSrc.src;
+					thumbImg.style.cssText = 'width:100%;height:100%;object-fit:contain;';
+					selThumb.appendChild(thumbImg);
 				}
 
 				// Show selected, hide picker
@@ -215,7 +219,11 @@
 						if (json.data.image_url) {
 							var thumbContainer = document.getElementById('set-post-thumbnail');
 							if (thumbContainer) {
-								thumbContainer.innerHTML = '<img src="' + esc(json.data.image_url) + '" style="max-width:100%;height:auto;" />';
+								thumbContainer.textContent = '';
+								var newImg = document.createElement('img');
+								newImg.src = json.data.image_url;
+								newImg.style.cssText = 'max-width:100%;height:auto;';
+								thumbContainer.appendChild(newImg);
 							}
 						}
 					} else {
