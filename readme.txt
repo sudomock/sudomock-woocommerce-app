@@ -55,20 +55,6 @@ Connect WooCommerce products to the SudoMock PSD rendering engine. Customers upl
 * PHP 7.4 or later
 * A SudoMock account ([free signup](https://sudomock.com/register))
 
-= External Services =
-
-This plugin connects to the **SudoMock API** ([sudomock.com](https://sudomock.com)) to provide PSD mockup rendering functionality. No data is transmitted until the store admin explicitly connects their account.
-
-**Services used:**
-
-1. **api.sudomock.com** — Server-to-server API calls (via `wp_remote_request`) for account verification, mockup listing, session creation, and render processing. Called only when the admin connects their account or a customer clicks the Customize button. The store's API key is stored encrypted (AES-256-CBC) and never exposed to the browser.
-2. **studio.sudomock.com** — The mockup design editor, loaded in an iframe on the frontend only when a customer clicks the "Customize" button on a product page. Customer-uploaded images are transmitted to the SudoMock rendering service to generate previews.
-
-**No data is collected or transmitted in the background.** All external communication requires explicit user action (admin connecting account, or customer clicking the customize button).
-
-* [SudoMock Terms of Service](https://sudomock.com/legal/terms)
-* [SudoMock Privacy Policy](https://sudomock.com/legal/privacy)
-
 == Installation ==
 
 1. Upload the plugin files to `/wp-content/plugins/sudomock-product-customizer/` or install through the WordPress plugins screen.
@@ -147,3 +133,43 @@ No product limit. Map as many products as you want to mockup templates. The only
 
 = 1.0.0 =
 Initial release. Install, connect your SudoMock account, and start customizing products.
+
+== External services ==
+
+This plugin connects to the external SudoMock service to provide PSD mockup rendering functionality for WooCommerce products. No data is transmitted until the store administrator explicitly connects their SudoMock account.
+
+= SudoMock API (api.sudomock.com) =
+
+The plugin communicates with the SudoMock API at https://api.sudomock.com for the following operations:
+
+* **Account verification** — When the admin connects their SudoMock account, the plugin sends an API key to verify the account (GET /api/v1/me).
+* **Mockup listing** — When the admin opens the Products tab, the plugin fetches the list of available PSD mockup templates from the merchant's account (GET /api/v1/mockups).
+* **Mockup details and thumbnails** — When viewing mapped products, the plugin fetches mockup metadata including thumbnail image URLs to display in the admin panel (GET /api/v1/mockups/{uuid}). The thumbnail images are served from SudoMock servers.
+* **Studio session creation** — When a customer clicks the "Customize" button, the plugin creates a rendering session on the server (POST /api/v1/studio/create-session).
+* **Render processing** — When a mockup render is requested, the plugin sends the mockup UUID and smart object data to the rendering API (POST /api/v1/renders).
+* **Studio configuration** — The plugin reads and updates white-label editor settings stored on the SudoMock server (GET/PUT /api/v1/studio/config).
+* **Support tickets** — When the admin submits a support message via the plugin's Help tab, it is sent to the SudoMock support API (POST /api/v1/support/ticket). As a fallback, the message may be sent via email to support@sudomock.com.
+* **Account disconnect** — When the admin disconnects, a notification is sent to the SudoMock server (POST /api/v1/woocommerce/disconnect).
+
+All API calls are made server-to-server using wp_remote_request. The API key is stored encrypted (AES-256-CBC) and is never exposed to the browser.
+
+This service is provided by "SudoMock": [Terms of Service](https://sudomock.com/legal/terms), [Privacy Policy](https://sudomock.com/legal/privacy).
+
+= SudoMock Studio (studio.sudomock.com) =
+
+The plugin loads the SudoMock Studio editor from https://studio.sudomock.com in an iframe on the frontend product page. This happens only when a customer clicks the "Customize" button. Inside the Studio editor, the customer can upload their own artwork/images which are transmitted to the SudoMock rendering service to generate a preview of the customized product. The rendered image URL is then sent back to WordPress via postMessage and stored alongside the customer's order.
+
+This service is provided by "SudoMock": [Terms of Service](https://sudomock.com/legal/terms), [Privacy Policy](https://sudomock.com/legal/privacy).
+
+= SudoMock Website (sudomock.com) =
+
+The plugin links to the SudoMock website at https://sudomock.com for the following purposes:
+
+* **OAuth connect flow** — The admin is redirected to sudomock.com/integrations/woocommerce/connect to authorize the WooCommerce integration and obtain an API key.
+* **Account registration** — Links to sudomock.com/register for new account signup.
+* **Dashboard links** — Links to sudomock.com/dashboard/playground for PSD mockup management and sudomock.com/dashboard/billing for plan management. These are navigational links that open in a new browser tab.
+* **Documentation links** — Links to sudomock.com/docs for integration guides and PSD preparation documentation.
+
+These are browser-side navigational links only. No data is automatically transmitted to sudomock.com by the plugin.
+
+This service is provided by "SudoMock": [Terms of Service](https://sudomock.com/legal/terms), [Privacy Policy](https://sudomock.com/legal/privacy).

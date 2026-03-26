@@ -59,8 +59,8 @@ final class SudoMock_Admin {
             'manage_woocommerce',
             'sudomock-settings',
             array( $this, 'render_page' ),
-            SUDOMOCK_PLUGIN_URL . 'assets/images/icon.svg',
-            58
+            'dashicons-art',
+            null
         );
     }
 
@@ -330,7 +330,7 @@ final class SudoMock_Admin {
             <nav class="sudomock-tabs">
                 <?php foreach ( $tabs as $tab_key => $tab_label ) : ?>
                     <a href="<?php echo esc_url( add_query_arg( 'tab', $tab_key, $base_url ) ); ?>"
-                       class="sudomock-tab <?php echo $current_tab === $tab_key ? 'sudomock-tab--active' : ''; ?>">
+                       class="sudomock-tab <?php echo esc_attr( $current_tab === $tab_key ? 'sudomock-tab--active' : '' ); ?>">
                         <?php echo esc_html( $tab_label ); ?>
                     </a>
                 <?php endforeach; ?>
@@ -564,7 +564,7 @@ final class SudoMock_Admin {
                 printf(
                     /* translators: %d: percentage of credits used */
                     esc_html__( 'You have used %d%% of your monthly credits.', 'sudomock-product-customizer' ),
-                    esc_attr( $d['credits_percent'] )
+                    absint( $d['credits_percent'] )
                 );
                 ?>
                 <a href="https://sudomock.com/dashboard/billing" target="_blank" rel="noopener" class="sudomock-btn sudomock-btn--sm"><?php esc_html_e( 'Manage Plan', 'sudomock-product-customizer' ); ?></a>
@@ -585,18 +585,18 @@ final class SudoMock_Admin {
                             ?>
                             <div class="sudomock-setup-header">
                                 <h2 class="sudomock-card__title"><?php esc_html_e( 'Setup Progress', 'sudomock-product-customizer' ); ?></h2>
-                                <span class="sudomock-badge sudomock-badge--<?php echo $steps_done === $steps_total ? 'success' : 'attention'; ?>">
+                                <span class="sudomock-badge sudomock-badge--<?php echo esc_attr( $steps_done === $steps_total ? 'success' : 'attention' ); ?>">
                                     <?php
                                     printf(
                                         /* translators: %1$d: done, %2$d: total */
                                         esc_html__( '%1$d of %2$d', 'sudomock-product-customizer' ),
-                                        esc_html( $steps_done ),
-                                        esc_html( $steps_total )
+                                        absint( $steps_done ),
+                                        absint( $steps_total )
                                     );
                                     ?>
                                 </span>
                             </div>
-                            <div class="sudomock-bar sudomock-bar--<?php echo $steps_done === $steps_total ? 'success' : 'primary'; ?>" style="margin-bottom: 16px;">
+                            <div class="sudomock-bar sudomock-bar--<?php echo esc_attr( $steps_done === $steps_total ? 'success' : 'primary' ); ?>" style="margin-bottom: 16px;">
                                 <div class="sudomock-bar__fill" style="width:<?php echo esc_attr( $setup_percent ); ?>%"></div>
                             </div>
                             <div class="sudomock-checklist">
@@ -604,7 +604,7 @@ final class SudoMock_Admin {
                                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" fill="#10b981"/><path d="M8 12l3 3 5-5" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
                                     <span><?php esc_html_e( 'Account connected', 'sudomock-product-customizer' ); ?></span>
                                 </div>
-                                <div class="sudomock-checklist__item <?php echo $has_mapped ? 'sudomock-checklist__item--done' : ''; ?>">
+                                <div class="sudomock-checklist__item <?php echo esc_attr( $has_mapped ? 'sudomock-checklist__item--done' : '' ); ?>">
                                     <?php if ( $has_mapped ) : ?>
                                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" fill="#10b981"/><path d="M8 12l3 3 5-5" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
                                     <?php else : ?>
@@ -657,8 +657,8 @@ final class SudoMock_Admin {
                             printf(
                                 /* translators: %1$d: mapped, %2$d: total */
                                 esc_html__( '%1$d of %2$d mapped', 'sudomock-product-customizer' ),
-                                esc_html( $d['mapped_count'] ),
-                                esc_html( $d['total_count'] )
+                                absint( $d['mapped_count'] ),
+                                absint( $d['total_count'] )
                             );
                             ?>
                         </p>
@@ -746,22 +746,22 @@ final class SudoMock_Admin {
         <!-- Filter Tabs -->
         <div class="sudomock-filter-tabs">
             <a href="<?php echo esc_url( add_query_arg( 'filter', 'all', $base_url ) ); ?>"
-               class="sudomock-filter-tab <?php echo 'all' === $filter ? 'sudomock-filter-tab--active' : ''; ?>">
+               class="sudomock-filter-tab <?php echo esc_attr( 'all' === $filter ? 'sudomock-filter-tab--active' : '' ); ?>">
                 <?php
                 /* translators: %d: total product count */
-                printf( esc_html__( 'All (%d)', 'sudomock-product-customizer' ), esc_html( $d['total_count'] ) ); ?>
+                printf( esc_html__( 'All (%d)', 'sudomock-product-customizer' ), absint( $d['total_count'] ) ); ?>
             </a>
             <a href="<?php echo esc_url( add_query_arg( 'filter', 'mapped', $base_url ) ); ?>"
-               class="sudomock-filter-tab <?php echo 'mapped' === $filter ? 'sudomock-filter-tab--active' : ''; ?>">
+               class="sudomock-filter-tab <?php echo esc_attr( 'mapped' === $filter ? 'sudomock-filter-tab--active' : '' ); ?>">
                 <?php
                 /* translators: %d: mapped product count */
-                printf( esc_html__( 'Mapped (%d)', 'sudomock-product-customizer' ), esc_html( $d['mapped_count'] ) ); ?>
+                printf( esc_html__( 'Mapped (%d)', 'sudomock-product-customizer' ), absint( $d['mapped_count'] ) ); ?>
             </a>
             <a href="<?php echo esc_url( add_query_arg( 'filter', 'unmapped', $base_url ) ); ?>"
-               class="sudomock-filter-tab <?php echo 'unmapped' === $filter ? 'sudomock-filter-tab--active' : ''; ?>">
+               class="sudomock-filter-tab <?php echo esc_attr( 'unmapped' === $filter ? 'sudomock-filter-tab--active' : '' ); ?>">
                 <?php
                 /* translators: %d: unmapped product count */
-                printf( esc_html__( 'Unmapped (%d)', 'sudomock-product-customizer' ), esc_html( $d['total_count'] - $d['mapped_count'] ) ); ?>
+                printf( esc_html__( 'Unmapped (%d)', 'sudomock-product-customizer' ), absint( $d['total_count'] - $d['mapped_count'] ) ); ?>
             </a>
         </div>
 
@@ -822,7 +822,7 @@ final class SudoMock_Admin {
                                     <strong><?php echo esc_html( $product->get_name() ); ?></strong>
                                 </td>
                                 <td>
-                                    <span class="sudomock-badge sudomock-badge--<?php echo 'publish' === $status ? 'success' : 'info'; ?>">
+                                    <span class="sudomock-badge sudomock-badge--<?php echo esc_attr( 'publish' === $status ? 'success' : 'info' ); ?>">
                                         <?php echo esc_html( 'publish' === $status ? __( 'Active', 'sudomock-product-customizer' ) : ucfirst( $status ) ); ?>
                                     </span>
                                 </td>
@@ -871,7 +871,7 @@ final class SudoMock_Admin {
                                     <?php endif; ?>
                                 </td>
                                 <td>
-                                    <button type="button" class="sudomock-btn sudomock-btn--sm <?php echo ! $has_mockup ? 'sudomock-btn--primary' : ''; ?>"
+                                    <button type="button" class="sudomock-btn sudomock-btn--sm <?php echo esc_attr( ! $has_mockup ? 'sudomock-btn--primary' : '' ); ?>"
                                         data-action="map" data-product-id="<?php echo esc_attr( $p->ID ); ?>" data-product-name="<?php echo esc_attr( $product->get_name() ); ?>">
                                         <?php echo $has_mockup ? esc_html__( 'Change', 'sudomock-product-customizer' ) : esc_html__( 'Map Mockup', 'sudomock-product-customizer' ); ?>
                                     </button>
@@ -1370,7 +1370,7 @@ final class SudoMock_Admin {
             wp_send_json_error( array( 'message' => __( 'Permission denied.', 'sudomock-product-customizer' ) ), 403 );
         }
 
-        $raw = isset( $_POST['config'] ) ? sanitize_text_field( wp_unslash( $_POST['config'] ) ) : ''; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- JSON string, parsed and whitelisted below
+        $raw = isset( $_POST['config'] ) ? sanitize_text_field( wp_unslash( $_POST['config'] ) ) : '';
         $parsed = json_decode( $raw, true );
         if ( ! is_array( $parsed ) ) {
             wp_send_json_error( array( 'message' => __( 'Invalid config data.', 'sudomock-product-customizer' ) ) );

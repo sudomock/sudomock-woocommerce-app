@@ -58,6 +58,13 @@ $sudomock_render_block = static function ( $attributes, $block ) {
         $sudomock_icon_html = $sudomock_icons[ $sudomock_a['iconStyle'] ];
     }
 
+    // Whitelist CSS values to prevent injection.
+    $sudomock_allowed_weights   = array( '500', '600', '700' );
+    $sudomock_allowed_transform = array( 'none', 'uppercase' );
+
+    $sudomock_font_weight    = in_array( (string) $sudomock_a['fontWeight'], $sudomock_allowed_weights, true ) ? $sudomock_a['fontWeight'] : '600';
+    $sudomock_text_transform = in_array( $sudomock_a['textTransform'], $sudomock_allowed_transform, true ) ? $sudomock_a['textTransform'] : 'none';
+
     $sudomock_btn_style = sprintf(
         'display:inline-flex;align-items:center;justify-content:center;gap:8px;'
         . 'width:%s;min-height:48px;box-sizing:border-box;'
@@ -69,12 +76,12 @@ $sudomock_render_block = static function ( $attributes, $block ) {
         . 'text-transform:%s;-webkit-font-smoothing:antialiased;'
         . '%s',
         ! empty( $sudomock_a['fullWidth'] ) ? '100%' : 'auto',
-        $sudomock_a['paddingY'], $sudomock_a['paddingX'],
-        $sudomock_a['fontSize'], $sudomock_a['fontWeight'],
-        $sudomock_a['borderWidth'], esc_attr( $sudomock_a['borderColor'] ),
-        $sudomock_a['borderRadius'],
+        absint( $sudomock_a['paddingY'] ), absint( $sudomock_a['paddingX'] ),
+        absint( $sudomock_a['fontSize'] ), $sudomock_font_weight,
+        absint( $sudomock_a['borderWidth'] ), esc_attr( $sudomock_a['borderColor'] ),
+        absint( $sudomock_a['borderRadius'] ),
         esc_attr( $sudomock_a['bgColor'] ), esc_attr( $sudomock_a['textColor'] ),
-        $sudomock_a['textTransform'],
+        $sudomock_text_transform,
         ! empty( $sudomock_a['shadow'] ) ? 'box-shadow:0 2px 8px rgba(0,0,0,0.12);' : ''
     );
 

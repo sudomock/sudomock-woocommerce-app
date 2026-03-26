@@ -43,10 +43,12 @@ global $wpdb;
 // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
 $wpdb->query( $wpdb->prepare( "DELETE FROM {$wpdb->options} WHERE option_name LIKE %s", 'sudomock_btn_%' ) );
 
-// Clear any transients
+// Clear any transients (sudomock_* and support rate limit transients)
 // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
 $wpdb->query( $wpdb->prepare(
-    "DELETE FROM {$wpdb->options} WHERE option_name LIKE %s OR option_name LIKE %s",
+    "DELETE FROM {$wpdb->options} WHERE option_name LIKE %s OR option_name LIKE %s OR option_name LIKE %s OR option_name LIKE %s",
     '_transient_sudomock_%',
-    '_transient_timeout_sudomock_%'
+    '_transient_timeout_sudomock_%',
+    '_transient_sudomock_support_count_%',
+    '_transient_timeout_sudomock_support_count_%'
 ) );
