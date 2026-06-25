@@ -21,7 +21,7 @@ final class SudoMock_Customizer {
     /** Option prefix */
     const PREFIX = 'sudomock_btn_';
 
-    /** Defaults — mirrors Shopify's customizer-button.liquid schema */
+    /** Defaults for the storefront customize button. */
     private static $defaults = array(
         'label'            => 'Customize This Product',
         'full_width'       => true,

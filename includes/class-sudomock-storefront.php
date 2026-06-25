@@ -3,7 +3,7 @@
  * Storefront — renders the customize button and Studio iframe/popup on product pages.
  *
  * SECURITY: Creates session via WP AJAX → PHP → API (server-to-server).
- * API key NEVER reaches the browser. Browser only gets an opaque session token (Redis-backed, 15-min TTL, auto-extends).
+ * API key NEVER reaches the browser. Browser only gets a short-lived, opaque session token; the API key stays server-side.
  *
  * @package SudoMock_Product_Customizer
  * @since   1.0.0

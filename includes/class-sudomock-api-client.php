@@ -3,7 +3,7 @@
  * SudoMock API Client — all server-to-server calls from WP → api.sudomock.com.
  *
  * SECURITY: API key is decrypted server-side, sent via x-api-key header.
- * The browser NEVER sees the API key. Studio sessions use JWT tokens.
+ * The browser NEVER sees the API key. Studio sessions use short-lived, server-issued session tokens.
  *
  * @package SudoMock_Product_Customizer
  * @since   1.0.0
