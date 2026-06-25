@@ -5,8 +5,8 @@ All notable changes to this project will be documented in this file.
 ## [Unreleased]
 
 ### Added
-- Opaque Redis session tokens (API key never exposed to client)
-- Shopify App Proxy HMAC verification
+- Opaque short-lived session tokens (API key never exposed to client)
+- Signed-request verification on session creation
 - Mockup ownership verification at session creation
 - 10 language translations (TR, DE, FR, ES, PT-BR, IT, NL, JA, KO, ZH-CN)
 
@@ -16,7 +16,7 @@ All notable changes to this project will be documented in this file.
 - Error report endpoint accepts optional session token
 
 ### Security
-- Removed JWT tokens (contained raw API key in base64-decodable payload)
+- Hardened session-token handling so credentials are never exposed to the browser
 - Added postMessage origin validation on all platforms
-- GraphQL search input sanitization
+- Mockup search input sanitization
 - Settings config whitelist validation
