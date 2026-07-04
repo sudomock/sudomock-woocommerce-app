@@ -48,11 +48,11 @@ Free to install. Pay only for renders:
 | Plan | Credits | Price/mo | Parallel Renders |
 |------|---------|----------|-----------------|
 | Free | 500 one-time | $0 | 1 |
-| Starter | 5K–100K/mo | $17.49–$179.99 | 3 |
-| Pro | 5K–100K/mo | $27.49–$189.99 | 10 |
-| Scale | 5K–100K/mo | $52.49–$214.99 | 25 |
+| Starter | 5K–10K/mo | $25–$39 | 3 |
+| Pro | 25K–50K/mo | $89–$145 | 10 |
+| Scale | 50K–100K/mo | $199–$309 | 25 |
 
-Renders start at **$0.002 each** on higher volume plans. Dashboard and playground are free and unlimited.
+Renders start from **$0.002 each** at enterprise volume. Dashboard and playground are free and unlimited.
 
 [View full pricing →](https://sudomock.com/pricing)
 
