@@ -55,16 +55,40 @@ final class SudoMock_Storefront {
         add_action( 'wp_ajax_sudomock_add_to_cart', array( $this, 'ajax_add_to_cart' ) );
         add_action( 'wp_ajax_nopriv_sudomock_add_to_cart', array( $this, 'ajax_add_to_cart' ) );
 
+        // AJAX: Mint a fresh nonce. On full-page-cached storefronts the nonce
+        // baked into the page can go stale and break Customize/add-to-cart with
+        // a generic error; the storefront fetches a fresh one before acting.
+        // Minting a nonce is not a state-changing action, so this endpoint
+        // itself needs no nonce.
+        add_action( 'wp_ajax_sudomock_refresh_nonce', array( $this, 'ajax_refresh_nonce' ) );
+        add_action( 'wp_ajax_nopriv_sudomock_refresh_nonce', array( $this, 'ajax_refresh_nonce' ) );
+
         // Enqueue storefront assets
         add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_assets' ) );
+    }
+
+    /**
+     * Resolve the WooCommerce $product global to a real WC_Product.
+     * The global can still be a post slug (string) depending on hook timing;
+     * calling methods on it then fatals (same class of bug as the fixed
+     * enqueue_assets crash).
+     *
+     * @return WC_Product|null
+     */
+    private static function current_product() {
+        global $product; // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound -- WooCommerce standard global
+        if ( $product instanceof WC_Product ) {
+            return $product;
+        }
+        $resolved = wc_get_product( get_the_ID() );
+        return $resolved instanceof WC_Product ? $resolved : null;
     }
 
     /**
      * Render the customize button on customizable products.
      */
     public function render_button() {
-        global $product;
-
+        $product = self::current_product();
         if ( ! $product || ! SudoMock_Product::is_customizable( $product->get_id() ) ) {
             return;
         }
@@ -78,7 +102,7 @@ final class SudoMock_Storefront {
      * @return string
      */
     public function shortcode_button() {
-        global $product;
+        $product = self::current_product();
         if ( ! $product || ! SudoMock_Product::is_customizable( $product->get_id() ) ) {
             return '';
         }
@@ -197,15 +221,8 @@ final class SudoMock_Storefront {
             return;
         }
 
-        global $product; // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound -- WooCommerce standard global
-        // At wp_enqueue_scripts time the WooCommerce global can still be the
-        // post slug (string), not a WC_Product — resolve it before any method
-        // call, otherwise classic themes fatal on every product page.
-        if ( ! $product instanceof WC_Product ) {
-            $product = wc_get_product( get_the_ID() ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
-        }
-
-        if ( ! $product instanceof WC_Product || ! SudoMock_Product::is_customizable( $product->get_id() ) ) {
+        $product = self::current_product();
+        if ( ! $product || ! SudoMock_Product::is_customizable( $product->get_id() ) ) {
             return;
         }
 
@@ -248,6 +265,14 @@ final class SudoMock_Storefront {
                 'missingData'      => __( 'Missing product-id or mockup-uuid on button.', 'sudomock-product-customizer' ),
             ),
         ) );
+    }
+
+    /**
+     * AJAX: Return a fresh nonce for the storefront actions. Safe without a
+     * nonce check — it only mints a token, it changes no state.
+     */
+    public function ajax_refresh_nonce() {
+        wp_send_json_success( array( 'nonce' => wp_create_nonce( 'sudomock_storefront' ) ) );
     }
 
     /**

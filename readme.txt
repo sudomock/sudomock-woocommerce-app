@@ -5,8 +5,8 @@ Requires at least: 6.0
 Tested up to: 6.9
 Requires PHP: 7.4
 WC requires at least: 8.0
-WC tested up to: 10.6
-Stable tag: 1.1.0
+WC tested up to: 10.9
+Stable tag: 1.2.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -118,6 +118,18 @@ No product limit. Map as many products as you want to mockup templates.
 
 == Changelog ==
 
+= 1.2.0 =
+* Original customer artwork is now attached to orders as downloadable "Source Design" links, alongside the customization preview, for production
+* Fixed variable products so the shopper's chosen variation (and price) is added to the cart
+* Fixed the product quantity being ignored (always added 1)
+* Add-to-cart failures no longer discard the shopper's design; the editor stays open to retry
+* Orphaned mockup mappings are flagged in the admin ("Mapped (invalid) — Remap") and hide the storefront button instead of showing an error
+* Popup display mode now falls back to the in-page editor when blocked; duplicate add-to-cart clicks are guarded; a fresh security token is fetched on cached pages
+* Fixed a fatal error on some classic themes' product pages
+* Security: hardened stored API-key encryption, order-URL validation, admin grid escaping, and error-report URL logging
+* GDPR erasure now deletes the stored design files from SudoMock (with automatic retry), not just local order meta
+* Removed unused code paths for a lighter, cleaner plugin
+
 = 1.0.0 =
 * Initial release
 * OAuth 2.0 connect flow with sudomock.com
@@ -132,6 +144,9 @@ No product limit. Map as many products as you want to mockup templates.
 * REST API for custom integrations
 
 == Upgrade Notice ==
+
+= 1.2.0 =
+Adds original artwork files to orders, fixes variable-product and quantity handling in the cart, and includes security, GDPR, and stability improvements. Recommended for all stores.
 
 = 1.0.0 =
 Initial release. Install, connect your SudoMock account, and start customizing products.
