@@ -267,7 +267,13 @@ final class SudoMock_Storefront {
         $result = SudoMock_API_Client::create_session( $mockup_uuid, $product_id );
 
         if ( ! $result['ok'] ) {
-            wp_send_json_error( array( 'message' => $result['error'] ) );
+            // Forward the backend status so the storefront can distinguish a
+            // permanent mapping problem (401/403/404 → hide the button) from a
+            // transient one (5xx/network → let the shopper retry).
+            wp_send_json_error( array(
+                'message' => $result['error'],
+                'status'  => isset( $result['status'] ) ? (int) $result['status'] : 0,
+            ) );
         }
 
         // Return ONLY the opaque session token - API key never leaves the server

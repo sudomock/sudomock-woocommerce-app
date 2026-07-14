@@ -109,14 +109,16 @@ final class SudoMock_API_Client {
         $response = self::request( 'GET', $path );
 
         if ( is_wp_error( $response ) ) {
-            return array( 'ok' => false, 'error' => $response->get_error_message() );
+            $data   = $response->get_error_data();
+            $status = ( is_array( $data ) && isset( $data['status'] ) ) ? (int) $data['status'] : 0;
+            return array( 'ok' => false, 'error' => $response->get_error_message(), 'status' => $status );
         }
 
         if ( ! empty( $response['success'] ) && isset( $response['data'] ) ) {
             return array( 'ok' => true, 'data' => $response['data'] );
         }
 
-        return array( 'ok' => false, 'error' => __( 'Failed to fetch mockup.', 'sudomock-product-customizer' ) );
+        return array( 'ok' => false, 'error' => __( 'Failed to fetch mockup.', 'sudomock-product-customizer' ), 'status' => 0 );
     }
 
     /**
@@ -149,7 +151,9 @@ final class SudoMock_API_Client {
         ) );
 
         if ( is_wp_error( $response ) ) {
-            return array( 'ok' => false, 'error' => $response->get_error_message() );
+            $data   = $response->get_error_data();
+            $status = ( is_array( $data ) && isset( $data['status'] ) ) ? (int) $data['status'] : 0;
+            return array( 'ok' => false, 'error' => $response->get_error_message(), 'status' => $status );
         }
 
         if ( ! empty( $response['success'] ) && ! empty( $response['session'] ) ) {
@@ -160,7 +164,7 @@ final class SudoMock_API_Client {
             );
         }
 
-        return array( 'ok' => false, 'error' => __( 'Failed to create session.', 'sudomock-product-customizer' ) );
+        return array( 'ok' => false, 'error' => __( 'Failed to create session.', 'sudomock-product-customizer' ), 'status' => 0 );
     }
 
     /**
