@@ -15,6 +15,7 @@ All notable changes to this project will be documented in this file.
 - 10 language translations (TR, DE, FR, ES, PT-BR, IT, NL, JA, KO, ZH-CN)
 
 ### Fixed
+- Orphaned mappings no longer show a dead "Customizer temporarily unavailable" alert to shoppers: when a mapped mockup no longer belongs to the connected account (deleted, or the store was reconnected to a different account), the button is hidden and the Products screen flags it as "Mapped (invalid) — Remap" so the merchant can fix it
 - Variable products: the shopper's chosen variation is now added to the cart (parent product_id + real variation_id); previously the variation id was miswired as the product id, so variable products failed or added the wrong variant/price
 - Quantity: the product-form quantity is honoured (was always forced to 1)
 - Add-to-cart failure no longer destroys the customizer session — the editor stays open with the artwork preserved and the error is reported to Studio for retry (was: overlay closed + blocking alert, losing the design)
