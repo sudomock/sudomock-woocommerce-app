@@ -16,6 +16,27 @@
 	var ajaxUrl     = (window.sudomockStorefront && window.sudomockStorefront.ajaxUrl)    || '/wp-admin/admin-ajax.php';
 	var nonce       = (window.sudomockStorefront && window.sudomockStorefront.nonce)      || '';
 	var i18n        = (window.sudomockStorefront && window.sudomockStorefront.i18n)       || {};
+	var nonceReady  = null; // Promise: resolves once a fresh nonce is fetched.
+
+	/**
+	 * Ensure `nonce` is fresh before a protected action. On full-page-cached
+	 * pages the baked nonce can be stale; fetch a new one once per page load.
+	 * Non-fatal on failure — the (possibly stale) baked nonce is still tried.
+	 */
+	function ensureFreshNonce() {
+		if (nonceReady) { return nonceReady; }
+		var body = new FormData();
+		body.append('action', 'sudomock_refresh_nonce');
+		nonceReady = fetch(ajaxUrl, { method: 'POST', body: body })
+			.then(function (r) { return r.json(); })
+			.then(function (json) {
+				if (json && json.success && json.data && json.data.nonce) {
+					nonce = json.data.nonce;
+				}
+			})
+			.catch(function () { /* keep the baked nonce */ });
+		return nonceReady;
+	}
 
 	/**
 	 * Create a session via WP AJAX (server-to-server, API key never in browser).
@@ -94,11 +115,19 @@
 			',menubar=no,toolbar=no,location=no,status=no,resizable=yes,scrollbars=no'
 		);
 
+		// Popup blockers commonly reject window.open here because it runs after
+		// an async session call (outside the click gesture). Fall back to the
+		// iframe overlay — and never start a poll timer on a null popup (the old
+		// code polled `popup.closed` on null forever).
+		if (!popup) {
+			openStudioIframe(token);
+			return;
+		}
+
 		// Poll for popup close
 		var pollTimer = setInterval(function () {
-			if (popup && popup.closed) {
+			if (popup.closed) {
 				clearInterval(pollTimer);
-				window.removeEventListener('message', handleStudioMessage);
 				var activeBtn = document.querySelector('.sudomock-customize-btn');
 				if (activeBtn) {
 					activeBtn.classList.remove('sudomock-loading');
@@ -106,8 +135,6 @@
 				}
 			}
 		}, 500);
-
-		window.addEventListener('message', handleStudioMessage);
 	}
 
 	/**
@@ -184,7 +211,14 @@
 	 *
 	 * @param {Object} data  { type, renderUrl, mockupUuid, session, productId }
 	 */
+	// Re-entry guard: duplicate listeners or a doubled postMessage from the
+	// editor must never produce two cart POSTs for one shopper action.
+	var cartRequestInFlight = false;
+
 	function onAddToCart(data, studioWindow) {
+		if (cartRequestInFlight) {
+			return;
+		}
 		// Studio sends: preview_url (not renderUrl), mockup_uuid (not mockupUuid), product_id (not productId)
 		var previewUrl = data.preview_url || data.renderUrl || '';
 		if (!previewUrl) {
@@ -240,9 +274,11 @@
 			body.append('artwork_urls[]', u);
 		});
 
+		cartRequestInFlight = true;
 		fetch(ajaxUrl, { method: 'POST', body: body })
 			.then(function (r) { return r.json(); })
 			.then(function (json) {
+				cartRequestInFlight = false;
 				if (json.success) {
 					// Success: notify Studio, close overlay, then redirect. The
 					// overlay stays up until here so nothing is lost mid-request.
@@ -260,6 +296,7 @@
 				}
 			})
 			.catch(function () {
+				cartRequestInFlight = false;
 				notifyStudio(studioWindow, 'sudomock:cart-error', i18n.networkCartError || 'Network error adding to cart. Please try again.');
 			});
 	}
@@ -405,7 +442,8 @@
 			btn.classList.add('sudomock-loading');
 			btn.disabled = true;
 
-			createSession(productId, mockupUuid)
+			ensureFreshNonce()
+				.then(function () { return createSession(productId, mockupUuid); })
 				.then(function (session) {
 					var mode = session.displayMode || 'iframe';
 					if (mode === 'popup') {

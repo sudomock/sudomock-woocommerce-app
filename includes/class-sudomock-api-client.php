@@ -122,6 +122,44 @@ final class SudoMock_API_Client {
     }
 
     /**
+     * Delete stored order artwork/preview files (GDPR erasure).
+     *
+     * Batches to the backend's 500-URL limit, so a large erasure never fails
+     * wholesale. Returns which URLs could not be deleted so the caller can
+     * queue them for retry.
+     *
+     * @param string[] $urls Stored order-asset URLs to delete.
+     * @return array{ok: bool, deleted: int, failed_urls: string[]}
+     */
+    public static function delete_order_assets( $urls ) {
+        if ( empty( $urls ) || ! is_array( $urls ) ) {
+            return array( 'ok' => true, 'deleted' => 0, 'failed_urls' => array() );
+        }
+
+        $urls        = array_values( array_unique( $urls ) );
+        $deleted     = 0;
+        $failed_urls = array();
+
+        foreach ( array_chunk( $urls, 500 ) as $chunk ) {
+            $response = self::request( 'POST', '/api/v1/artworks/delete', array(
+                'urls' => $chunk,
+            ) );
+            if ( is_wp_error( $response ) ) {
+                // Whole chunk unconfirmed — keep every URL for retry.
+                $failed_urls = array_merge( $failed_urls, $chunk );
+                continue;
+            }
+            $deleted += isset( $response['deleted'] ) ? (int) $response['deleted'] : 0;
+        }
+
+        return array(
+            'ok'          => empty( $failed_urls ),
+            'deleted'     => $deleted,
+            'failed_urls' => $failed_urls,
+        );
+    }
+
+    /**
      * Notify backend about WooCommerce disconnect.
      *
      * @return array{ok: bool, error?: string}

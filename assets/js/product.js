@@ -186,76 +186,6 @@
 		});
 	}
 
-	/* ────────────────────────────────────────────
-	 * Gallery Generator
-	 * ──────────────────────────────────────────── */
-	function initGalleryGenerator() {
-		var btn = document.getElementById('sudomock-generate-gallery');
-		if (!btn) return;
-
-		btn.addEventListener('click', function () {
-			var productId  = btn.getAttribute('data-product-id');
-			var mockupUuid = btn.getAttribute('data-mockup-uuid');
-			if (!productId || !mockupUuid) return;
-
-			var feedback = document.getElementById('sudomock-gallery-feedback');
-
-			btn.disabled = true;
-			btn.textContent = i18n.generating || 'Generating image...';
-			showGalleryFeedback('info', i18n.generating || 'Generating image... This may take a few seconds.');
-
-			var body = new FormData();
-			body.append('action', 'sudomock_generate_gallery');
-			body.append('nonce', nonce);
-			body.append('product_id', productId);
-			body.append('mockup_uuid', mockupUuid);
-
-			fetch(ajaxUrl, { method: 'POST', body: body })
-				.then(function (r) { return r.json(); })
-				.then(function (json) {
-					if (json.success) {
-						showGalleryFeedback('success', json.data.message || (i18n.generateSuccess || 'Product image generated and set as featured image.'));
-						// Refresh the featured image thumbnail in WC meta box if possible
-						if (json.data.image_url) {
-							var thumbContainer = document.getElementById('set-post-thumbnail');
-							if (thumbContainer) {
-								thumbContainer.textContent = '';
-								var newImg = document.createElement('img');
-								newImg.src = json.data.image_url;
-								newImg.style.cssText = 'max-width:100%;height:auto;';
-								thumbContainer.appendChild(newImg);
-							}
-						}
-					} else {
-						showGalleryFeedback('error', (json.data && json.data.message) || (i18n.generateFailed || 'Failed to generate image.'));
-					}
-					btn.disabled = false;
-					btn.textContent = i18n.generateBtn || 'Generate Product Image';
-				})
-				.catch(function () {
-					showGalleryFeedback('error', i18n.networkError || 'Network error.');
-					btn.disabled = false;
-					btn.textContent = i18n.generateBtn || 'Generate Product Image';
-				});
-		});
-	}
-
-	function showGalleryFeedback(type, msg) {
-		var el = document.getElementById('sudomock-gallery-feedback');
-		if (!el) return;
-		el.style.display = 'block';
-		var bgColors = { success: '#dcfce7', error: '#fef2f2', info: '#eff6ff' };
-		var txtColors = { success: '#15803d', error: '#dc2626', info: '#1d4ed8' };
-		var borderColors = { success: '#bbf7d0', error: '#fecaca', info: '#bfdbfe' };
-		el.style.background = bgColors[type] || bgColors.info;
-		el.style.color = txtColors[type] || txtColors.info;
-		el.style.border = '1px solid ' + (borderColors[type] || borderColors.info);
-		el.style.padding = '10px 14px';
-		el.style.borderRadius = '8px';
-		el.style.fontSize = '13px';
-		el.textContent = msg;
-	}
-
 	// Escapes for BOTH text and attribute context (quotes included), so a
 	// mockup name/URL cannot break out of an attribute and execute (stored XSS).
 	function esc(str) {
@@ -269,9 +199,8 @@
 
 	// Boot
 	if (document.readyState === 'loading') {
-		document.addEventListener('DOMContentLoaded', function () { init(); initGalleryGenerator(); });
+		document.addEventListener('DOMContentLoaded', init);
 	} else {
 		init();
-		initGalleryGenerator();
 	}
 })();

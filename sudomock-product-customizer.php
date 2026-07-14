@@ -3,7 +3,7 @@
  * Plugin Name: SudoMock Product Customizer
  * Plugin URI: https://sudomock.com/woocommerce
  * Description: Connect your WooCommerce store to SudoMock's PSD mockup rendering engine. Let customers customize products with professional mockup designs.
- * Version: 1.1.0
+ * Version: 1.2.0
  * Requires at least: 6.0
  * Requires PHP: 7.4
  * Author: SudoMock
@@ -15,7 +15,7 @@
  * Text Domain: sudomock-product-customizer
  * Domain Path: /languages
  * WC requires at least: 8.0
- * WC tested up to: 10.6
+ * WC tested up to: 10.9
  * Requires Plugins: woocommerce
  *
  * @package SudoMock_Product_Customizer
@@ -27,7 +27,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 // Plugin constants
-define( 'SUDOMOCK_VERSION', '1.1.0' );
+define( 'SUDOMOCK_VERSION', '1.2.0' );
 define( 'SUDOMOCK_PLUGIN_FILE', __FILE__ );
 define( 'SUDOMOCK_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 define( 'SUDOMOCK_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
@@ -113,7 +113,6 @@ final class SudoMock_Product_Customizer {
         require_once SUDOMOCK_PLUGIN_DIR . 'includes/class-sudomock-storefront.php';
         require_once SUDOMOCK_PLUGIN_DIR . 'includes/class-sudomock-cart.php';
         require_once SUDOMOCK_PLUGIN_DIR . 'includes/class-sudomock-order.php';
-        require_once SUDOMOCK_PLUGIN_DIR . 'includes/class-sudomock-blocks.php';
         require_once SUDOMOCK_PLUGIN_DIR . 'includes/class-sudomock-privacy.php';
     }
 
@@ -165,7 +164,6 @@ final class SudoMock_Product_Customizer {
         SudoMock_Storefront::get_instance();
         SudoMock_Cart::get_instance();
         SudoMock_Order::get_instance();
-        SudoMock_Blocks::get_instance();
         SudoMock_Privacy::get_instance();
 
         // Register Gutenberg block for Site Editor
