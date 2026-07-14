@@ -45,11 +45,11 @@ final class SudoMock_Privacy {
 		$content = sprintf(
 			'<p>%s</p><p>%s</p>',
 			esc_html__(
-				'When you customise a product using the SudoMock editor, we transmit your uploaded image(s) to the SudoMock rendering service (api.sudomock.com) to generate a preview. The rendered image URL is stored alongside your order.',
+				'When you customise a product using the SudoMock editor, we transmit your uploaded image(s) to the SudoMock rendering service (api.sudomock.com) to generate a preview. The rendered preview URL and your uploaded design file(s) are stored alongside your order so the merchant can produce the item.',
 				'sudomock-product-customizer'
 			),
 			esc_html__(
-				'No personal data beyond order information is shared with SudoMock. Rendered images are retained according to the store data-retention policy and can be deleted upon request.',
+				'No personal data beyond order information is shared with SudoMock. Stored images are retained for order fulfilment and can be deleted upon request.',
 				'sudomock-product-customizer'
 			)
 		);
@@ -108,24 +108,39 @@ final class SudoMock_Privacy {
 
 		foreach ( $orders as $order ) {
 			foreach ( $order->get_items() as $item ) {
-				$render_url = $item->get_meta( '_sudomock_render_url' );
-				if ( ! empty( $render_url ) ) {
-					$data_to_export[] = array(
-						'group_id'    => 'sudomock',
-						'group_label' => __( 'SudoMock Customizations', 'sudomock-product-customizer' ),
-						'item_id'     => "sudomock-order-{$order->get_id()}-{$item->get_id()}",
-						'data'        => array(
-							array(
-								'name'  => __( 'Order', 'sudomock-product-customizer' ),
-								'value' => $order->get_order_number(),
-							),
-							array(
-								'name'  => __( 'Render URL', 'sudomock-product-customizer' ),
-								'value' => $render_url,
-							),
-						),
+				$preview_url  = SudoMock_Order::get_preview_url( $item );
+				$artwork_urls = SudoMock_Order::get_artwork_urls( $item );
+
+				if ( empty( $preview_url ) && empty( $artwork_urls ) ) {
+					continue;
+				}
+
+				$row = array(
+					array(
+						'name'  => __( 'Order', 'sudomock-product-customizer' ),
+						'value' => $order->get_order_number(),
+					),
+				);
+				if ( ! empty( $preview_url ) ) {
+					$row[] = array(
+						'name'  => __( 'Customization Preview URL', 'sudomock-product-customizer' ),
+						'value' => $preview_url,
 					);
 				}
+				foreach ( $artwork_urls as $idx => $artwork_url ) {
+					$row[] = array(
+						/* translators: %d: artwork file number */
+						'name'  => sprintf( __( 'Uploaded Design URL %d', 'sudomock-product-customizer' ), $idx + 1 ),
+						'value' => $artwork_url,
+					);
+				}
+
+				$data_to_export[] = array(
+					'group_id'    => 'sudomock',
+					'group_label' => __( 'SudoMock Customizations', 'sudomock-product-customizer' ),
+					'item_id'     => "sudomock-order-{$order->get_id()}-{$item->get_id()}",
+					'data'        => $row,
+				);
 			}
 		}
 
@@ -155,13 +170,34 @@ final class SudoMock_Privacy {
 
 		foreach ( $orders as $order ) {
 			foreach ( $order->get_items() as $item ) {
-				if ( $item->get_meta( '_sudomock_render_url' ) ) {
-					$item->delete_meta_data( '_sudomock_render_url' );
-					$item->delete_meta_data( '_sudomock_mockup_uuid' );
-					$item->delete_meta_data( '_sudomock_session_token' );
-					$item->save();
-					$removed++;
+				$has_data = $item->get_meta( '_sudomock_preview_url' )
+					|| $item->get_meta( '_sudomock_artwork_url' )
+					|| $item->get_meta( '_sudomock_render_url' );
+				if ( ! $has_data ) {
+					continue;
 				}
+
+				// Hidden keys (current model + legacy fallbacks).
+				$item->delete_meta_data( '_sudomock_preview_url' );
+				$item->delete_meta_data( '_sudomock_artwork_url' );
+				for ( $i = 2; $i <= 10; $i++ ) {
+					$item->delete_meta_data( '_sudomock_artwork_url_' . $i );
+				}
+				$item->delete_meta_data( '_sudomock_render_uuid' );
+				$item->delete_meta_data( '_sudomock_mockup_uuid' );
+				$item->delete_meta_data( '_sudomock_render_url' );
+				$item->delete_meta_data( '_sudomock_session_token' );
+
+				// Merchant-visible labels written alongside the hidden keys.
+				$item->delete_meta_data( __( 'Customization Preview', 'sudomock-product-customizer' ) );
+				$item->delete_meta_data( __( 'Source Design', 'sudomock-product-customizer' ) );
+				for ( $i = 2; $i <= 10; $i++ ) {
+					/* translators: %d: artwork file number */
+					$item->delete_meta_data( sprintf( __( 'Source Design %d', 'sudomock-product-customizer' ), $i ) );
+				}
+
+				$item->save();
+				$removed++;
 			}
 		}
 
