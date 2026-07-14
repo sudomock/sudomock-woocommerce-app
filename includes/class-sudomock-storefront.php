@@ -279,6 +279,42 @@ final class SudoMock_Storefront {
     }
 
     /**
+     * Validate a browser-supplied asset URL before it is stored on an order.
+     *
+     * These URLs (render preview + customer artwork) are produced by the
+     * SudoMock API but travel through the shopper's browser, so a forged
+     * request could inject an arbitrary link into merchant-facing order meta.
+     * Accept only https, a real public host (no data:/localhost/private IP),
+     * and a bounded length.
+     *
+     * @param string $raw_url Raw URL from the request.
+     * @return string Sanitized URL, or '' if it fails validation.
+     */
+    private static function sanitize_asset_url( $raw_url ) {
+        if ( ! is_string( $raw_url ) ) {
+            return '';
+        }
+        $url = esc_url_raw( $raw_url, array( 'https' ) );
+        if ( '' === $url || strlen( $url ) >= 2000 ) {
+            return '';
+        }
+        $host = wp_parse_url( $url, PHP_URL_HOST );
+        if ( empty( $host ) ) {
+            return '';
+        }
+        // Reject loopback / obviously private hosts (defence in depth; these
+        // links are merchant-clicked, and legit assets live on public CDNs).
+        if ( in_array( strtolower( $host ), array( 'localhost', '127.0.0.1', '::1' ), true ) ) {
+            return '';
+        }
+        if ( filter_var( $host, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4 | FILTER_FLAG_IPV6 )
+            && ! filter_var( $host, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE ) ) {
+            return '';
+        }
+        return $url;
+    }
+
+    /**
      * AJAX: Add customized product to WooCommerce cart.
      */
     public function ajax_add_to_cart() {
@@ -286,23 +322,24 @@ final class SudoMock_Storefront {
 
         $product_id  = isset( $_POST['product_id'] ) ? absint( $_POST['product_id'] ) : 0;
         $mockup_uuid = isset( $_POST['mockup_uuid'] ) ? sanitize_text_field( wp_unslash( $_POST['mockup_uuid'] ) ) : '';
-        $preview_url = isset( $_POST['preview_url'] ) ? esc_url_raw( wp_unslash( $_POST['preview_url'] ) ) : '';
+        $preview_url = isset( $_POST['preview_url'] ) ? self::sanitize_asset_url( wp_unslash( $_POST['preview_url'] ) ) : '';
         $render_uuid = isset( $_POST['render_uuid'] ) ? sanitize_text_field( wp_unslash( $_POST['render_uuid'] ) ) : '';
         if ( strlen( $render_uuid ) >= 128 ) {
             $render_uuid = '';
         }
 
-        // Original artwork URLs (up to 10). Only short, non-data URLs are kept:
-        // the order must never store base64 payloads or unbounded strings.
+        // Original artwork URLs (up to 10). These come from the browser, so each
+        // is host-validated (https + public host) before it is written to order
+        // meta the merchant will click — a forged URL must not reach the order.
         $artwork_urls = array();
         if ( isset( $_POST['artwork_urls'] ) && is_array( $_POST['artwork_urls'] ) ) {
-            $raw_urls = array_slice( wp_unslash( $_POST['artwork_urls'] ), 0, 10 ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- each URL sanitized below
+            $raw_urls = array_slice( wp_unslash( $_POST['artwork_urls'] ), 0, 10 ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- each URL validated by sanitize_asset_url()
             foreach ( $raw_urls as $raw_url ) {
                 if ( ! is_string( $raw_url ) ) {
                     continue;
                 }
-                $url = esc_url_raw( $raw_url );
-                if ( $url && strlen( $url ) < 2000 && 0 !== strpos( $url, 'data:' ) ) {
+                $url = self::sanitize_asset_url( $raw_url );
+                if ( '' !== $url ) {
                     $artwork_urls[] = $url;
                 }
             }
@@ -317,10 +354,12 @@ final class SudoMock_Storefront {
             wp_send_json_error( array( 'message' => __( 'Product not found.', 'sudomock-product-customizer' ) ) );
         }
 
-        // Determine the correct variant/product ID to add
-        $add_id = $product->is_type( 'variable' )
-            ? ( isset( $_POST['variation_id'] ) ? absint( $_POST['variation_id'] ) : $product->get_id() )
-            : $product->get_id();
+        // Shopper's selected variation + quantity from the product form.
+        $variation_id = isset( $_POST['variation_id'] ) ? absint( $_POST['variation_id'] ) : 0;
+        $quantity     = isset( $_POST['quantity'] ) ? absint( $_POST['quantity'] ) : 1;
+        if ( $quantity < 1 ) {
+            $quantity = 1;
+        }
 
         // Cart item data — stored in WC session, visible in cart/order
         $cart_item_data = array(
@@ -332,7 +371,16 @@ final class SudoMock_Storefront {
             ),
         );
 
-        $cart_item_key = WC()->cart->add_to_cart( $add_id, 1, 0, array(), $cart_item_data );
+        // Variable products need the parent product_id AND a real variation_id
+        // (never the variation id as the product_id, which silently fails).
+        if ( $product->is_type( 'variable' ) ) {
+            if ( ! $variation_id ) {
+                wp_send_json_error( array( 'message' => __( 'Please choose the product options before adding to cart.', 'sudomock-product-customizer' ) ) );
+            }
+            $cart_item_key = WC()->cart->add_to_cart( $product->get_id(), $quantity, $variation_id, array(), $cart_item_data );
+        } else {
+            $cart_item_key = WC()->cart->add_to_cart( $product->get_id(), $quantity, 0, array(), $cart_item_data );
+        }
 
         if ( ! $cart_item_key ) {
             wp_send_json_error( array( 'message' => __( 'Failed to add to cart.', 'sudomock-product-customizer' ) ) );

@@ -138,7 +138,9 @@
 				onRenderComplete(data);
 				break;
 			case 'sudomock:add-to-cart':
-				onAddToCart(data);
+				// Pass the Studio window (iframe contentWindow or popup) so we can
+				// report success/error back to it in both display modes.
+				onAddToCart(data, event.source);
 				break;
 			case 'sudomock:close':
 				var overlay = document.getElementById('sudomock-overlay');
@@ -178,10 +180,11 @@
 	 *
 	 * @param {Object} data  { type, renderUrl, mockupUuid, session, productId }
 	 */
-	function onAddToCart(data) {
+	function onAddToCart(data, studioWindow) {
 		// Studio sends: preview_url (not renderUrl), mockup_uuid (not mockupUuid), product_id (not productId)
 		var previewUrl = data.preview_url || data.renderUrl || '';
 		if (!previewUrl) {
+			notifyStudio(studioWindow, 'sudomock:cart-error', i18n.cartError || 'Could not add to cart. Please try again.');
 			return;
 		}
 
@@ -190,6 +193,7 @@
 
 		if (!productId) {
 			console.error('[SudoMock] Cannot add to cart: no product ID.');
+			notifyStudio(studioWindow, 'sudomock:cart-error', i18n.cartError || 'Could not add to cart. Please try again.');
 			return;
 		}
 
@@ -199,6 +203,15 @@
 		body.append('product_id', productId);
 		body.append('mockup_uuid', data.mockup_uuid || data.mockupUuid || '');
 		body.append('preview_url', previewUrl);
+
+		// The shopper's live variant + quantity selections from the product form.
+		// Variable products carry variation_id (kept in sync by WooCommerce's own
+		// variation script); without it the cart falls back to the parent product.
+		var variationId = getSelectedVariationId();
+		if (variationId) {
+			body.append('variation_id', variationId);
+		}
+		body.append('quantity', getSelectedQuantity());
 
 		// Render id for merchant cross-reference (support, re-render, audit).
 		if (typeof data.render_uuid === 'string' && data.render_uuid) {
@@ -226,32 +239,77 @@
 		fetch(ajaxUrl, { method: 'POST', body: body })
 			.then(function (r) { return r.json(); })
 			.then(function (json) {
-				// Close studio
-				var overlay = document.getElementById('sudomock-overlay');
-				closeStudio(overlay);
-
 				if (json.success) {
+					// Success: notify Studio, close overlay, then redirect. The
+					// overlay stays up until here so nothing is lost mid-request.
+					notifyStudio(studioWindow, 'sudomock:cart-success', (json.data && json.data.cart_url) || '');
+					closeStudio(document.getElementById('sudomock-overlay'));
 					showPreview(previewUrl);
-
-					// Notify Studio iframe of success (if still open)
-					var iframe = overlay && overlay.querySelector('.sudomock-iframe');
-					if (iframe && iframe.contentWindow) {
-						iframe.contentWindow.postMessage({ type: 'sudomock:cart-success', cartUrl: json.data.cart_url }, STUDIO_BASE);
-					}
-
-					// Redirect to cart or show success
 					if (json.data && json.data.cart_url) {
 						window.location.href = json.data.cart_url;
 					}
 				} else {
-					alert((json.data && json.data.message) || (i18n.cartError || 'Failed to add to cart. Please try again.'));
+					// Failure: keep the customizer OPEN so the shopper's artwork and
+					// edits are preserved and they can retry. Report the error to
+					// Studio instead of a blocking alert or destroying the session.
+					notifyStudio(studioWindow, 'sudomock:cart-error', (json.data && json.data.message) || (i18n.cartError || 'Could not add to cart. Please try again.'));
 				}
 			})
 			.catch(function () {
-				var overlay = document.getElementById('sudomock-overlay');
-				closeStudio(overlay);
-				alert(i18n.networkCartError || 'Network error adding to cart.');
+				notifyStudio(studioWindow, 'sudomock:cart-error', i18n.networkCartError || 'Network error adding to cart. Please try again.');
 			});
+	}
+
+	/**
+	 * Post a result message back to the Studio window (iframe or popup),
+	 * origin-scoped to STUDIO_BASE. No-op if the window is gone.
+	 *
+	 * @param {Window} studioWindow Source window from the postMessage event.
+	 * @param {string} type         'sudomock:cart-success' | 'sudomock:cart-error'.
+	 * @param {string} payload      cartUrl on success, message on error.
+	 */
+	function notifyStudio(studioWindow, type, payload) {
+		if (!studioWindow) {
+			return;
+		}
+		var msg = { type: type };
+		if (type === 'sudomock:cart-success') {
+			msg.cartUrl = payload;
+		} else {
+			msg.message = payload;
+		}
+		try {
+			studioWindow.postMessage(msg, STUDIO_BASE);
+		} catch (e) {
+			/* window closed or cross-origin — nothing to do */
+		}
+	}
+
+	/**
+	 * Selected variation ID from the product form (variable products only).
+	 * WooCommerce's variation script keeps input[name="variation_id"] in sync.
+	 *
+	 * @returns {string} Variation ID, or '' when none/simple product.
+	 */
+	function getSelectedVariationId() {
+		var input = document.querySelector('form.variations_form input[name="variation_id"]')
+			|| document.querySelector('form.cart input[name="variation_id"]')
+			|| document.querySelector('input[name="variation_id"]');
+		var val = input ? String(input.value || '').trim() : '';
+		return val && val !== '0' ? val : '';
+	}
+
+	/**
+	 * Selected quantity from the product form; defaults to 1 when absent
+	 * or unparseable/invalid.
+	 *
+	 * @returns {number} Quantity (>= 1).
+	 */
+	function getSelectedQuantity() {
+		var input = document.querySelector('form.cart input[name="quantity"]')
+			|| document.querySelector('input[name="quantity"]');
+		var qty = input ? parseInt(input.value, 10) : 1;
+		return qty && qty > 0 ? qty : 1;
 	}
 
 	/**
