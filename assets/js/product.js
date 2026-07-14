@@ -256,10 +256,15 @@
 		el.textContent = msg;
 	}
 
+	// Escapes for BOTH text and attribute context (quotes included), so a
+	// mockup name/URL cannot break out of an attribute and execute (stored XSS).
 	function esc(str) {
-		var div = document.createElement('div');
-		div.appendChild(document.createTextNode(str || ''));
-		return div.innerHTML;
+		return String( str == null ? '' : str )
+			.replace( /&/g, '&amp;' )
+			.replace( /</g, '&lt;' )
+			.replace( />/g, '&gt;' )
+			.replace( /"/g, '&quot;' )
+			.replace( /'/g, '&#39;' );
 	}
 
 	// Boot

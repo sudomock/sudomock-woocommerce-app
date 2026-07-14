@@ -966,10 +966,16 @@
 		el.textContent = msg;
 	}
 
+	// Escapes for BOTH text and attribute context. The old textNode/innerHTML
+	// trick left quotes intact, so a mockup name like `" onerror="alert(1)`
+	// broke out of alt="..."/title="..." and executed (stored XSS).
 	function escapeHtml(str) {
-		var div = document.createElement('div');
-		div.appendChild(document.createTextNode(str || ''));
-		return div.innerHTML;
+		return String( str == null ? '' : str )
+			.replace( /&/g, '&amp;' )
+			.replace( /</g, '&lt;' )
+			.replace( />/g, '&gt;' )
+			.replace( /"/g, '&quot;' )
+			.replace( /'/g, '&#39;' );
 	}
 
 	/* ────────────────────────────────────────────
