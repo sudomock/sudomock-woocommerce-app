@@ -200,6 +200,29 @@
 		body.append('mockup_uuid', data.mockup_uuid || data.mockupUuid || '');
 		body.append('preview_url', previewUrl);
 
+		// Render id for merchant cross-reference (support, re-render, audit).
+		if (typeof data.render_uuid === 'string' && data.render_uuid) {
+			body.append('render_uuid', data.render_uuid);
+		}
+
+		// Original customer-uploaded artwork URLs (when Studio supplies them).
+		// `artwork_urls` (array, request order) wins; single-field fallback keeps
+		// older Studio versions working. data: URIs and over-long values are
+		// dropped — the order only ever stores short, durable URLs.
+		function isShortUrl(u) {
+			return typeof u === 'string' && u.length > 0 && u.length < 2000 && u.indexOf('data:') !== 0;
+		}
+		var artworkUrls = Array.isArray(data.artwork_urls) ? data.artwork_urls.filter(isShortUrl) : [];
+		if (artworkUrls.length === 0) {
+			var single = data.artwork_url || data.design_url || data.source_url || '';
+			if (isShortUrl(single)) {
+				artworkUrls = [single];
+			}
+		}
+		artworkUrls.slice(0, 10).forEach(function (u) {
+			body.append('artwork_urls[]', u);
+		});
+
 		fetch(ajaxUrl, { method: 'POST', body: body })
 			.then(function (r) { return r.json(); })
 			.then(function (json) {

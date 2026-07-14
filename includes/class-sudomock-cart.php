@@ -96,6 +96,28 @@ final class SudoMock_Cart {
                     true
                 );
             }
+
+            // Original customer artwork file(s) — the durable source files the
+            // merchant prints from. First entry keeps the unsuffixed key so
+            // fulfillment tooling reading "Source Design" works unchanged.
+            if ( ! empty( $custom['artwork_urls'] ) && is_array( $custom['artwork_urls'] ) ) {
+                $i = 0;
+                foreach ( array_slice( $custom['artwork_urls'], 0, 10 ) as $artwork_url ) {
+                    $i++;
+                    $suffix = ( 1 === $i ) ? '' : '_' . $i;
+                    $label  = ( 1 === $i )
+                        ? __( 'Source Design', 'sudomock-product-customizer' )
+                        /* translators: %d: artwork file number */
+                        : sprintf( __( 'Source Design %d', 'sudomock-product-customizer' ), $i );
+                    $item->add_meta_data( '_sudomock_artwork_url' . $suffix, $artwork_url, true );
+                    $item->add_meta_data( $label, $artwork_url, true );
+                }
+            }
+
+            // Render id for merchant cross-reference (support, re-render, audit).
+            if ( ! empty( $custom['render_uuid'] ) ) {
+                $item->add_meta_data( '_sudomock_render_uuid', $custom['render_uuid'], true );
+            }
         }
     }
 

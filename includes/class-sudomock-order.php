@@ -30,13 +30,8 @@ final class SudoMock_Order {
 	}
 
 	private function __construct() {
-		// Copy cart-item meta → order-item meta during checkout.
-		add_action(
-			'woocommerce_checkout_create_order_line_item',
-			array( $this, 'save_customization_to_order' ),
-			10,
-			4
-		);
+		// Order-item meta is written by SudoMock_Cart::add_order_item_meta
+		// (the AJAX add-to-cart path). This class only handles admin display.
 
 		// Display customization in admin order view.
 		add_action(
@@ -48,50 +43,88 @@ final class SudoMock_Order {
 	}
 
 	/**
-	 * Persist customization data from cart item to order item.
+	 * Customization preview URL for an order item.
+	 * `_sudomock_render_url` is the legacy key of a retired flow; read fallback only.
 	 *
-	 * @param \WC_Order_Item_Product $item          Order line item.
-	 * @param string                 $cart_item_key  Cart item key.
-	 * @param array                  $values         Cart item data.
-	 * @param \WC_Order              $order          Order object.
+	 * @param object $item Order item object.
+	 * @return string
 	 */
-	public function save_customization_to_order( $item, $cart_item_key, $values, $order ) {
-		if ( empty( $values['sudomock_render_url'] ) ) {
-			return;
+	public static function get_preview_url( $item ) {
+		$preview_url = $item->get_meta( '_sudomock_preview_url' );
+		if ( empty( $preview_url ) ) {
+			$preview_url = $item->get_meta( '_sudomock_render_url' );
 		}
-
-		$item->add_meta_data( '_sudomock_render_url', sanitize_url( $values['sudomock_render_url'] ) );
-
-		if ( ! empty( $values['sudomock_mockup_uuid'] ) ) {
-			$item->add_meta_data( '_sudomock_mockup_uuid', sanitize_text_field( $values['sudomock_mockup_uuid'] ) );
-		}
-		if ( ! empty( $values['sudomock_session_token'] ) ) {
-			$item->add_meta_data( '_sudomock_session_token', sanitize_text_field( $values['sudomock_session_token'] ) );
-		}
+		return $preview_url;
 	}
 
 	/**
-	 * Show a small render thumbnail in the admin order screen.
+	 * Original artwork file URLs for an order item (_sudomock_artwork_url, _2 ... _10).
+	 *
+	 * @param object $item Order item object.
+	 * @return string[]
+	 */
+	public static function get_artwork_urls( $item ) {
+		$artwork_urls  = array();
+		$first_artwork = $item->get_meta( '_sudomock_artwork_url' );
+		if ( ! empty( $first_artwork ) ) {
+			$artwork_urls[] = $first_artwork;
+		}
+		for ( $i = 2; $i <= 10; $i++ ) {
+			$extra = $item->get_meta( '_sudomock_artwork_url_' . $i );
+			if ( empty( $extra ) ) {
+				break;
+			}
+			$artwork_urls[] = $extra;
+		}
+		return $artwork_urls;
+	}
+
+	/**
+	 * Show the customization preview thumbnail and the original artwork
+	 * file link(s) in the admin order screen.
 	 *
 	 * @param int            $item_id  Order item ID.
 	 * @param object         $item     Order item object.
 	 * @param \WC_Product|null $product Product object (may be null).
 	 */
 	public function display_admin_order_item_meta( $item_id, $item, $product ) {
-		$render_url = $item->get_meta( '_sudomock_render_url' );
-		if ( empty( $render_url ) ) {
+		$preview_url  = self::get_preview_url( $item );
+		$artwork_urls = self::get_artwork_urls( $item );
+
+		if ( empty( $preview_url ) && empty( $artwork_urls ) ) {
 			return;
 		}
-		printf(
-			'<div class="sudomock-order-preview" style="margin-top:8px;">'
-			. '<strong>%s</strong><br>'
-			. '<a href="%s" target="_blank" rel="noopener">'
-			. '<img src="%s" alt="%s" style="max-width:120px;height:auto;border:1px solid #ddd;border-radius:4px;" />'
-			. '</a></div>',
-			esc_html__( 'Customer Design:', 'sudomock-product-customizer' ),
-			esc_url( $render_url ),
-			esc_url( $render_url ),
-			esc_attr__( 'Customer customization preview', 'sudomock-product-customizer' )
-		);
+
+		echo '<div class="sudomock-order-preview" style="margin-top:8px;">';
+
+		if ( ! empty( $preview_url ) ) {
+			printf(
+				'<strong>%s</strong><br>'
+				. '<a href="%s" target="_blank" rel="noopener">'
+				. '<img src="%s" alt="%s" style="max-width:120px;height:auto;border:1px solid #ddd;border-radius:4px;" />'
+				. '</a>',
+				esc_html__( 'Customer Design:', 'sudomock-product-customizer' ),
+				esc_url( $preview_url ),
+				esc_url( $preview_url ),
+				esc_attr__( 'Customer customization preview', 'sudomock-product-customizer' )
+			);
+		}
+
+		if ( ! empty( $artwork_urls ) ) {
+			echo '<div style="margin-top:6px;"><strong>'
+				. esc_html__( 'Source design file(s):', 'sudomock-product-customizer' )
+				. '</strong><br>';
+			foreach ( $artwork_urls as $idx => $artwork_url ) {
+				printf(
+					'<a href="%s" target="_blank" rel="noopener">%s</a><br>',
+					esc_url( $artwork_url ),
+					/* translators: %d: artwork file number */
+					esc_html( sprintf( __( 'Download artwork %d', 'sudomock-product-customizer' ), $idx + 1 ) )
+				);
+			}
+			echo '</div>';
+		}
+
+		echo '</div>';
 	}
 }
