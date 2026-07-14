@@ -198,11 +198,14 @@ final class SudoMock_Storefront {
         }
 
         global $product; // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound -- WooCommerce standard global
-        if ( ! $product ) {
+        // At wp_enqueue_scripts time the WooCommerce global can still be the
+        // post slug (string), not a WC_Product — resolve it before any method
+        // call, otherwise classic themes fatal on every product page.
+        if ( ! $product instanceof WC_Product ) {
             $product = wc_get_product( get_the_ID() ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
         }
 
-        if ( ! $product || ! SudoMock_Product::is_customizable( $product->get_id() ) ) {
+        if ( ! $product instanceof WC_Product || ! SudoMock_Product::is_customizable( $product->get_id() ) ) {
             return;
         }
 
