@@ -55,8 +55,13 @@ final class SudoMock_Encryption {
             return '';
         }
 
-        // Store IV + encrypted data together
-        return base64_encode( $iv . '::' . $encrypted ); // phpcs:ignore
+        // Store as "<base64 iv>::<base64 ciphertext>". Both halves are base64
+        // (colon-free), so the '::' separator can never collide with the
+        // payload. The previous format base64-encoded the raw IV inline, so a
+        // random IV containing the bytes 0x3A3A ('::') split at the wrong
+        // offset and silently corrupted the key (~1/4400 keys). decrypt() reads
+        // both formats.
+        return base64_encode( $iv ) . '::' . $encrypted; // phpcs:ignore
     }
 
     /**
@@ -70,22 +75,36 @@ final class SudoMock_Encryption {
             return '';
         }
 
+        $key = self::get_key();
+
+        // Current format: "<base64 iv>::<base64 ciphertext>". A raw stored value
+        // contains '::' ONLY in this format — legacy values are a single base64
+        // blob (base64 alphabet has no colon), so this discriminator is exact.
+        if ( function_exists( 'openssl_decrypt' ) && false !== strpos( $value, '::' ) ) {
+            list( $iv_b64, $ciphertext ) = explode( '::', $value, 2 );
+            $iv = base64_decode( $iv_b64, true ); // phpcs:ignore
+            if ( false === $iv ) {
+                return '';
+            }
+            $decrypted = openssl_decrypt( $ciphertext, self::$cipher, $key, 0, $iv );
+            return ( false !== $decrypted ) ? $decrypted : '';
+        }
+
         $decoded = base64_decode( $value, true ); // phpcs:ignore
         if ( false === $decoded ) {
             return '';
         }
 
-        $key = self::get_key();
-
-        // Check if it has our IV separator
+        // Legacy format: base64( iv . '::' . ciphertext ). Best-effort — a
+        // reconnect re-encrypts in the current format above.
         if ( function_exists( 'openssl_decrypt' ) && false !== strpos( $decoded, '::' ) ) {
             $parts = explode( '::', $decoded, 2 );
-            if ( 2 !== count( $parts ) ) {
-                return $decoded; // Was base64-only fallback
+            if ( 2 === count( $parts ) ) {
+                $decrypted = openssl_decrypt( $parts[1], self::$cipher, $key, 0, $parts[0] );
+                if ( false !== $decrypted ) {
+                    return $decrypted;
+                }
             }
-
-            $decrypted = openssl_decrypt( $parts[1], self::$cipher, $key, 0, $parts[0] );
-            return ( false !== $decrypted ) ? $decrypted : '';
         }
 
         // base64-only fallback decode
