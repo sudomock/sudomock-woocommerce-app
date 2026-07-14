@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file.
 
-## [1.1.0] - 2026-07-14
+## [1.2.0] - 2026-07-14
 
 ### Added
 - Original customer artwork on orders: `_sudomock_artwork_url` (+ `_2`..`_10`) hidden keys and merchant-visible "Source Design" (+ numbered) order item meta, populated from the Studio add-to-cart payload (`artwork_urls` / `artwork_url`)
@@ -15,6 +15,10 @@ All notable changes to this project will be documented in this file.
 - 10 language translations (TR, DE, FR, ES, PT-BR, IT, NL, JA, KO, ZH-CN)
 
 ### Fixed
+- Popup display mode no longer silently fails when a popup blocker rejects the window (it opens after an async call, outside the click gesture): it now falls back to the iframe overlay. A stale poll timer that ran forever on a blocked (null) popup is removed
+- Double-clicking "Add to Cart" no longer creates duplicate cart lines (in-flight guard)
+- Full-page-cached storefronts: a fresh nonce is fetched before Customize/add-to-cart, so a stale cached nonce no longer breaks the flow with a generic error
+- The customize button/shortcode resolve the WooCommerce `$product` global (can be a string) before use, matching the enqueue fatal fix
 - Orphaned mappings no longer show a dead "Customizer temporarily unavailable" alert to shoppers: when a mapped mockup no longer belongs to the connected account (deleted, or the store was reconnected to a different account), the button is hidden and the Products screen flags it as "Mapped (invalid) — Remap" so the merchant can fix it
 - Variable products: the shopper's chosen variation is now added to the cart (parent product_id + real variation_id); previously the variation id was miswired as the product id, so variable products failed or added the wrong variant/price
 - Quantity: the product-form quantity is honoured (was always forced to 1)
@@ -26,6 +30,10 @@ All notable changes to this project will be documented in this file.
 - Fixed a rare API-key corruption: the encrypted-key IV separator could collide with random IV bytes (~1/4400 keys), silently breaking the stored key; keys are now stored as `base64(iv)::base64(ciphertext)` (legacy values still decrypt)
 - Order-item artwork/preview URLs from the browser are host-validated (https + public host) before being written to merchant-facing order meta
 - Admin/product mockup grids escape quotes in mockup names/URLs, closing an attribute-context stored XSS
+- Storefront error reports send the page path only, not the full URL (no query-string leakage)
+
+### Privacy
+- GDPR erasure now deletes the actual stored design files from SudoMock storage (owner-scoped), not just the local order meta; deletions that cannot be confirmed immediately are queued and retried daily so no file is orphaned
 
 ### Changed
 - Session URL parameter: `?token=` → `?session=`
