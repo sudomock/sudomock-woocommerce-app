@@ -284,6 +284,26 @@ final class SudoMock_Storefront {
         $product_id  = isset( $_POST['product_id'] ) ? absint( $_POST['product_id'] ) : 0;
         $mockup_uuid = isset( $_POST['mockup_uuid'] ) ? sanitize_text_field( wp_unslash( $_POST['mockup_uuid'] ) ) : '';
         $preview_url = isset( $_POST['preview_url'] ) ? esc_url_raw( wp_unslash( $_POST['preview_url'] ) ) : '';
+        $render_uuid = isset( $_POST['render_uuid'] ) ? sanitize_text_field( wp_unslash( $_POST['render_uuid'] ) ) : '';
+        if ( strlen( $render_uuid ) >= 128 ) {
+            $render_uuid = '';
+        }
+
+        // Original artwork URLs (up to 10). Only short, non-data URLs are kept:
+        // the order must never store base64 payloads or unbounded strings.
+        $artwork_urls = array();
+        if ( isset( $_POST['artwork_urls'] ) && is_array( $_POST['artwork_urls'] ) ) {
+            $raw_urls = array_slice( wp_unslash( $_POST['artwork_urls'] ), 0, 10 ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- each URL sanitized below
+            foreach ( $raw_urls as $raw_url ) {
+                if ( ! is_string( $raw_url ) ) {
+                    continue;
+                }
+                $url = esc_url_raw( $raw_url );
+                if ( $url && strlen( $url ) < 2000 && 0 !== strpos( $url, 'data:' ) ) {
+                    $artwork_urls[] = $url;
+                }
+            }
+        }
 
         if ( empty( $product_id ) ) {
             wp_send_json_error( array( 'message' => __( 'Invalid product.', 'sudomock-product-customizer' ) ) );
@@ -302,8 +322,10 @@ final class SudoMock_Storefront {
         // Cart item data — stored in WC session, visible in cart/order
         $cart_item_data = array(
             'sudomock_customization' => array(
-                'mockup_uuid' => $mockup_uuid,
-                'preview_url' => $preview_url,
+                'mockup_uuid'  => $mockup_uuid,
+                'preview_url'  => $preview_url,
+                'artwork_urls' => $artwork_urls,
+                'render_uuid'  => $render_uuid,
             ),
         );
 
