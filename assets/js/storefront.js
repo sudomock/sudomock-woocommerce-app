@@ -35,7 +35,11 @@
 			.then(function (r) { return r.json(); })
 			.then(function (json) {
 				if (!json.success) {
-					throw new Error(json.data && json.data.message ? json.data.message : 'Session creation failed');
+					// Carry the backend status so the caller can tell a permanent
+					// mapping problem (401/403/404) from a transient one.
+					var err = new Error(json.data && json.data.message ? json.data.message : 'Session creation failed');
+					err.status = (json.data && json.data.status) ? json.data.status : 0;
+					throw err;
 				}
 				return json.data;
 			});
@@ -313,6 +317,36 @@
 	}
 
 	/**
+	 * Hide every customize button/root. Used when the product's mapping is
+	 * invalid for the connected account, so shoppers see no dead action.
+	 */
+	function hideCustomizeButtons() {
+		var els = document.querySelectorAll('.sudomock-customize-btn, .sudomock-customizer-root');
+		Array.prototype.forEach.call(els, function (el) { el.style.display = 'none'; });
+	}
+
+	/**
+	 * Show a brief, non-blocking notice (replaces blocking alert()).
+	 *
+	 * @param {string} message Text to show.
+	 */
+	function showNotice(message) {
+		var existing = document.getElementById('sudomock-notice');
+		if (existing) { existing.remove(); }
+		var el = document.createElement('div');
+		el.id = 'sudomock-notice';
+		el.setAttribute('role', 'status');
+		el.textContent = message;
+		el.style.cssText =
+			'position:fixed;bottom:24px;left:50%;transform:translateX(-50%);' +
+			'background:#dc2626;color:#fff;padding:12px 20px;border-radius:10px;' +
+			'font-size:14px;font-weight:600;z-index:2147483647;max-width:90vw;' +
+			'box-shadow:0 8px 30px rgba(0,0,0,0.2);';
+		document.body.appendChild(el);
+		setTimeout(function () { if (el.parentNode) { el.parentNode.removeChild(el); } }, 4000);
+	}
+
+	/**
 	 * Insert or update a hidden input inside a form.
 	 */
 	function setHidden(form, name, value) {
@@ -382,7 +416,17 @@
 				})
 				.catch(function (err) {
 					console.error('[SudoMock] Session error:', err);
-					alert(err.message || (i18n.sessionError || 'Could not open customizer. Please try again.'));
+					var status = err && err.status;
+					// 401/403/404: this product cannot be customized for the
+					// connected account (mockup deleted, or the store was
+					// reconnected to a different account). Hide the button so
+					// shoppers are not offered a dead action; the merchant fixes
+					// the mapping in the plugin. Other errors are transient.
+					if (status === 401 || status === 403 || status === 404) {
+						hideCustomizeButtons();
+					} else {
+						showNotice(i18n.sessionError || 'Customizer is temporarily unavailable. Please try again in a moment.');
+					}
 				})
 				.finally(function () {
 					btn.classList.remove('sudomock-loading');
