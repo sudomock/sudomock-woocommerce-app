@@ -76,6 +76,7 @@
 		var overlay = document.createElement('div');
 		overlay.id = 'sudomock-overlay';
 		overlay.setAttribute('role', 'dialog');
+		overlay.setAttribute('aria-modal', 'true');
 		overlay.setAttribute('aria-label', 'Product Customizer');
 
 		// Close button
@@ -89,11 +90,27 @@
 		var iframe = document.createElement('iframe');
 		iframe.src = STUDIO_BASE + '/editor?session=' + encodeURIComponent(token);
 		iframe.className = 'sudomock-iframe';
+		iframe.title = 'Product customizer';
 		iframe.setAttribute('allow', 'clipboard-write');
+		// CRITICAL: Studio derives its postMessage target origin from
+		// document.referrer. On stores with a strict Referrer-Policy (security
+		// plugins, a no-referrer meta/header), the referrer is stripped and every
+		// Add to Cart would fail silently. Force the origin to be sent.
+		iframe.referrerPolicy = 'origin';
 
 		overlay.appendChild(closeBtn);
 		overlay.appendChild(iframe);
 		document.body.appendChild(overlay);
+
+		// Close on Escape or backdrop click (a11y + expected modal behavior).
+		overlay.addEventListener('keydown', function (e) {
+			if (e.key === 'Escape') { closeStudio(overlay); }
+		});
+		overlay.addEventListener('mousedown', function (e) {
+			if (e.target === overlay) { closeStudio(overlay); }
+		});
+		// Move focus into the dialog so keyboard users are not stranded behind it.
+		closeBtn.focus();
 
 		// Prevent background scroll
 		document.body.style.overflow = 'hidden';
@@ -245,7 +262,7 @@
 		// The shopper's live variant + quantity selections from the product form.
 		// Variable products carry variation_id (kept in sync by WooCommerce's own
 		// variation script); without it the cart falls back to the parent product.
-		var variationId = getSelectedVariationId();
+		var variationId = getSelectedVariationId(productId);
 		if (variationId) {
 			body.append('variation_id', variationId);
 		}
@@ -275,9 +292,14 @@
 		});
 
 		cartRequestInFlight = true;
-		fetch(ajaxUrl, { method: 'POST', body: body })
+		// Bound the request so a hung connection can't leave cartRequestInFlight
+		// stuck true (which would silently block every later Add to Cart).
+		var cartCtrl = new AbortController();
+		var cartTimer = setTimeout(function () { cartCtrl.abort(); }, 20000);
+		fetch(ajaxUrl, { method: 'POST', body: body, signal: cartCtrl.signal })
 			.then(function (r) { return r.json(); })
 			.then(function (json) {
+				clearTimeout(cartTimer);
 				cartRequestInFlight = false;
 				if (json.success) {
 					// Success: notify Studio, close overlay, then redirect. The
@@ -296,6 +318,7 @@
 				}
 			})
 			.catch(function () {
+				clearTimeout(cartTimer);
 				cartRequestInFlight = false;
 				notifyStudio(studioWindow, 'sudomock:cart-error', i18n.networkCartError || 'Network error adding to cart. Please try again.');
 			});
@@ -329,15 +352,70 @@
 	/**
 	 * Selected variation ID from the product form (variable products only).
 	 * WooCommerce's variation script keeps input[name="variation_id"] in sync.
+	 * Scoped to the given product's form when WooCommerce tagged one
+	 * (data-product_id), so on multi-product-form pages the cart POST reads the
+	 * SAME form the pre-open guard validated — never another product's value.
+	 * Falls back to the page-global lookup for single-form/legacy themes.
 	 *
+	 * @param {string} productId Product the shopper is customizing.
 	 * @returns {string} Variation ID, or '' when none/simple product.
 	 */
-	function getSelectedVariationId() {
-		var input = document.querySelector('form.variations_form input[name="variation_id"]')
-			|| document.querySelector('form.cart input[name="variation_id"]')
-			|| document.querySelector('input[name="variation_id"]');
+	function getSelectedVariationId(productId) {
+		// When THIS product's tagged form exists, trust only it — falling back to
+		// the page-global lookup from here would reintroduce reading another
+		// product's variation. The global chain remains for single-form/legacy
+		// themes where no tagged form is found.
+		var scopedForm = findVariationForm(productId);
+		var input = scopedForm
+			? scopedForm.querySelector('input[name="variation_id"]')
+			: (document.querySelector('form.variations_form input[name="variation_id"]')
+				|| document.querySelector('form.cart input[name="variation_id"]')
+				|| document.querySelector('input[name="variation_id"]'));
 		var val = input ? String(input.value || '').trim() : '';
 		return val && val !== '0' ? val : '';
+	}
+
+	/**
+	 * The variation form belonging to a specific product. On pages that render
+	 * several product forms (page builders, grouped/bundle layouts) the global
+	 * first-form lookup is wrong; WooCommerce tags each form with data-product_id.
+	 *
+	 * @param {string} productId Clicked button's product id.
+	 * @returns {HTMLElement|null} That product's variations_form, or the single
+	 *   page form as a fallback, or null when there is no variable product.
+	 */
+	function findVariationForm(productId) {
+		// Only trust the form WooCommerce tagged for THIS product. A simple
+		// product has no variations_form, so this returns null and the guard is
+		// skipped. We must NEVER fall back to another product's form: on a page
+		// with several product forms (bundles, grouped, page-builder loops) that
+		// would false-block a simple product's customizer with a bogus 'choose
+		// options'. The cart step re-validates the variation regardless. (Numeric
+		// guard: productId is interpolated into the selector; a malformed value
+		// would throw.)
+		if (productId && /^\d+$/.test(productId)) {
+			return document.querySelector('form.variations_form[data-product_id="' + productId + '"]');
+		}
+		return null;
+	}
+
+	/**
+	 * Whether every attribute of a variation form has a chosen value. Reads the
+	 * attribute selects directly rather than input[name="variation_id"], which
+	 * WooCommerce's variation.js only fills a tick after DOM-ready (so an early
+	 * click on a default-variation product would otherwise false-block).
+	 *
+	 * @param {HTMLElement} form variations_form element.
+	 * @returns {boolean} true when chosen (or when there are no attribute selects
+	 *   to judge, e.g. swatch plugins — the cart step then validates).
+	 */
+	function variationChosen(form) {
+		var selects = form.querySelectorAll('.variations select');
+		if (!selects.length) { return true; }
+		for (var i = 0; i < selects.length; i++) {
+			if (!selects[i].value) { return false; }
+		}
+		return true;
 	}
 
 	/**
@@ -436,6 +514,17 @@
 
 			if (!productId || !mockupUuid) {
 				console.error('[SudoMock] Missing product-id or mockup-uuid on button.');
+				return;
+			}
+
+			// Variable products: require a variation choice BEFORE opening the
+			// customizer. Otherwise the shopper designs, hits add-to-cart, gets a
+			// 'choose options' error, but the full-screen overlay hides the
+			// variation selector — a dead end. Scoped to THIS product's form so a
+			// second product's unset form can't block an unrelated button.
+			var variationForm = findVariationForm(productId);
+			if (variationForm && !variationChosen(variationForm)) {
+				showNotice(i18n.chooseOptions || 'Please choose the product options first.');
 				return;
 			}
 
