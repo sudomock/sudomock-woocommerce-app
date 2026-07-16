@@ -261,6 +261,7 @@ final class SudoMock_Storefront {
                 'cartError'        => __( 'Failed to add to cart. Please try again.', 'sudomock-product-customizer' ),
                 'sessionError'     => __( 'Could not open customizer. Please try again.', 'sudomock-product-customizer' ),
                 'networkCartError' => __( 'Network error adding to cart.', 'sudomock-product-customizer' ),
+                'chooseOptions'    => __( 'Please choose the product options first.', 'sudomock-product-customizer' ),
                 'noProduct'        => __( 'Cannot add to cart: no product ID.', 'sudomock-product-customizer' ),
                 'missingData'      => __( 'Missing product-id or mockup-uuid on button.', 'sudomock-product-customizer' ),
             ),
@@ -414,7 +415,23 @@ final class SudoMock_Storefront {
         }
 
         if ( ! $cart_item_key ) {
-            wp_send_json_error( array( 'message' => __( 'Failed to add to cart.', 'sudomock-product-customizer' ) ) );
+            // Surface WooCommerce's own reason (out of stock, max quantity, etc.)
+            // instead of a generic message so the shopper knows what to fix.
+            $reason = '';
+            if ( function_exists( 'wc_get_notices' ) ) {
+                $errors = wc_get_notices( 'error' );
+                if ( ! empty( $errors ) ) {
+                    $texts = array();
+                    foreach ( $errors as $e ) {
+                        $texts[] = is_array( $e ) && isset( $e['notice'] ) ? wp_strip_all_tags( $e['notice'] ) : wp_strip_all_tags( (string) $e );
+                    }
+                    $reason = trim( implode( ' ', array_filter( $texts ) ) );
+                    wc_clear_notices();
+                }
+            }
+            wp_send_json_error( array(
+                'message' => $reason !== '' ? $reason : __( 'Failed to add to cart. Please try again.', 'sudomock-product-customizer' ),
+            ) );
         }
 
         wp_send_json_success( array(
