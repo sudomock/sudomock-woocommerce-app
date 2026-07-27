@@ -24,6 +24,7 @@
 			var selThumb = document.getElementById('sudomock-selected-thumb');
 			var selName  = document.getElementById('sudomock-selected-name');
 			var selUuid  = document.getElementById('sudomock-selected-uuid');
+			var selType  = document.getElementById('sudomock-selected-type');
 			var nameInput = document.getElementById('sudomock_mockup_name');
 
 			if (selThumb && cm.thumbnail) {
@@ -38,6 +39,9 @@
 			}
 			if (selUuid && cm.uuid) {
 				selUuid.textContent = cm.uuid.substring(0, 8) + '...';
+			}
+			if (selType && cm.type) {
+				selType.textContent = cm.type.toUpperCase();
 			}
 			if (nameInput && cm.name) {
 				nameInput.value = cm.name;
@@ -72,6 +76,7 @@
 		if (removeBtn) {
 			removeBtn.addEventListener('click', function () {
 				document.getElementById('sudomock_mockup_uuid').value = '';
+				document.getElementById('sudomock_mockup_type').value = '';
 				document.getElementById('sudomock_mockup_name').value = '';
 				document.getElementById('sudomock-selected-mockup').style.display = 'none';
 				document.getElementById('sudomock-mockup-picker').style.display = 'block';
@@ -124,11 +129,15 @@
 			}
 
 			var soCount = m.smart_objects ? m.smart_objects.length : 0;
+			var mockupType = m.mockup_type === '2d' ? '2d' : 'psd';
+			var layerCount = typeof m.layer_count === 'number' ? m.layer_count : soCount;
+			var layerLabel = mockupType === '2d' ? 'print area' : (i18n.smartObject || 'smart object');
 
 			var card = document.createElement('div');
 			card.style.cssText = 'cursor:pointer;border:2px solid transparent;border-radius:8px;overflow:hidden;background:#f9fafb;transition:all 0.15s;';
 			card.setAttribute('data-uuid', m.uuid);
 			card.setAttribute('data-name', m.name || m.uuid);
+			card.setAttribute('data-type', mockupType);
 
 			card.innerHTML =
 				'<div style="width:100%;aspect-ratio:4/3;display:flex;align-items:center;justify-content:center;overflow:hidden;background:#e5e7eb;">' +
@@ -136,7 +145,7 @@
 				'</div>' +
 				'<div style="padding:6px 8px;">' +
 					'<div style="font-size:11px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;" title="' + esc(m.name) + '">' + esc(m.name) + '</div>' +
-					'<div style="font-size:10px;color:#9ca3af;">' + soCount + ' ' + (soCount !== 1 ? (i18n.smartObjects || 'smart objects') : (i18n.smartObject || 'smart object')) + '</div>' +
+					'<div style="display:flex;gap:4px;align-items:center;font-size:10px;color:#9ca3af;"><span style="padding:1px 5px;border-radius:4px;background:#e0e7ff;color:#3730a3;text-transform:uppercase;">' + mockupType + '</span><span>' + layerCount + ' ' + layerLabel + (layerCount !== 1 ? 's' : '') + '</span></div>' +
 				'</div>';
 
 			card.addEventListener('mouseenter', function () {
@@ -153,17 +162,21 @@
 			card.addEventListener('click', function () {
 				var uuid = card.getAttribute('data-uuid');
 				var name = card.getAttribute('data-name');
+				var type = card.getAttribute('data-type');
 
 				// Set hidden inputs
 				document.getElementById('sudomock_mockup_uuid').value = uuid;
+				document.getElementById('sudomock_mockup_type').value = type;
 				document.getElementById('sudomock_mockup_name').value = name;
 
 				// Update selected display
 				var selName = document.getElementById('sudomock-selected-name');
 				var selUuid = document.getElementById('sudomock-selected-uuid');
 				var selThumb = document.getElementById('sudomock-selected-thumb');
+				var selType = document.getElementById('sudomock-selected-type');
 				if (selName) selName.textContent = name;
 				if (selUuid) selUuid.textContent = uuid.substring(0, 8) + '...';
+				if (selType) selType.textContent = type.toUpperCase();
 
 				// Update thumbnail in selected display
 				var thumbSrc = card.querySelector('img');

@@ -3,7 +3,7 @@
  * Product Integration — mockup mapping via WC product meta.
  *
  * Adds a "SudoMock" tab in the WooCommerce product edit panel.
- * Stores mockup_uuid + customization_enabled in wp_postmeta (native WC).
+ * Stores mockup_uuid + mockup_type + customization_enabled in wp_postmeta.
  *
  * @package SudoMock_Product_Customizer
  * @since   1.0.0
@@ -20,6 +20,7 @@ final class SudoMock_Product {
 
     /** Meta key prefix */
     const META_MOCKUP_UUID  = '_sudomock_mockup_uuid';
+    const META_MOCKUP_TYPE  = '_sudomock_mockup_type';
     const META_CUSTOMIZABLE = '_sudomock_customization_enabled';
 
     public static function get_instance() {
@@ -63,6 +64,7 @@ final class SudoMock_Product {
 
         $product_id    = $post->ID;
         $mockup_uuid   = get_post_meta( $product_id, self::META_MOCKUP_UUID, true );
+        $mockup_type   = self::get_mockup_type( $product_id );
         $mockup_name   = get_post_meta( $product_id, '_sudomock_mockup_name', true );
         $is_enabled    = get_post_meta( $product_id, self::META_CUSTOMIZABLE, true );
         $is_connected  = ! empty( SudoMock_API_Client::get_api_key() );
@@ -96,16 +98,17 @@ final class SudoMock_Product {
                 ?>
 
                 <div class="form-field" style="margin-top:8px;">
-                    <p style="margin:0 0 8px;"><strong><?php esc_html_e( 'PSD Mockup Template', 'sudomock-product-customizer' ); ?></strong></p>
+                    <p style="margin:0 0 8px;"><strong><?php esc_html_e( 'Mockup', 'sudomock-product-customizer' ); ?></strong></p>
 
                     <!-- Current Selection -->
                     <input type="hidden" id="sudomock_mockup_uuid" name="<?php echo esc_attr( self::META_MOCKUP_UUID ); ?>" value="<?php echo esc_attr( $mockup_uuid ); ?>" />
+                    <input type="hidden" id="sudomock_mockup_type" name="<?php echo esc_attr( self::META_MOCKUP_TYPE ); ?>" value="<?php echo esc_attr( $mockup_type ); ?>" />
                     <input type="hidden" id="sudomock_mockup_name" name="_sudomock_mockup_name" value="<?php echo esc_attr( $mockup_name ); ?>" />
 
                     <div id="sudomock-selected-mockup" style="<?php echo esc_attr( ( empty( $mockup_uuid ) ? 'display:none;' : '' ) . 'margin-bottom:10px;' ); ?>">
                         <div style="display:flex;align-items:center;gap:12px;padding:10px;background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;">
                             <div id="sudomock-selected-thumb" style="width:60px;height:60px;border-radius:6px;overflow:hidden;background:#e5e7eb;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-                                <span style="color:#9ca3af;font-size:11px;">PSD</span>
+                                <span style="color:#9ca3af;font-size:11px;"><?php esc_html_e( 'Preview', 'sudomock-product-customizer' ); ?></span>
                             </div>
                             <div style="flex:1;min-width:0;">
                                 <div id="sudomock-selected-name" style="font-weight:600;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">
@@ -114,6 +117,7 @@ final class SudoMock_Product {
                                 <div id="sudomock-selected-uuid" style="font-size:11px;color:#6b7280;font-family:monospace;">
                                     <?php echo esc_html( $mockup_uuid ? substr( $mockup_uuid, 0, 8 ) . '...' : '' ); ?>
                                 </div>
+                                <span id="sudomock-selected-type" style="display:inline-block;margin-top:3px;padding:1px 5px;border-radius:4px;background:#e0e7ff;color:#3730a3;font-size:10px;text-transform:uppercase;"><?php echo esc_html( $mockup_type ); ?></span>
                             </div>
                             <button type="button" id="sudomock-change-mockup" class="button button-small"><?php esc_html_e( 'Change', 'sudomock-product-customizer' ); ?></button>
                             <button type="button" id="sudomock-remove-mockup" class="button button-small" style="color:#dc2626;"><?php esc_html_e( 'Remove', 'sudomock-product-customizer' ); ?></button>
@@ -156,13 +160,26 @@ final class SudoMock_Product {
         $uuid = isset( $_POST[ self::META_MOCKUP_UUID ] )
             ? sanitize_text_field( wp_unslash( $_POST[ self::META_MOCKUP_UUID ] ) )
             : '';
-        update_post_meta( $product_id, self::META_MOCKUP_UUID, $uuid );
+        $type = isset( $_POST[ self::META_MOCKUP_TYPE ] )
+            ? sanitize_text_field( wp_unslash( $_POST[ self::META_MOCKUP_TYPE ] ) )
+            : 'psd';
+        if ( ! in_array( $type, array( 'psd', '2d' ), true ) ) {
+            $type = '';
+        }
 
         // Mockup name (for display)
         $name = isset( $_POST['_sudomock_mockup_name'] )
             ? sanitize_text_field( wp_unslash( $_POST['_sudomock_mockup_name'] ) )
             : '';
-        update_post_meta( $product_id, '_sudomock_mockup_name', $name );
+        if ( '' === $uuid || '' === $type ) {
+            delete_post_meta( $product_id, self::META_MOCKUP_UUID );
+            delete_post_meta( $product_id, self::META_MOCKUP_TYPE );
+            delete_post_meta( $product_id, '_sudomock_mockup_name' );
+        } else {
+            update_post_meta( $product_id, self::META_MOCKUP_UUID, $uuid );
+            update_post_meta( $product_id, self::META_MOCKUP_TYPE, $type );
+            update_post_meta( $product_id, '_sudomock_mockup_name', $name );
+        }
     }
 
     /**
@@ -203,15 +220,11 @@ final class SudoMock_Product {
                 'failedToLoad'   => __( 'Failed to load mockups.', 'sudomock-product-customizer' ),
                 'noMockupsMatch' => __( 'No mockups match', 'sudomock-product-customizer' ),
                 'noMockupsYet'   => __( 'No mockups yet.', 'sudomock-product-customizer' ),
-                'uploadFirstPsd' => __( 'Upload your first PSD', 'sudomock-product-customizer' ),
+                'uploadFirstPsd' => __( 'Create your first mockup', 'sudomock-product-customizer' ),
                 'networkError'   => __( 'Network error.', 'sudomock-product-customizer' ),
                 'noPreview'           => __( 'No preview', 'sudomock-product-customizer' ),
                 'smartObject'         => __( 'smart object', 'sudomock-product-customizer' ),
                 'smartObjects'        => __( 'smart objects', 'sudomock-product-customizer' ),
-                'generating'          => __( 'Generating image...', 'sudomock-product-customizer' ),
-                'generateSuccess'     => __( 'Product image generated and set as featured image.', 'sudomock-product-customizer' ),
-                'generateFailed'      => __( 'Failed to generate image.', 'sudomock-product-customizer' ),
-                'generateBtn'         => __( 'Generate Product Image', 'sudomock-product-customizer' ),
             ),
         );
 
@@ -220,7 +233,8 @@ final class SudoMock_Product {
         if ( $post ) {
             $mockup_uuid = get_post_meta( $post->ID, self::META_MOCKUP_UUID, true );
             if ( ! empty( $mockup_uuid ) ) {
-                $result = SudoMock_API_Client::get_mockup( $mockup_uuid );
+                $mockup_type = self::get_mockup_type( $post->ID );
+                $result = SudoMock_API_Client::get_mapped_mockup( $mockup_uuid, $mockup_type );
                 if ( $result['ok'] && ! empty( $result['data'] ) ) {
                     $mockup    = $result['data'];
                     $thumbnail = '';
@@ -238,6 +252,7 @@ final class SudoMock_Product {
                     }
                     $localize_data['currentMockup'] = array(
                         'uuid'      => $mockup_uuid,
+                        'type'      => $mockup_type,
                         'name'      => isset( $mockup['name'] ) ? $mockup['name'] : '',
                         'thumbnail' => $thumbnail,
                     );
@@ -267,5 +282,19 @@ final class SudoMock_Product {
      */
     public static function get_mockup_uuid( $product_id ) {
         return (string) get_post_meta( $product_id, self::META_MOCKUP_UUID, true );
+    }
+
+    /**
+     * Get the validated mockup type. Missing type on a legacy mapping is PSD.
+     *
+     * @param int $product_id Product ID.
+     * @return string psd|2d, or empty for corrupt stored data.
+     */
+    public static function get_mockup_type( $product_id ) {
+        $type = (string) get_post_meta( $product_id, self::META_MOCKUP_TYPE, true );
+        if ( '' === $type ) {
+            return 'psd';
+        }
+        return in_array( $type, array( 'psd', '2d' ), true ) ? $type : '';
     }
 }

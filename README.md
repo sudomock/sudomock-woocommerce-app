@@ -38,7 +38,7 @@ Let customers personalize products with professional PSD mockup designs in real-
 
 1. **Upload PSD** — Upload Photoshop files with Smart Object layers to your SudoMock dashboard
 2. **Map to Products** — Assign mockups to WooCommerce products from the plugin admin
-3. **Customers Customize** — A "Customize" button appears on product pages. Customers upload artwork and preview in real-time
+3. **Customers Customize** — A "Customize" button opens Studio in an iframe modal. Customers upload artwork and preview in real-time
 4. **Render & Cart** — Final mockup renders in <1 second, attaches to cart item, persists to order
 
 ## Pricing

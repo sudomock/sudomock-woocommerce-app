@@ -1,6 +1,6 @@
 <?php
 /**
- * Storefront — renders the customize button and Studio iframe/popup on product pages.
+ * Storefront — renders the customize button and Studio iframe modal on product pages.
  *
  * SECURITY: Creates session via WP AJAX → PHP → API (server-to-server).
  * API key NEVER reaches the browser. Browser only gets a short-lived, opaque session token; the API key stays server-side.
@@ -118,7 +118,6 @@ final class SudoMock_Storefront {
      */
     private function output_button( $product ) {
         $opts = SudoMock_Customizer::get_all();
-        $mockup_uuid = SudoMock_Product::get_mockup_uuid( $product->get_id() );
 
         // Icon SVGs
         $icons = array(
@@ -185,7 +184,6 @@ final class SudoMock_Storefront {
             <button type="button"
                     class="sudomock-customize-btn button"
                     data-product-id="<?php echo esc_attr( $product->get_id() ); ?>"
-                    data-mockup-uuid="<?php echo esc_attr( $mockup_uuid ); ?>"
                     style="<?php echo esc_attr( $btn_style ); ?>"
             >
                 <?php
@@ -253,7 +251,6 @@ final class SudoMock_Storefront {
             'ajaxUrl'     => admin_url( 'admin-ajax.php' ),
             'nonce'       => wp_create_nonce( 'sudomock_storefront' ),
             'studioBase'  => SUDOMOCK_STUDIO_BASE,
-            'displayMode' => get_option( 'sudomock_display_mode', 'iframe' ),
             'i18n'        => array(
                 'loading'          => __( 'Loading...', 'sudomock-product-customizer' ),
                 'unavailable'      => __( 'Customizer is temporarily unavailable. Please try again.', 'sudomock-product-customizer' ),
@@ -277,73 +274,188 @@ final class SudoMock_Storefront {
     }
 
     /**
-     * AJAX: Create Studio session (PHP → API, server-to-server).
-     * Browser gets back an opaque session token, NEVER the API key.
+     * Exact storefront origin used by the Studio parent bridge.
+     *
+     * @return string
      */
-    public function ajax_create_session() {
-        check_ajax_referer( 'sudomock_storefront', 'nonce' );
-
-        $mockup_uuid = isset( $_POST['mockup_uuid'] ) ? sanitize_text_field( wp_unslash( $_POST['mockup_uuid'] ) ) : '';
-        $product_id  = isset( $_POST['product_id'] ) ? absint( $_POST['product_id'] ) : 0;
-
-        if ( empty( $mockup_uuid ) ) {
-            wp_send_json_error( array( 'message' => __( 'Invalid request.', 'sudomock-product-customizer' ) ) );
-        }
-
-        $result = SudoMock_API_Client::create_session( $mockup_uuid, $product_id );
-
-        if ( ! $result['ok'] ) {
-            // Forward the backend status so the storefront can distinguish a
-            // permanent mapping problem (401/403/404 → hide the button) from a
-            // transient one (5xx/network → let the shopper retry).
-            wp_send_json_error( array(
-                'message' => $result['error'],
-                'status'  => isset( $result['status'] ) ? (int) $result['status'] : 0,
-            ) );
-        }
-
-        // Return ONLY the opaque session token - API key never leaves the server
-        wp_send_json_success( array(
-            'session'     => $result['session'],
-            'studioUrl'   => SUDOMOCK_STUDIO_BASE . '/editor?session=' . urlencode( $result['session'] ),
-            'displayMode' => $result['displayMode'],
-        ) );
+    private static function storefront_origin() {
+        return self::url_origin( home_url( '/' ) );
     }
 
     /**
-     * Validate a browser-supplied asset URL before it is stored on an order.
+     * Normalize an HTTP(S) URL to scheme + host + optional port.
      *
-     * These URLs (render preview + customer artwork) are produced by the
-     * SudoMock API but travel through the shopper's browser, so a forged
-     * request could inject an arbitrary link into merchant-facing order meta.
-     * Accept only https, a real public host (no data:/localhost/private IP),
-     * and a bounded length.
-     *
-     * @param string $raw_url Raw URL from the request.
-     * @return string Sanitized URL, or '' if it fails validation.
+     * @param string $url URL or Origin header.
+     * @return string
      */
-    private static function sanitize_asset_url( $raw_url ) {
-        if ( ! is_string( $raw_url ) ) {
+    private static function url_origin( $url ) {
+        $parts = wp_parse_url( $url );
+        if ( ! is_array( $parts ) || empty( $parts['scheme'] ) || empty( $parts['host'] ) ) {
             return '';
         }
-        $url = esc_url_raw( $raw_url, array( 'https' ) );
-        if ( '' === $url || strlen( $url ) >= 2000 ) {
+        $scheme = strtolower( $parts['scheme'] );
+        if ( ! in_array( $scheme, array( 'http', 'https' ), true ) ) {
             return '';
         }
-        $host = wp_parse_url( $url, PHP_URL_HOST );
-        if ( empty( $host ) ) {
-            return '';
+        $origin = $scheme . '://' . strtolower( $parts['host'] );
+        if ( ! empty( $parts['port'] ) ) {
+            $port = absint( $parts['port'] );
+            if ( ( 'http' === $scheme && 80 !== $port ) || ( 'https' === $scheme && 443 !== $port ) ) {
+                $origin .= ':' . $port;
+            }
         }
-        // Reject loopback / obviously private hosts (defence in depth; these
-        // links are merchant-clicked, and legit assets live on public CDNs).
-        if ( in_array( strtolower( $host ), array( 'localhost', '127.0.0.1', '::1' ), true ) ) {
-            return '';
+        return $origin;
+    }
+
+    /**
+     * Fail closed when a guest AJAX write did not originate on this storefront.
+     *
+     * WordPress guest nonces share user ID 0, so the nonce alone is not a
+     * cross-site boundary. Modern fetch sends Origin; Referer is the fallback.
+     *
+     * @return bool
+     */
+    private static function request_has_storefront_origin() {
+        $expected = self::storefront_origin();
+        if ( '' === $expected ) {
+            return false;
         }
-        if ( filter_var( $host, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4 | FILTER_FLAG_IPV6 )
-            && ! filter_var( $host, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE ) ) {
-            return '';
+
+        if ( isset( $_SERVER['HTTP_ORIGIN'] ) && is_string( $_SERVER['HTTP_ORIGIN'] ) ) {
+            $origin = self::url_origin( wp_unslash( $_SERVER['HTTP_ORIGIN'] ) );
+            return '' !== $origin && hash_equals( $expected, $origin );
         }
-        return $url;
+        if ( isset( $_SERVER['HTTP_REFERER'] ) && is_string( $_SERVER['HTTP_REFERER'] ) ) {
+            $origin = self::url_origin( wp_unslash( $_SERVER['HTTP_REFERER'] ) );
+            return '' !== $origin && hash_equals( $expected, $origin );
+        }
+        return false;
+    }
+
+    /**
+     * Transient key for a server-minted Studio message session.
+     *
+     * @param string $message_session_id Message-session UUID.
+     * @return string
+     */
+    private static function session_binding_key( $message_session_id ) {
+        return 'sudomock_studio_' . hash( 'sha256', $message_session_id );
+    }
+
+    /**
+     * Transient key for a completed cart action retry.
+     *
+     * @param string $request_id Studio action request UUID.
+     * @return string
+     */
+    private static function cart_action_key( $request_id ) {
+        return 'sudomock_cart_' . hash( 'sha256', $request_id );
+    }
+
+    /**
+     * Whether a value is a canonical UUID accepted by the Studio protocol.
+     *
+     * @param string $value Candidate UUID.
+     * @return bool
+     */
+    private static function is_protocol_uuid( $value ) {
+        return is_string( $value )
+            && 1 === preg_match( '/^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/', $value );
+    }
+
+    /**
+     * AJAX: Create Studio session (PHP → API, server-to-server).
+     * Browser gets the opaque session and its one-time parent bootstrap secret.
+     * The merchant API key never leaves this server.
+     */
+    public function ajax_create_session() {
+        check_ajax_referer( 'sudomock_storefront', 'nonce' );
+        if ( ! self::request_has_storefront_origin() ) {
+            wp_send_json_error( array( 'message' => __( 'Invalid request.', 'sudomock-product-customizer' ) ), 403 );
+        }
+
+        $product_id = isset( $_POST['product_id'] ) ? absint( $_POST['product_id'] ) : 0;
+        $product    = $product_id ? wc_get_product( $product_id ) : false;
+        $variation_id = isset( $_POST['variation_id'] ) ? absint( $_POST['variation_id'] ) : 0;
+
+        if ( ! $product || ! SudoMock_Product::is_customizable( $product_id ) ) {
+            wp_send_json_error( array( 'message' => __( 'Invalid request.', 'sudomock-product-customizer' ) ) );
+        }
+        if ( $product->is_type( 'variable' ) ) {
+            $variation = $variation_id ? wc_get_product( $variation_id ) : false;
+            if (
+                ! $variation
+                || ! $variation->is_type( 'variation' )
+                || (int) $variation->get_parent_id() !== $product_id
+            ) {
+                wp_send_json_error( array( 'message' => __( 'Invalid product option.', 'sudomock-product-customizer' ) ), 400 );
+            }
+        } elseif ( 0 !== $variation_id ) {
+            wp_send_json_error( array( 'message' => __( 'Invalid product option.', 'sudomock-product-customizer' ) ), 400 );
+        }
+
+        // Resolve the binding on the server. A forged browser request cannot
+        // pair another mockup with this product.
+        $mockup_uuid   = SudoMock_Product::get_mockup_uuid( $product_id );
+        $mockup_type   = SudoMock_Product::get_mockup_type( $product_id );
+        $allowed_origin = self::storefront_origin();
+        if ( empty( $mockup_uuid ) || empty( $mockup_type ) || empty( $allowed_origin ) ) {
+            wp_send_json_error( array( 'message' => __( 'Invalid request.', 'sudomock-product-customizer' ) ) );
+        }
+
+        $result = SudoMock_API_Client::create_session(
+            $mockup_uuid,
+            $mockup_type,
+            $product_id,
+            $variation_id,
+            $allowed_origin
+        );
+
+        if ( ! $result['ok'] ) {
+            $status = isset( $result['status'] ) ? (int) $result['status'] : 503;
+            $status = in_array( $status, array( 401, 403, 404, 409 ), true ) ? $status : 503;
+            $error = array(
+                'message' => __( 'Could not open customizer. Please try again.', 'sudomock-product-customizer' ),
+                'status'  => $status,
+            );
+            if (
+                409 === $status
+                && isset( $result['error_code'] )
+                && in_array( $result['error_code'], array( 'SETUP_REQUIRED', 'MOCKUP_TERMINAL' ), true )
+            ) {
+                $error['error_code'] = $result['error_code'];
+            }
+            wp_send_json_error( $error );
+        }
+
+        $ttl = max( 1, min( DAY_IN_SECONDS, (int) $result['expires_in'] ) );
+        $binding_saved = set_transient(
+            self::session_binding_key( $result['message_session_id'] ),
+            array(
+                'product_id'   => $product_id,
+                'variation_id' => $variation_id,
+                'mockup_uuid'  => $mockup_uuid,
+                'mockup_type'  => $mockup_type,
+                'action_id'    => 'add-to-cart',
+                'shop'         => strtolower( (string) wp_parse_url( $allowed_origin, PHP_URL_HOST ) ),
+            ),
+            $ttl
+        );
+        if ( ! $binding_saved ) {
+            wp_send_json_error( array(
+                'message' => __( 'Could not open customizer. Please try again.', 'sudomock-product-customizer' ),
+                'status'  => 503,
+            ) );
+        }
+
+        // These are the exact browser-side handshake fields. No merchant
+        // credential, proof key, product binding, or action binding is exposed.
+        wp_send_json_success( array(
+            'session'            => $result['session'],
+            'message_session_id' => $result['message_session_id'],
+            'bootstrap_secret'   => $result['bootstrap_secret'],
+            'expires_in'         => $result['expires_in'],
+        ) );
     }
 
     /**
@@ -351,55 +463,174 @@ final class SudoMock_Storefront {
      */
     public function ajax_add_to_cart() {
         check_ajax_referer( 'sudomock_storefront', 'nonce' );
-
-        $product_id  = isset( $_POST['product_id'] ) ? absint( $_POST['product_id'] ) : 0;
-        $mockup_uuid = isset( $_POST['mockup_uuid'] ) ? sanitize_text_field( wp_unslash( $_POST['mockup_uuid'] ) ) : '';
-        $preview_url = isset( $_POST['preview_url'] ) ? self::sanitize_asset_url( wp_unslash( $_POST['preview_url'] ) ) : '';
-        $render_uuid = isset( $_POST['render_uuid'] ) ? sanitize_text_field( wp_unslash( $_POST['render_uuid'] ) ) : '';
-        if ( strlen( $render_uuid ) >= 128 ) {
-            $render_uuid = '';
+        if ( ! self::request_has_storefront_origin() ) {
+            wp_send_json_error( array( 'message' => __( 'Invalid request.', 'sudomock-product-customizer' ) ), 403 );
         }
 
-        // Original artwork URLs (up to 10). These come from the browser, so each
-        // is host-validated (https + public host) before it is written to order
-        // meta the merchant will click — a forged URL must not reach the order.
-        $artwork_urls = array();
-        if ( isset( $_POST['artwork_urls'] ) && is_array( $_POST['artwork_urls'] ) ) {
-            $raw_urls = array_slice( wp_unslash( $_POST['artwork_urls'] ), 0, 10 ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- each URL validated by sanitize_asset_url()
-            foreach ( $raw_urls as $raw_url ) {
-                if ( ! is_string( $raw_url ) ) {
-                    continue;
-                }
-                $url = self::sanitize_asset_url( $raw_url );
-                if ( '' !== $url ) {
-                    $artwork_urls[] = $url;
-                }
-            }
+        $allowed_fields = array(
+            'action',
+            'nonce',
+            'version',
+            'request_id',
+            'message_session_id',
+            'type',
+            'mockup_uuid',
+            'render_uuid',
+            'action_id',
+            'quantity',
+        );
+        if ( array_diff( array_keys( $_POST ), $allowed_fields ) ) {
+            wp_send_json_error( array( 'message' => __( 'Invalid customization action.', 'sudomock-product-customizer' ) ), 400 );
         }
 
-        if ( empty( $product_id ) ) {
-            wp_send_json_error( array( 'message' => __( 'Invalid product.', 'sudomock-product-customizer' ) ) );
+        $version = isset( $_POST['version'] ) && is_string( $_POST['version'] )
+            ? wp_unslash( $_POST['version'] )
+            : '';
+        $request_id = isset( $_POST['request_id'] )
+            ? sanitize_text_field( wp_unslash( $_POST['request_id'] ) )
+            : '';
+        $message_session_id = isset( $_POST['message_session_id'] )
+            ? sanitize_text_field( wp_unslash( $_POST['message_session_id'] ) )
+            : '';
+        $type = isset( $_POST['type'] )
+            ? sanitize_text_field( wp_unslash( $_POST['type'] ) )
+            : '';
+        $mockup_uuid = isset( $_POST['mockup_uuid'] )
+            ? sanitize_text_field( wp_unslash( $_POST['mockup_uuid'] ) )
+            : '';
+        $render_uuid = isset( $_POST['render_uuid'] )
+            ? sanitize_text_field( wp_unslash( $_POST['render_uuid'] ) )
+            : '';
+        $action_id = isset( $_POST['action_id'] )
+            ? sanitize_text_field( wp_unslash( $_POST['action_id'] ) )
+            : '';
+        if (
+            '1' !== $version
+            || ! self::is_protocol_uuid( $request_id )
+            || ! self::is_protocol_uuid( $message_session_id )
+            || 'studio.design-submitted' !== $type
+            || ! self::is_protocol_uuid( $mockup_uuid )
+            || ! self::is_protocol_uuid( $render_uuid )
+            || 'add-to-cart' !== $action_id
+        ) {
+            wp_send_json_error( array( 'message' => __( 'Invalid customization action.', 'sudomock-product-customizer' ) ), 400 );
+        }
+
+        $binding = get_transient( self::session_binding_key( $message_session_id ) );
+        if (
+            ! is_array( $binding )
+            || empty( $binding['product_id'] )
+            || empty( $binding['mockup_uuid'] )
+            || ! is_string( $binding['mockup_uuid'] )
+            || empty( $binding['mockup_type'] )
+            || ! is_string( $binding['mockup_type'] )
+            || ! isset( $binding['variation_id'] )
+            || ! isset( $binding['shop'] )
+            || ! is_string( $binding['shop'] )
+            || ! isset( $binding['action_id'] )
+            || 'add-to-cart' !== $binding['action_id']
+        ) {
+            wp_send_json_error( array( 'message' => __( 'Invalid customization session.', 'sudomock-product-customizer' ) ) );
+        }
+
+        $product_id  = absint( $binding['product_id'] );
+        $variation_id = absint( $binding['variation_id'] );
+        $bound_mockup_uuid = sanitize_text_field( $binding['mockup_uuid'] );
+        $mockup_type = sanitize_text_field( $binding['mockup_type'] );
+        $origin      = self::storefront_origin();
+        $shop        = strtolower( (string) wp_parse_url( $origin, PHP_URL_HOST ) );
+        if (
+            empty( $product_id )
+            || ! in_array( $mockup_type, array( 'psd', '2d' ), true )
+            || empty( $origin )
+            || empty( $shop )
+            || ! hash_equals( $binding['shop'], $shop )
+            || ! SudoMock_Product::is_customizable( $product_id )
+            || SudoMock_Product::get_mockup_uuid( $product_id ) !== $bound_mockup_uuid
+            || SudoMock_Product::get_mockup_type( $product_id ) !== $mockup_type
+            || ! hash_equals( $bound_mockup_uuid, $mockup_uuid )
+        ) {
+            wp_send_json_error( array( 'message' => __( 'Invalid customization session.', 'sudomock-product-customizer' ) ) );
         }
 
         $product = wc_get_product( $product_id );
         if ( ! $product ) {
             wp_send_json_error( array( 'message' => __( 'Product not found.', 'sudomock-product-customizer' ) ) );
         }
+        if ( $product->is_type( 'variable' ) ) {
+            $variation = $variation_id ? wc_get_product( $variation_id ) : false;
+            if (
+                ! $variation
+                || ! $variation->is_type( 'variation' )
+                || (int) $variation->get_parent_id() !== $product_id
+            ) {
+                wp_send_json_error( array( 'message' => __( 'Product mapping changed.', 'sudomock-product-customizer' ) ), 409 );
+            }
+        } elseif ( 0 !== $variation_id ) {
+            wp_send_json_error( array( 'message' => __( 'Product mapping changed.', 'sudomock-product-customizer' ) ), 409 );
+        }
 
-        // Shopper's selected variation + quantity from the product form.
-        $variation_id = isset( $_POST['variation_id'] ) ? absint( $_POST['variation_id'] ) : 0;
+        $payload = array(
+            'mockup_uuid'   => $mockup_uuid,
+            'render_uuid'   => $render_uuid,
+            'action_id'     => $action_id,
+            'action_context' => array(
+                'shop'       => $shop,
+                'product_id' => (string) $product_id,
+                'variant_id' => (string) $variation_id,
+            ),
+        );
+
+        $consume_request = array(
+            'version'            => 1,
+            'request_id'         => $request_id,
+            'message_session_id' => $message_session_id,
+            'type'               => $type,
+            'payload'            => $payload,
+        );
+        $consumed = SudoMock_API_Client::consume_studio_action( $consume_request );
+        $receipt = ! empty( $consumed['ok'] ) && isset( $consumed['data']['receipt'] ) && is_array( $consumed['data']['receipt'] )
+            ? $consumed['data']['receipt']
+            : array();
+        $receipt_context = isset( $receipt['action_context'] ) && is_array( $receipt['action_context'] )
+            ? $receipt['action_context']
+            : array();
+        if (
+            empty( $consumed['ok'] )
+            || 1 !== ( isset( $receipt['version'] ) ? $receipt['version'] : null )
+            || $request_id !== ( isset( $receipt['request_id'] ) ? $receipt['request_id'] : null )
+            || $message_session_id !== ( isset( $receipt['message_session_id'] ) ? $receipt['message_session_id'] : null )
+            || $type !== ( isset( $receipt['type'] ) ? $receipt['type'] : null )
+            || $mockup_type !== ( isset( $receipt['mockup_type'] ) ? $receipt['mockup_type'] : null )
+            || 'customize' !== ( isset( $receipt['session_kind'] ) ? $receipt['session_kind'] : null )
+            || $action_id !== ( isset( $receipt['action_id'] ) ? $receipt['action_id'] : null )
+            || $mockup_uuid !== ( isset( $receipt['mockup_uuid'] ) ? $receipt['mockup_uuid'] : null )
+            || $render_uuid !== ( isset( $receipt['render_uuid'] ) ? $receipt['render_uuid'] : null )
+            || $shop !== ( isset( $receipt_context['shop'] ) ? $receipt_context['shop'] : null )
+            || (string) $product_id !== ( isset( $receipt_context['product_id'] ) ? $receipt_context['product_id'] : null )
+            || (string) $variation_id !== ( isset( $receipt_context['variant_id'] ) ? $receipt_context['variant_id'] : null )
+            || count( $receipt_context ) !== 3
+            || count( $receipt ) !== 10
+        ) {
+            wp_send_json_error( array( 'message' => __( 'Could not verify this customization.', 'sudomock-product-customizer' ) ), 403 );
+        }
+
         $quantity     = isset( $_POST['quantity'] ) ? absint( $_POST['quantity'] ) : 1;
         if ( $quantity < 1 ) {
             $quantity = 1;
         }
 
+        $previous_cart = get_transient( self::cart_action_key( $request_id ) );
+        if ( is_array( $previous_cart ) ) {
+            wp_send_json_success( $previous_cart );
+        }
+
         // Cart item data — stored in WC session, visible in cart/order
         $cart_item_data = array(
             'sudomock_customization' => array(
-                'mockup_uuid'  => $mockup_uuid,
-                'preview_url'  => $preview_url,
-                'artwork_urls' => $artwork_urls,
-                'render_uuid'  => $render_uuid,
+                'mockup_uuid'      => $mockup_uuid,
+                'render_uuid'      => $render_uuid,
+                'action_receipt_id' => $request_id,
             ),
         );
 
@@ -434,10 +665,12 @@ final class SudoMock_Storefront {
             ) );
         }
 
-        wp_send_json_success( array(
+        $cart_response = array(
             'message'  => __( 'Added to cart!', 'sudomock-product-customizer' ),
             'cart_url' => wc_get_cart_url(),
             'count'    => WC()->cart->get_cart_contents_count(),
-        ) );
+        );
+        set_transient( self::cart_action_key( $request_id ), $cart_response, DAY_IN_SECONDS );
+        wp_send_json_success( $cart_response );
     }
 }
