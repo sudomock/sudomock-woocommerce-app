@@ -59,7 +59,7 @@ final class SudoMock_Encryption {
         // (colon-free), so the '::' separator can never collide with the
         // payload. The previous format base64-encoded the raw IV inline, so a
         // random IV containing the bytes 0x3A3A ('::') split at the wrong
-        // offset and silently corrupted the key (~1/4400 keys). decrypt() reads
+        // offset and silently corrupted the key (~1/243 keys). decrypt() reads
         // both formats.
         return base64_encode( $iv ) . '::' . $encrypted; // phpcs:ignore
     }
@@ -95,12 +95,14 @@ final class SudoMock_Encryption {
             return '';
         }
 
-        // Legacy format: base64( iv . '::' . ciphertext ). Best-effort — a
-        // reconnect re-encrypts in the current format above.
-        if ( function_exists( 'openssl_decrypt' ) && false !== strpos( $decoded, '::' ) ) {
-            $parts = explode( '::', $decoded, 2 );
-            if ( 2 === count( $parts ) ) {
-                $decrypted = openssl_decrypt( $parts[1], self::$cipher, $key, 0, $parts[0] );
+        // Legacy format: base64( fixed-length iv . '::' . ciphertext ). Split
+        // at the known IV boundary, so an IV containing '::' is still recoverable.
+        if ( function_exists( 'openssl_decrypt' ) ) {
+            $iv_length = openssl_cipher_iv_length( self::$cipher );
+            if ( $iv_length > 0 && '::' === substr( $decoded, $iv_length, 2 ) ) {
+                $iv         = substr( $decoded, 0, $iv_length );
+                $ciphertext = substr( $decoded, $iv_length + 2 );
+                $decrypted  = openssl_decrypt( $ciphertext, self::$cipher, $key, 0, $iv );
                 if ( false !== $decrypted ) {
                     return $decrypted;
                 }

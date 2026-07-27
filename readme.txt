@@ -6,7 +6,7 @@ Tested up to: 6.9
 Requires PHP: 7.4
 WC requires at least: 8.0
 WC tested up to: 10.9
-Stable tag: 1.2.0
+Stable tag: 1.3.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -20,7 +20,7 @@ https://www.youtube.com/watch?v=nmD0ePncAm4
 
 = Features =
 
-* **PSD Rendering** - Photoshop Smart Object replacement with 27 blend modes, CMYK support, and up to 8000px output resolution
+* **PSD Rendering** - High-fidelity mockups with 27 blend modes, CMYK support, and up to 10000px output resolution
 * **White-Label** - Fully customizable labels, button text, and colors. No third-party branding shown to customers
 * **Pay Per Render** - Credit-based rendering, pay only for what you use
 * **Cart Integration** - Rendered mockup preview automatically attaches to cart and order
@@ -74,7 +74,7 @@ Yes. Sign up at [sudomock.com/register](https://sudomock.com/register). A free t
 
 = Is the product customizer white-labeled? =
 
-Yes. No SudoMock branding is visible to your customers. You can customize the button label, colors, display mode, and all customer-facing text in the Settings tab.
+Yes. No SudoMock branding is visible to your customers. You can customize the button label, colors, and all customer-facing text in the Settings tab.
 
 = Does it work with WooCommerce Blocks checkout? =
 
@@ -82,11 +82,11 @@ Yes. The plugin is fully compatible with both the classic WooCommerce checkout a
 
 = What PSD files are supported? =
 
-Any PSD with Smart Object layers. Smart Objects become customizable areas where customers upload their artwork. Supports files up to 300MB, unlimited layers, RGB/CMYK color modes, and 27 blend modes.
+PSD templates can contain multiple customizable areas for customer artwork. Supports files up to 300MB, unlimited layers, RGB/CMYK color modes, and 27 blend modes.
 
 = What output formats does the mockup renderer support? =
 
-PNG, JPEG, and WebP. You can configure quality (1-100), resolution up to 8000px, and transparency (alpha channel support).
+PNG, JPEG, and WebP. You can configure quality (1-100), resolution up to 10000px, and transparency (alpha channel support).
 
 = Is it GDPR compliant? =
 
@@ -110,7 +110,7 @@ No product limit. Map as many products as you want to mockup templates.
 2. **Products** - Browse WooCommerce products with one-click mockup mapping and status indicators.
 3. **Mockup Library** - Search, filter, and preview your PSD mockup templates.
 4. **Product Mapping** - Select a mockup for any product with instant preview.
-5. **Settings** - Customize button label, display mode, and storefront behavior.
+5. **Settings** - Customize button label and storefront behavior.
 6. **Storefront Preview** - Customer view with the "Customize" button on product page.
 7. **Customer Customizer** - Upload artwork and see real-time mockup preview.
 8. **Cart Integration** - Rendered mockup preview attached to cart line item.
@@ -118,15 +118,20 @@ No product limit. Map as many products as you want to mockup templates.
 
 == Changelog ==
 
+= 1.3.0 =
+* 2D mockups: create product mockups directly from a product photo, no PSD template required
+* Storefront customization flow now supports 2D mockups end to end, alongside PSD mockups
+* Add-to-cart is confirmed with a server-verified receipt, so only completed customizations reach the cart
+
 = 1.2.0 =
 * Original customer artwork is now attached to orders as downloadable "Source Design" links, alongside the customization preview, for production
 * Fixed variable products so the shopper's chosen variation (and price) is added to the cart
 * Fixed the product quantity being ignored (always added 1)
 * Add-to-cart failures no longer discard the shopper's design; the editor stays open to retry
 * Orphaned mockup mappings are flagged in the admin ("Mapped (invalid) — Remap") and hide the storefront button instead of showing an error
-* Popup display mode now falls back to the in-page editor when blocked; duplicate add-to-cart clicks are guarded; a fresh security token is fetched on cached pages
+* Studio now always opens in an iframe modal; duplicate add-to-cart clicks are guarded; a fresh security token is fetched on cached pages
 * Fixed a fatal error on some classic themes' product pages
-* Security: hardened stored API-key encryption, order-URL validation, admin grid escaping, and error-report URL logging
+* Security: restores stores affected by a rare saved-connection issue, prevents recurrence, and strengthens order links, admin displays, and error reporting
 * GDPR erasure now deletes the stored design files from SudoMock (with automatic retry), not just local order meta
 * Removed unused code paths for a lighter, cleaner plugin
 
@@ -174,7 +179,7 @@ This service is provided by "SudoMock": [Terms of Service](https://sudomock.com/
 
 = SudoMock Studio (studio.sudomock.com) =
 
-The plugin loads the SudoMock Studio editor from https://studio.sudomock.com in an iframe on the frontend product page. This happens only when a customer clicks the "Customize" button. Inside the Studio editor, the customer can upload their own artwork/images which are transmitted to the SudoMock rendering service to generate a preview of the customized product. The rendered image URL is then sent back to WordPress via postMessage and stored alongside the customer's order.
+The product editor at https://studio.sudomock.com opens in an iframe modal only when a customer clicks the "Customize" button. Customers can upload artwork to preview their customized product. The preview and source-design file links are returned to the store and saved with the order for fulfilment.
 
 This service is provided by "SudoMock": [Terms of Service](https://sudomock.com/legal/terms), [Privacy Policy](https://sudomock.com/legal/privacy).
 

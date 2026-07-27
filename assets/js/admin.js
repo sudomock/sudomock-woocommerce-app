@@ -82,6 +82,7 @@
 	 * ──────────────────────────────────────────── */
 	var modal = null;
 	var selectedMockup = null;
+	var selectedMockupType = null;
 	var selectedMockupName = null;
 	var currentProductId = null;
 
@@ -98,6 +99,7 @@
 				var info = modal.querySelector('.sudomock-modal__product-info');
 				if (info) info.textContent = (i18n.assigningTo || 'Assigning mockup to:') + ' ' + name;
 				selectedMockup = null;
+				selectedMockupType = null;
 				selectedMockupName = null;
 				updateAssignBtn();
 				openModal();
@@ -146,6 +148,7 @@
 	function closeModal() {
 		if (modal) modal.style.display = 'none';
 		selectedMockup = null;
+		selectedMockupType = null;
 		selectedMockupName = null;
 		currentProductId = null;
 	}
@@ -185,6 +188,7 @@
 			var card = document.createElement('div');
 			card.className = 'sudomock-mockup-card';
 			card.setAttribute('data-uuid', m.uuid);
+			var mockupType = m.mockup_type === '2d' ? '2d' : 'psd';
 
 			var thumbUrl = '';
 			if (m.thumbnails && m.thumbnails.length) {
@@ -195,6 +199,8 @@
 			}
 
 			var soCount = m.smart_objects ? m.smart_objects.length : 0;
+			var layerCount = typeof m.layer_count === 'number' ? m.layer_count : soCount;
+			var layerLabel = mockupType === '2d' ? 'print area' : 'smart object';
 			var dims = (m.width && m.height) ? m.width + ' × ' + m.height + 'px' : '';
 
 			card.innerHTML =
@@ -204,7 +210,8 @@
 				'<div class="sudomock-mockup-card__info">' +
 					'<div class="sudomock-mockup-card__name" title="' + escapeHtml(m.name) + '">' + escapeHtml(m.name) + '</div>' +
 					'<div style="display:flex;gap:4px;align-items:center;flex-wrap:wrap;">' +
-						'<span class="sudomock-badge sudomock-badge--info" style="font-size:10px;padding:1px 6px;">' + soCount + ' smart object' + (soCount !== 1 ? 's' : '') + '</span>' +
+						'<span class="sudomock-badge" style="font-size:10px;padding:1px 6px;text-transform:uppercase;">' + mockupType + '</span>' +
+						'<span class="sudomock-badge sudomock-badge--info" style="font-size:10px;padding:1px 6px;">' + layerCount + ' ' + layerLabel + (layerCount !== 1 ? 's' : '') + '</span>' +
 						(dims ? '<span style="font-size:10px;color:#94a3b8;">' + dims + '</span>' : '') +
 					'</div>' +
 				'</div>';
@@ -223,6 +230,7 @@
 				check.textContent = '✓';
 				card.appendChild(check);
 				selectedMockup = m.uuid;
+				selectedMockupType = mockupType;
 				selectedMockupName = m.name || '';
 				updateAssignBtn();
 			});
@@ -245,6 +253,7 @@
 		body.append('nonce', nonce);
 		body.append('product_id', productId);
 		body.append('mockup_uuid', mockupUuid);
+		body.append('mockup_type', selectedMockupType || '');
 		body.append('mockup_name', selectedMockupName || '');
 
 		fetch(ajaxUrl, { method: 'POST', body: body })
@@ -381,11 +390,11 @@
 						emptyDiv.appendChild(iconWrap2);
 						var h3 = document.createElement('h3');
 						h3.className = 'sudomock-empty-state__title';
-						h3.textContent = i18n.noPsdMockups || 'No PSD mockups yet';
+						h3.textContent = i18n.noPsdMockups || 'No mockups yet';
 						emptyDiv.appendChild(h3);
 						var desc = document.createElement('p');
 						desc.className = 'sudomock-empty-state__desc';
-						desc.textContent = i18n.uploadPsdDesc || 'Upload PSD mockup files in your SudoMock Dashboard. Mockups with smart objects will appear here automatically.';
+						desc.textContent = i18n.uploadPsdDesc || 'Create a PSD or 2D mockup in your SudoMock Dashboard. It will appear here automatically.';
 						emptyDiv.appendChild(desc);
 						var cta = document.createElement('a');
 						cta.href = 'https://sudomock.com/dashboard/playground';
@@ -411,6 +420,8 @@
 						thumbUrl = m.thumbnail;
 					}
 					var soCount = m.smart_objects ? m.smart_objects.length : 0;
+					var mockupType = m.mockup_type === '2d' ? '2d' : 'psd';
+					var layerCount = typeof m.layer_count === 'number' ? m.layer_count : soCount;
 					var textCount = m.text_layers ? m.text_layers.length : 0;
 					var dims = (m.width && m.height) ? m.width + ' × ' + m.height + 'px' : '';
 
@@ -459,7 +470,7 @@
 					// SO badge overlay
 					var soBadge = document.createElement('div');
 					soBadge.className = 'sudomock-mockup-card__so-badge';
-					soBadge.textContent = soCount + ' SO' + (soCount !== 1 ? 's' : '');
+					soBadge.textContent = mockupType.toUpperCase();
 					card.appendChild(soBadge);
 
 					// Info
@@ -476,8 +487,13 @@
 					var soBadgeInfo = document.createElement('span');
 					soBadgeInfo.className = 'sudomock-badge sudomock-badge--info';
 					soBadgeInfo.style.cssText = 'font-size:10px;padding:1px 6px;';
-					soBadgeInfo.textContent = soCount + ' smart object' + (soCount !== 1 ? 's' : '');
+					soBadgeInfo.textContent = layerCount + (mockupType === '2d' ? ' print area' : ' smart object') + (layerCount !== 1 ? 's' : '');
 					badgesDiv.appendChild(soBadgeInfo);
+					var typeBadge = document.createElement('span');
+					typeBadge.className = 'sudomock-badge';
+					typeBadge.style.cssText = 'font-size:10px;padding:1px 6px;text-transform:uppercase;';
+					typeBadge.textContent = mockupType;
+					badgesDiv.appendChild(typeBadge);
 					if (textCount > 0) {
 						var textBadge = document.createElement('span');
 						textBadge.className = 'sudomock-badge';
@@ -562,7 +578,7 @@
 		showAdjustments: true, showColorOverlay: true, showFitMode: true,
 		showPosition: true, showSize: true, showRotation: true, showFlip: true,
 		showExportOptions: true, showZoomControls: true, showUndoRedo: true,
-		displayMode: 'iframe', layout: 'full', autoRender: true,
+		layout: 'full', autoRender: true,
 		autoRenderDelay: 800, maxFileSize: 15
 	};
 

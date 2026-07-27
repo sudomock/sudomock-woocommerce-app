@@ -3,7 +3,7 @@
  * Plugin Name: SudoMock Product Customizer
  * Plugin URI: https://sudomock.com/woocommerce
  * Description: Connect your WooCommerce store to SudoMock's PSD mockup rendering engine. Let customers customize products with professional mockup designs.
- * Version: 1.2.0
+ * Version: 1.3.0
  * Requires at least: 6.0
  * Requires PHP: 7.4
  * Author: SudoMock
@@ -27,7 +27,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 // Plugin constants
-define( 'SUDOMOCK_VERSION', '1.2.0' );
+define( 'SUDOMOCK_VERSION', '1.3.0' );
 define( 'SUDOMOCK_PLUGIN_FILE', __FILE__ );
 define( 'SUDOMOCK_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 define( 'SUDOMOCK_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
@@ -331,8 +331,6 @@ function sudomock_activate() {
     // Set default options
     add_option( 'sudomock_version', SUDOMOCK_VERSION );
     add_option( 'sudomock_button_label', __( 'Customize This Product', 'sudomock-product-customizer' ) );
-    add_option( 'sudomock_display_mode', 'iframe' );
-
     // Flush rewrite rules
     flush_rewrite_rules();
 }
@@ -344,6 +342,7 @@ register_deactivation_hook( __FILE__, 'sudomock_deactivate' );
  * Plugin deactivation — clean up plugin-specific options that should not persist.
  */
 function sudomock_deactivate() {
+    wp_clear_scheduled_hook( 'sudomock_retry_asset_deletions' );
     flush_rewrite_rules();
 }
 

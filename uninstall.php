@@ -24,17 +24,22 @@ $sudomock_options = array(
     'sudomock_credits_remaining',
     'sudomock_connected_at',
     'sudomock_button_label',
+    // Legacy pre-iframe-only option.
     'sudomock_display_mode',
     'sudomock_credits_warning_dismissed',
     'sudomock_onboarding_dismissed',
+    'sudomock_pending_asset_deletions',
 );
 
 foreach ( $sudomock_options as $sudomock_option ) {
     delete_option( $sudomock_option );
 }
 
+wp_clear_scheduled_hook( 'sudomock_retry_asset_deletions' );
+
 // Product meta
 delete_post_meta_by_key( '_sudomock_mockup_uuid' );
+delete_post_meta_by_key( '_sudomock_mockup_type' );
 delete_post_meta_by_key( '_sudomock_customization_enabled' );
 delete_post_meta_by_key( '_sudomock_mockup_name' );
 

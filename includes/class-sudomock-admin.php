@@ -44,11 +44,6 @@ final class SudoMock_Admin {
             'sanitize_callback' => 'sanitize_text_field',
             'default'           => __( 'Customize This Product', 'sudomock-product-customizer' ),
         ) );
-        register_setting( 'sudomock_settings', 'sudomock_display_mode', array(
-            'type'              => 'string',
-            'sanitize_callback' => 'sanitize_text_field',
-            'default'           => 'iframe',
-        ) );
     }
 
     public function add_menu() {
@@ -109,8 +104,8 @@ final class SudoMock_Admin {
                 'smartObject'             => __( 'smart object', 'sudomock-product-customizer' ),
                 'smartObjects'            => __( 'smart objects', 'sudomock-product-customizer' ),
                 'uploadFirstPsd'          => __( 'Upload Your First PSD', 'sudomock-product-customizer' ),
-                'noPsdMockups'            => __( 'No PSD mockups yet', 'sudomock-product-customizer' ),
-                'uploadPsdDesc'           => __( 'Upload PSD mockup files in your SudoMock Dashboard. Mockups with smart objects will appear here automatically.', 'sudomock-product-customizer' ),
+                'noPsdMockups'            => __( 'No mockups yet', 'sudomock-product-customizer' ),
+                'uploadPsdDesc'           => __( 'Create a PSD or 2D mockup in your SudoMock Dashboard. It will appear here automatically.', 'sudomock-product-customizer' ),
                 'noMockupsMatch'          => __( 'No mockups match', 'sudomock-product-customizer' ),
                 'page'                    => __( 'Page', 'sudomock-product-customizer' ),
                 'of'                      => __( 'of', 'sudomock-product-customizer' ),
@@ -186,6 +181,7 @@ final class SudoMock_Admin {
         // 1. Remove all product mockup meta data
         global $wpdb;
         $wpdb->delete( $wpdb->postmeta, array( 'meta_key' => '_sudomock_mockup_uuid' ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.SlowDBQuery.slow_db_query_meta_key
+        $wpdb->delete( $wpdb->postmeta, array( 'meta_key' => '_sudomock_mockup_type' ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.SlowDBQuery.slow_db_query_meta_key
         $wpdb->delete( $wpdb->postmeta, array( 'meta_key' => '_sudomock_customization_enabled' ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.SlowDBQuery.slow_db_query_meta_key
         $wpdb->delete( $wpdb->postmeta, array( 'meta_key' => '_sudomock_mockup_name' ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.SlowDBQuery.slow_db_query_meta_key
 
@@ -225,7 +221,7 @@ final class SudoMock_Admin {
             $offset = ( $page - 1 ) * $limit;
         }
 
-        $result = SudoMock_API_Client::list_mockups( array(
+        $result = SudoMock_API_Client::list_picker_mockups( array(
             'name'   => $search,
             'limit'  => $limit,
             'offset' => $offset,
@@ -294,7 +290,6 @@ final class SudoMock_Admin {
         $credits_used    = (int) get_option( 'sudomock_credits_used', 0 );
         $credits_limit   = (int) get_option( 'sudomock_credits_limit', 0 );
         $connected_at    = get_option( 'sudomock_connected_at', '' );
-        $display_mode    = get_option( 'sudomock_display_mode', 'iframe' );
         $button_label    = get_option( 'sudomock_button_label', __( 'Customize This Product', 'sudomock-product-customizer' ) );
         $credits_percent = $credits_limit > 0 ? min( round( ( $credits_used / $credits_limit ) * 100 ), 100 ) : 0;
 
@@ -317,7 +312,7 @@ final class SudoMock_Admin {
 
         $data = compact(
             'email', 'plan', 'plan_tier', 'credits_used', 'credits_limit', 'credits_percent',
-            'connected_at', 'display_mode', 'button_label', 'mapped_count', 'total_count'
+            'connected_at', 'button_label', 'mapped_count', 'total_count'
         );
         ?>
         <div class="wrap sudomock-wrap">
@@ -811,6 +806,7 @@ final class SudoMock_Admin {
                                 if ( ! $product ) continue;
                                 $thumb      = $product->get_image( array( 40, 40 ) );
                                 $mockup_uuid = get_post_meta( $p->ID, '_sudomock_mockup_uuid', true );
+                                $mockup_type = SudoMock_Product::get_mockup_type( $p->ID );
                                 $mockup_name = get_post_meta( $p->ID, '_sudomock_mockup_name', true );
                                 $has_mockup  = ! empty( $mockup_uuid );
                                 $status      = $product->get_status();
@@ -832,7 +828,7 @@ final class SudoMock_Admin {
                                         // account: a 403/404 means the mockup no longer belongs to this
                                         // account (deleted, or the store was reconnected to a different
                                         // account), i.e. an orphaned mapping the merchant must re-map.
-                                        $cache_key   = 'sudomock_thumb_' . md5( $mockup_uuid );
+                                        $cache_key   = 'sudomock_thumb_' . md5( $mockup_type . ':' . $mockup_uuid );
                                         $cached      = get_transient( $cache_key );
                                         $display_name = $mockup_name;
                                         $is_orphan   = false;
@@ -840,7 +836,7 @@ final class SudoMock_Admin {
                                             $is_orphan = true;
                                             $thumb_url = '';
                                         } elseif ( false === $cached ) {
-                                            $m_result = SudoMock_API_Client::get_mockup( $mockup_uuid );
+                                            $m_result = SudoMock_API_Client::get_mapped_mockup( $mockup_uuid, $mockup_type );
                                             if ( $m_result['ok'] && ! empty( $m_result['data'] ) ) {
                                                 $m_data = $m_result['data'];
                                                 $thumb_url = ! empty( $m_data['thumbnail'] ) ? $m_data['thumbnail'] : '';
@@ -857,7 +853,7 @@ final class SudoMock_Admin {
                                                     update_post_meta( $p->ID, '_sudomock_mockup_name', sanitize_text_field( $display_name ) );
                                                 }
                                                 set_transient( $cache_key, $thumb_url ? $thumb_url : 'none', 5 * MINUTE_IN_SECONDS );
-                                            } elseif ( isset( $m_result['status'] ) && in_array( (int) $m_result['status'], array( 403, 404 ), true ) ) {
+                                            } elseif ( isset( $m_result['status'] ) && in_array( (int) $m_result['status'], array( 400, 403, 404 ), true ) ) {
                                                 // Definitive: mapping is orphaned. Cache the verdict.
                                                 $is_orphan = true;
                                                 $thumb_url = '';
@@ -886,6 +882,7 @@ final class SudoMock_Admin {
                                                 <?php endif; ?>
                                                 <div>
                                                     <span class="sudomock-badge sudomock-badge--success"><?php esc_html_e( 'Mapped', 'sudomock-product-customizer' ); ?></span>
+                                                    <span class="sudomock-badge sudomock-badge--info" style="text-transform:uppercase;"><?php echo esc_html( $mockup_type ); ?></span>
                                                     <div class="sudomock-text--muted sudomock-text--sm" style="margin-top:2px;"><?php echo esc_html( ! empty( $display_name ) ? $display_name : substr( $mockup_uuid, 0, 12 ) . '...' ); ?></div>
                                                 </div>
                                             </div>
@@ -1230,19 +1227,6 @@ final class SudoMock_Admin {
                         <hr class="sudomock-divider" />
 
                         <div class="sudomock-form-row">
-                            <label class="sudomock-form-row__label" for="sudomock-cfg-displayMode">
-                                <?php esc_html_e( 'Display mode', 'sudomock-product-customizer' ); ?>
-                            </label>
-                            <select id="sudomock-cfg-displayMode" data-config-key="displayMode" class="sudomock-select">
-                                <option value="iframe"><?php esc_html_e( 'Embedded (in-page modal)', 'sudomock-product-customizer' ); ?></option>
-                                <option value="popup"><?php esc_html_e( 'New window', 'sudomock-product-customizer' ); ?></option>
-                            </select>
-                            <p class="sudomock-text--muted sudomock-text--sm" style="margin-top:4px;">
-                                <?php esc_html_e( 'Embedded opens the customizer as an overlay on the product page. New window opens it in a separate browser window.', 'sudomock-product-customizer' ); ?>
-                            </p>
-                        </div>
-
-                        <div class="sudomock-form-row">
                             <label class="sudomock-form-row__label" for="sudomock-cfg-layout">
                                 <?php esc_html_e( 'Layout mode', 'sudomock-product-customizer' ); ?>
                             </label>
@@ -1348,13 +1332,15 @@ final class SudoMock_Admin {
 
         $product_id  = isset( $_POST['product_id'] ) ? absint( $_POST['product_id'] ) : 0;
         $mockup_uuid = isset( $_POST['mockup_uuid'] ) ? sanitize_text_field( wp_unslash( $_POST['mockup_uuid'] ) ) : '';
+        $mockup_type = isset( $_POST['mockup_type'] ) ? sanitize_text_field( wp_unslash( $_POST['mockup_type'] ) ) : '';
         $mockup_name = isset( $_POST['mockup_name'] ) ? sanitize_text_field( wp_unslash( $_POST['mockup_name'] ) ) : '';
 
-        if ( ! $product_id || empty( $mockup_uuid ) ) {
+        if ( ! $product_id || empty( $mockup_uuid ) || ! in_array( $mockup_type, array( 'psd', '2d' ), true ) ) {
             wp_send_json_error( array( 'message' => __( 'Missing product ID or mockup UUID.', 'sudomock-product-customizer' ) ) );
         }
 
         update_post_meta( $product_id, '_sudomock_mockup_uuid', $mockup_uuid );
+        update_post_meta( $product_id, '_sudomock_mockup_type', $mockup_type );
         update_post_meta( $product_id, '_sudomock_mockup_name', $mockup_name );
         update_post_meta( $product_id, '_sudomock_customization_enabled', 'yes' );
 
@@ -1373,6 +1359,7 @@ final class SudoMock_Admin {
         }
 
         delete_post_meta( $product_id, '_sudomock_mockup_uuid' );
+        delete_post_meta( $product_id, '_sudomock_mockup_type' );
         delete_post_meta( $product_id, '_sudomock_mockup_name' );
         delete_post_meta( $product_id, '_sudomock_customization_enabled' );
 
@@ -1417,7 +1404,7 @@ final class SudoMock_Admin {
             'addingText', 'successText',
             'showAdjustments', 'showColorOverlay', 'showFitMode', 'showPosition',
             'showSize', 'showRotation', 'showFlip', 'showExportOptions', 'showZoomControls', 'showUndoRedo',
-            'theme', 'layout', 'displayMode', 'autoRender', 'autoRenderDelay', 'maxFileSize',
+            'theme', 'layout', 'autoRender', 'autoRenderDelay', 'maxFileSize',
         );
         $config = array();
         foreach ( $allowed as $key ) {
@@ -1431,7 +1418,7 @@ final class SudoMock_Admin {
             'primaryColor', 'accentColor', 'successColor', 'backgroundColor', 'panelBackground',
             'textColor', 'borderColor', 'logoUrl', 'fontFamily',
             'buttonText', 'renderButtonText', 'uploadText', 'headerText',
-            'addingText', 'successText', 'theme', 'layout', 'displayMode',
+            'addingText', 'successText', 'theme', 'layout',
         );
         foreach ( $string_keys as $key ) {
             if ( isset( $config[ $key ] ) ) {

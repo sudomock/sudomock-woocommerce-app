@@ -118,6 +118,9 @@ final class SudoMock_Cart {
             if ( ! empty( $custom['render_uuid'] ) ) {
                 $item->add_meta_data( '_sudomock_render_uuid', $custom['render_uuid'], true );
             }
+            if ( ! empty( $custom['action_receipt_id'] ) ) {
+                $item->add_meta_data( '_sudomock_action_receipt_id', $custom['action_receipt_id'], true );
+            }
         }
     }
 

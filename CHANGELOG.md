@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.3.0] - 2026-07-27
+
+### Added
+- 2D mockup support: merchants can map products to 2D mockups created directly from a product photo, no PSD template required
+- Storefront customization flow supports 2D mockups end to end, alongside existing PSD mockups
+- Add-to-cart is confirmed with a server-verified receipt, so only completed customizations are attached to the cart and order
+
 ## [1.2.0] - 2026-07-14
 
 ### Added
@@ -15,7 +22,7 @@ All notable changes to this project will be documented in this file.
 - 10 language translations (TR, DE, FR, ES, PT-BR, IT, NL, JA, KO, ZH-CN)
 
 ### Fixed
-- Popup display mode no longer silently fails when a popup blocker rejects the window (it opens after an async call, outside the click gesture): it now falls back to the iframe overlay. A stale poll timer that ran forever on a blocked (null) popup is removed
+- Studio now always opens in an iframe modal on the product page
 - Double-clicking "Add to Cart" no longer creates duplicate cart lines (in-flight guard)
 - Full-page-cached storefronts: a fresh nonce is fetched before Customize/add-to-cart, so a stale cached nonce no longer breaks the flow with a generic error
 - The customize button/shortcode resolve the WooCommerce `$product` global (can be a string) before use, matching the enqueue fatal fix
@@ -27,7 +34,7 @@ All notable changes to this project will be documented in this file.
 - Classic themes: resolve the WooCommerce `$product` global (can be a string at enqueue time) before use, preventing a fatal on product pages
 
 ### Security
-- Fixed a rare API-key corruption: the encrypted-key IV separator could collide with random IV bytes (~1/4400 keys), silently breaking the stored key; keys are now stored as `base64(iv)::base64(ciphertext)` (legacy values still decrypt)
+- Restores stores affected by a rare saved-connection issue and prevents recurrence; recovery is automatic and requires no reconnect or data migration
 - Order-item artwork/preview URLs from the browser are host-validated (https + public host) before being written to merchant-facing order meta
 - Admin/product mockup grids escape quotes in mockup names/URLs, closing an attribute-context stored XSS
 - Storefront error reports send the page path only, not the full URL (no query-string leakage)
