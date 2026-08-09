@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: SudoMock Product Customizer 1.0.0\n"
 "Report-Msgid-Bugs-To: support@sudomock.com\n"
-"POT-Creation-Date: 2026-07-26 14:29+0300\n"
+"POT-Creation-Date: 2026-08-08 03:38+0300\n"
 "PO-Revision-Date: 2026-03-15 03:00+0300\n"
 "Last-Translator: SudoMock <support@sudomock.com>\n"
 "Language-Team: Turkish <support@sudomock.com>\n"
@@ -20,7 +20,7 @@ msgstr ""
 #: includes/class-sudomock-admin.php:45 includes/class-sudomock-admin.php:293
 #: sudomock-product-customizer.php:333
 msgid "Customize This Product"
-msgstr "Bu Urunu Ozellestir"
+msgstr "Bu Ürünü Özelleştir"
 
 #: includes/class-sudomock-admin.php:51 includes/class-sudomock-admin.php:52
 #: includes/class-sudomock-product.php:51
@@ -29,30 +29,30 @@ msgstr "SudoMock"
 
 #: includes/class-sudomock-admin.php:86
 msgid "Connect with SudoMock"
-msgstr "SudoMock ile Baglan"
+msgstr "SudoMock ile Bağlan"
 
 #: includes/class-sudomock-admin.php:87
 msgid "Connecting..."
-msgstr "Baglaniyor..."
+msgstr "Bağlanıyor..."
 
 #: includes/class-sudomock-admin.php:88
 msgid "Saving connection..."
-msgstr "Baglanti kaydediliyor..."
+msgstr "Bağlantı kaydediliyor..."
 
 #: includes/class-sudomock-admin.php:89
 msgid "Connected"
-msgstr "Bagli"
+msgstr "Bağlı"
 
 #: includes/class-sudomock-admin.php:90
 msgid "Connection failed"
-msgstr "Baglanti basarisiz"
+msgstr "Bağlantı başarısız"
 
 #: includes/class-sudomock-admin.php:91
 msgid ""
 "Are you sure you want to disconnect? Product customizations will stop "
 "working."
 msgstr ""
-"Baglantiyi kesmek istediginize emin misiniz? Urun ozellestirmeleri calismayi "
+"Bağlantıyı kesmek istediğinize emin mısınız? Ürün özelleştirmeleri çalışmayı "
 "durduracak."
 
 #: includes/class-sudomock-admin.php:92
@@ -60,83 +60,85 @@ msgid ""
 "This will remove all mockup assignments from your products and notify the "
 "SudoMock server. Product customization will stop working immediately."
 msgstr ""
-"Bu islem tum mockup atamalarini urunlerinizden kaldirip SudoMock sunucusuna "
-"bildirecektir. Urun ozellestirmesi aninda duracaktir."
+"Bu işlem tüm mockup atamalarını ürünlerinizden kaldırıp SudoMock sunucusuna "
+"bildirecektir. Ürün özelleştirmesi anında duracaktır."
 
 #: includes/class-sudomock-admin.php:93
 msgid "Disconnecting..."
-msgstr "Baglanti kesiliyor..."
+msgstr "Bağlantı kesiliyor..."
 
 #: includes/class-sudomock-admin.php:94
 msgid "Assigning..."
-msgstr "Ataniyor..."
+msgstr "Atanıyor..."
 
-#: includes/class-sudomock-admin.php:95 includes/class-sudomock-admin.php:980
+#: includes/class-sudomock-admin.php:95 includes/class-sudomock-admin.php:995
 msgid "Assign Mockup"
 msgstr "Mockup Ata"
 
 #: includes/class-sudomock-admin.php:96
 msgid "No mockups found."
-msgstr "Mockup bulunamadi."
+msgstr "Mockup bulunamadı."
 
-#: includes/class-sudomock-admin.php:97 includes/class-sudomock-admin.php:1013
+#: includes/class-sudomock-admin.php:97 includes/class-sudomock-admin.php:1028
 #: includes/class-sudomock-product.php:219
 msgid "Loading mockups..."
-msgstr "Mockup'lar yukleniyor..."
+msgstr "Mockup'lar yükleniyor..."
 
 #: includes/class-sudomock-admin.php:98 includes/class-sudomock-product.php:220
 msgid "Failed to load mockups."
-msgstr "Mockup'lar yuklenemedi."
+msgstr "Mockup'lar yüklenemedi."
 
 #: includes/class-sudomock-admin.php:99
 msgid "Failed to map mockup."
-msgstr "Mockup atanamadi."
+msgstr "Mockup atanamadı."
 
 #: includes/class-sudomock-admin.php:100
 msgid "Network error. Please try again."
-msgstr "Ag hatasi. Lutfen tekrar deneyin."
+msgstr "Ağ hatası. Lütfen tekrar deneyin."
 
 #: includes/class-sudomock-admin.php:101
 msgid "Remove mockup mapping from this product?"
-msgstr "Bu urunden mockup atamasini kaldirmak istiyor musunuz?"
+msgstr "Bu üründen mockup atamasını kaldırmak istiyor musunuz?"
 
 #: includes/class-sudomock-admin.php:102
 msgid "Assigning mockup to:"
-msgstr "Mockup ataniyor:"
+msgstr "Mockup atanıyor:"
 
 #: includes/class-sudomock-admin.php:103
 #: includes/class-sudomock-product.php:225
 msgid "No preview"
-msgstr "Onizleme yok"
+msgstr "Önizleme yok"
 
 #: includes/class-sudomock-admin.php:104
 #: includes/class-sudomock-product.php:226
 msgid "smart object"
-msgstr "akilli nesne"
+msgstr "akıllı nesne"
 
 #: includes/class-sudomock-admin.php:105
 #: includes/class-sudomock-product.php:227
 msgid "smart objects"
-msgstr "akilli nesneler"
+msgstr "akıllı nesneler"
 
 #: includes/class-sudomock-admin.php:106
 msgid "Upload Your First PSD"
-msgstr "Ilk PSD Dosyanizi Yukleyin"
+msgstr "İlk PSD Dosyanızı Yükleyin"
 
 #: includes/class-sudomock-admin.php:107
 msgid "No mockups yet"
-msgstr ""
+msgstr "Henüz mockup yok"
 
 #: includes/class-sudomock-admin.php:108
 msgid ""
 "Create a PSD or 2D mockup in your SudoMock Dashboard. It will appear here "
 "automatically."
 msgstr ""
+"SudoMock Panelinde bir PSD veya 2D mockup oluşturun. Burada otomatik olarak "
+"görünecektir."
 
 #: includes/class-sudomock-admin.php:109
 #: includes/class-sudomock-product.php:221
 msgid "No mockups match"
-msgstr "Eslesen mockup yok"
+msgstr "Eşleşen mockup yok"
 
 #: includes/class-sudomock-admin.php:110
 msgid "Page"
@@ -154,42 +156,42 @@ msgstr "mockup"
 msgid "mockup"
 msgstr "mockup"
 
-#: includes/class-sudomock-admin.php:114 includes/class-sudomock-admin.php:937
+#: includes/class-sudomock-admin.php:114 includes/class-sudomock-admin.php:952
 msgid "Previous"
-msgstr "Onceki"
+msgstr "Önceki"
 
-#: includes/class-sudomock-admin.php:115 includes/class-sudomock-admin.php:955
+#: includes/class-sudomock-admin.php:115 includes/class-sudomock-admin.php:970
 msgid "Next"
 msgstr "Sonraki"
 
 #: includes/class-sudomock-admin.php:116
 msgid "Popup blocked. Please allow popups for this site."
 msgstr ""
-"Acilir pencere engellendi. Lutfen bu site icin acilir pencerelere izin verin."
+"Açılır pencere engellendi. Lütfen bu site için açılır pencerelere izin verin."
 
 #: includes/class-sudomock-admin.php:117
 msgid "Configuration error."
-msgstr "Yapilandirma hatasi."
+msgstr "Yapılandırma hatası."
 
 #: includes/class-sudomock-admin.php:118
 msgid "Settings saved successfully."
-msgstr "Ayarlar basariyla kaydedildi."
+msgstr "Ayarlar başarıyla kaydedildi."
 
 #: includes/class-sudomock-admin.php:119
 msgid "Reset all studio settings to defaults?"
-msgstr "Tum studio ayarlarini varsayilana sifirlamak istiyor musunuz?"
+msgstr "Tüm studio ayarlarını varsayılana sıfırlamak istiyor musunuz?"
 
 #: includes/class-sudomock-admin.php:120
 msgid "Changes discarded."
-msgstr "Degisiklikler iptal edildi."
+msgstr "Değişiklikler iptal edildi."
 
-#: includes/class-sudomock-admin.php:121 includes/class-sudomock-admin.php:1280
+#: includes/class-sudomock-admin.php:121 includes/class-sudomock-admin.php:1295
 msgid "Save Studio Config"
-msgstr "Studio Yapilandirmasini Kaydet"
+msgstr "Studio Yapılandırmasını Kaydet"
 
 #: includes/class-sudomock-admin.php:122
 msgid "Network error saving config."
-msgstr "Yapilandirma kaydedilirken ag hatasi."
+msgstr "Yapılandırma kaydedilirken ağ hatası."
 
 #: includes/class-sudomock-admin.php:123
 msgid "Failed to save."
@@ -199,71 +201,71 @@ msgstr "Kaydedilemedi."
 msgid "text"
 msgstr "metin"
 
-#: includes/class-sudomock-admin.php:126 includes/class-sudomock-admin.php:1489
+#: includes/class-sudomock-admin.php:126 includes/class-sudomock-admin.php:1504
 msgid "Please enter a subject."
-msgstr "Lutfen bir konu girin."
+msgstr "Lütfen bir konu girin."
 
-#: includes/class-sudomock-admin.php:127 includes/class-sudomock-admin.php:1492
+#: includes/class-sudomock-admin.php:127 includes/class-sudomock-admin.php:1507
 msgid "Please enter a message."
-msgstr "Lutfen bir mesaj girin."
+msgstr "Lütfen bir mesaj girin."
 
 #: includes/class-sudomock-admin.php:128
 msgid "Sending..."
-msgstr "Gonderiliyor..."
+msgstr "Gönderiliyor..."
 
-#: includes/class-sudomock-admin.php:129 includes/class-sudomock-admin.php:1547
+#: includes/class-sudomock-admin.php:129 includes/class-sudomock-admin.php:1562
 msgid "Your message has been sent. We will get back to you soon."
-msgstr "Mesajiniz gonderildi. En kisa surede size donecegiz."
+msgstr "Mesajınız gönderildi. En kısa sürede size döneceğiz."
 
 #: includes/class-sudomock-admin.php:130
 msgid "Failed to send message. Please try again."
-msgstr "Mesaj gonderilemedi. Lutfen tekrar deneyin."
+msgstr "Mesaj gönderilemedi. Lütfen tekrar deneyin."
 
 #: includes/class-sudomock-admin.php:131
 msgid "You have reached the limit. Please wait before sending another message."
 msgstr ""
-"Gonderim limitine ulastiniz. Lutfen yeni mesaj gondermeden once bekleyin."
+"Gönderim limitine ulaştınız. Lütfen yeni mesaj göndermeden önce bekleyin."
 
-#: includes/class-sudomock-admin.php:132 includes/class-sudomock-admin.php:1315
+#: includes/class-sudomock-admin.php:132 includes/class-sudomock-admin.php:1330
 msgid "Submit"
-msgstr "Gonder"
+msgstr "Gönder"
 
-#: includes/class-sudomock-admin.php:134 includes/class-sudomock-admin.php:1564
+#: includes/class-sudomock-admin.php:134 includes/class-sudomock-admin.php:1579
 msgid "Onboarding dismissed."
-msgstr "Baslangic rehberi kapatildi."
+msgstr "Başlangıç rehberi kapatıldı."
 
 #: includes/class-sudomock-admin.php:146 includes/class-sudomock-admin.php:178
-#: includes/class-sudomock-admin.php:211 includes/class-sudomock-admin.php:1330
-#: includes/class-sudomock-admin.php:1353
-#: includes/class-sudomock-admin.php:1376
-#: includes/class-sudomock-admin.php:1390
-#: includes/class-sudomock-admin.php:1475
-#: includes/class-sudomock-admin.php:1558
-#: includes/class-sudomock-admin.php:1575
+#: includes/class-sudomock-admin.php:211 includes/class-sudomock-admin.php:1345
+#: includes/class-sudomock-admin.php:1368
+#: includes/class-sudomock-admin.php:1391
+#: includes/class-sudomock-admin.php:1405
+#: includes/class-sudomock-admin.php:1490
+#: includes/class-sudomock-admin.php:1573
+#: includes/class-sudomock-admin.php:1590
 msgid "Permission denied."
-msgstr "Erisim reddedildi."
+msgstr "Erişim reddedildi."
 
 #: includes/class-sudomock-admin.php:151
 msgid "Invalid API key format. Keys start with sm_"
-msgstr "Gecersiz API anahtari formati. Anahtarlar sm_ ile baslar."
+msgstr "Geçersiz API anahtarı formatı. Anahtarlar sm_ ile başlar."
 
 #: includes/class-sudomock-admin.php:171
 msgid "Connected successfully!"
-msgstr "Basariyla baglandi!"
+msgstr "Başarıyla bağlandı!"
 
 #: includes/class-sudomock-admin.php:205
 msgid "Disconnected."
-msgstr "Baglanti kesildi."
+msgstr "Bağlantı kesildi."
 
 #: includes/class-sudomock-admin.php:275
 msgid "Dashboard"
 msgstr "Kontrol Paneli"
 
-#: includes/class-sudomock-admin.php:276 includes/class-sudomock-admin.php:648
+#: includes/class-sudomock-admin.php:276 includes/class-sudomock-admin.php:663
 msgid "Products"
-msgstr "Urunler"
+msgstr "Ürünler"
 
-#: includes/class-sudomock-admin.php:277 includes/class-sudomock-admin.php:667
+#: includes/class-sudomock-admin.php:277 includes/class-sudomock-admin.php:682
 msgid "Mockups"
 msgstr "Mockup'lar"
 
@@ -273,21 +275,23 @@ msgstr "Ayarlar"
 
 #: includes/class-sudomock-admin.php:366
 msgid "Product Customization, Powered by Your PSDs"
-msgstr "PSD'lerinizle Desteklenen Urun Ozellestirme"
+msgstr "PSD'lerinizle Desteklenen Ürün Özelleştirme"
 
 #: includes/class-sudomock-admin.php:369
 msgid ""
-"Let shoppers personalize products with their own artwork, logos, and text — "
+"Let shoppers personalize products with their own artwork, logos, and text, "
 "rendered onto your PSD mockups in real time."
 msgstr ""
+"Müşterileriniz kendi görselleri, logoları ve metinleriyle ürünleri "
+"kişiselleştirsin. Hepsi PSD mockup'larınıza anlık olarak işlenir."
 
 #: includes/class-sudomock-admin.php:373
 msgid "Connect your SudoMock account to begin"
-msgstr "Baslamak icin SudoMock hesabinizi baglayin"
+msgstr "Başlamak için SudoMock hesabınızı bağlayın"
 
 #: includes/class-sudomock-admin.php:378
 msgid "Connect Account"
-msgstr "Hesabi Bagla"
+msgstr "Hesabı Bağla"
 
 #: includes/class-sudomock-admin.php:384
 #, php-format
@@ -296,35 +300,35 @@ msgstr "veya %s"
 
 #: includes/class-sudomock-admin.php:385
 msgid "create a free account"
-msgstr "ucretsiz hesap olusturun"
+msgstr "ücretsiz hesap oluşturun"
 
 #: includes/class-sudomock-admin.php:397
 msgid "How It Works"
-msgstr "Nasil Calisir"
+msgstr "Nasıl Çalışır"
 
 #: includes/class-sudomock-admin.php:401
 msgid "Upload PSDs"
-msgstr "PSD Yukle"
+msgstr "PSD Yükle"
 
 #: includes/class-sudomock-admin.php:401
 msgid "Upload Photoshop mockups on sudomock.com."
-msgstr "sudomock.com uzerinde Photoshop mockup'larini yukleyin."
+msgstr "sudomock.com üzerinde Photoshop mockup'larını yükleyin."
 
 #: includes/class-sudomock-admin.php:402
 msgid "Map to Products"
-msgstr "Urunlere Ata"
+msgstr "Ürünlere Ata"
 
 #: includes/class-sudomock-admin.php:402
 msgid "Assign a PSD mockup to each WooCommerce product."
-msgstr "Her WooCommerce urunune bir PSD mockup atayin."
+msgstr "Her WooCommerce ürününe bir PSD mockup atayın."
 
 #: includes/class-sudomock-admin.php:403
 msgid "Customers Customize"
-msgstr "Musteriler Ozellestirsin"
+msgstr "Müşteriler Özelleştirsin"
 
 #: includes/class-sudomock-admin.php:403
 msgid "Shoppers upload artwork and see a live preview."
-msgstr "Musteriler gorsellerini yukleyip canli onizleme gorsun."
+msgstr "Müşteriler görsellerini yükleyip canlı önizleme görsün."
 
 #: includes/class-sudomock-admin.php:404
 msgid "Render & Cart"
@@ -336,682 +340,725 @@ msgstr "Son mockup render edilip sepete eklenir."
 
 #: includes/class-sudomock-admin.php:425
 msgid "Pricing"
-msgstr "Fiyatlandirma"
+msgstr "Fiyatlandırma"
 
 #: includes/class-sudomock-admin.php:427
 msgid ""
-"Free to install. Pay per render from your credit balance — $0.002 per render."
+"Free to install. Pay as you go at $0.10 per PSD render, so $1 covers 10. $5 "
+"minimum, no subscription."
 msgstr ""
+"Kurulum ücretsiz. Kullandıkça ödeyin: PSD render başına $0.10, yani $1 ile "
+"10 render. Minimum $5, abonelik yok."
 
-#: includes/class-sudomock-admin.php:432
-msgid "free renders / month"
-msgstr "ucretsiz render / ay"
+#: includes/class-sudomock-admin.php:430
+msgid ""
+"2D Mockups and video renders are priced by cost, not at the flat render "
+"rate. Volume plans start at $25 per month."
+msgstr ""
+"2D Mockups ve video render'ları sabit render ücretine göre değil, maliyete "
+"göre fiyatlanır. Hacim planları ayda $25'ten başlar."
 
-#: includes/class-sudomock-admin.php:462
-msgid "Upgrade"
-msgstr "Yukselt"
+#: includes/class-sudomock-admin.php:435
+msgid "free credits to start, one time"
+msgstr "başlangıç kredisi, tek seferlik"
 
-#: includes/class-sudomock-admin.php:462 includes/class-sudomock-admin.php:564
+#: includes/class-sudomock-admin.php:465 includes/class-sudomock-admin.php:579
+msgid "Add a credit card"
+msgstr "Kredi kartı ekleyin"
+
+#: includes/class-sudomock-admin.php:465 includes/class-sudomock-admin.php:579
 msgid "Manage Plan"
-msgstr "Plani Yonet"
+msgstr "Planı Yönet"
 
-#: includes/class-sudomock-admin.php:465
+#: includes/class-sudomock-admin.php:468
 msgid "Disconnect"
-msgstr "Baglantiyi Kes"
+msgstr "Bağlantıyı Kes"
 
-#: includes/class-sudomock-admin.php:477
+#: includes/class-sudomock-admin.php:480
 #, php-format
 msgid "%1$s / %2$s credits"
 msgstr "%1$s / %2$s kredi"
 
-#: includes/class-sudomock-admin.php:497
+#: includes/class-sudomock-admin.php:500
 msgid "Get Started"
-msgstr "Baslayin"
+msgstr "Başlayın"
 
-#: includes/class-sudomock-admin.php:500 includes/class-sudomock-admin.php:565
+#: includes/class-sudomock-admin.php:503 includes/class-sudomock-admin.php:580
 msgid "Dismiss"
 msgstr "Kapat"
 
-#: includes/class-sudomock-admin.php:504
+#: includes/class-sudomock-admin.php:507
 msgid ""
 "Complete these 3 steps to start offering product customization to your "
 "customers."
 msgstr ""
-"Musterilerinize urun ozellestirme sunmaya baslamak icin bu 3 adimi "
-"tamamlayin."
-
-#: includes/class-sudomock-admin.php:511
-msgid "Upload your PSD mockups"
-msgstr "PSD mockup'larinizi yukleyin"
+"Müşterilerinize ürün özelleştirme sunmaya başlamak için bu 3 adımı "
+"tamamlayın."
 
 #: includes/class-sudomock-admin.php:514
+msgid "Upload your PSD mockups"
+msgstr "PSD mockup'larınızı yükleyin"
+
+#: includes/class-sudomock-admin.php:517
 msgid ""
 "Upload your Photoshop mockup files with smart object layers in the SudoMock "
 "Dashboard."
 msgstr ""
-"SudoMock Panelinde akilli nesne katmanlari iceren Photoshop mockup "
-"dosyalarinizi yukleyin."
+"SudoMock Panelinde akıllı nesne katmanları içeren Photoshop mockup "
+"dosyalarınızı yükleyin."
 
-#: includes/class-sudomock-admin.php:518
+#: includes/class-sudomock-admin.php:521
 msgid "Open Dashboard"
-msgstr "Paneli Ac"
-
-#: includes/class-sudomock-admin.php:525
-msgid "Map mockups to products"
-msgstr "Mockup'lari urunlere atayin"
+msgstr "Paneli Aç"
 
 #: includes/class-sudomock-admin.php:528
+msgid "Map mockups to products"
+msgstr "Mockup'ları ürünlere atayın"
+
+#: includes/class-sudomock-admin.php:531
 msgid ""
 "Assign a PSD mockup to each WooCommerce product you want to offer "
 "customization for."
 msgstr ""
-"Ozellestirme sunmak istediginiz her WooCommerce urunune bir PSD mockup "
-"atayin."
+"Özelleştirme sunmak istediğiniz her WooCommerce ürününe bir PSD mockup "
+"atayın."
 
-#: includes/class-sudomock-admin.php:532
+#: includes/class-sudomock-admin.php:535
 msgid "Products Tab"
-msgstr "Urunler Sekmesi"
-
-#: includes/class-sudomock-admin.php:539
-msgid "Customize button appearance"
-msgstr "Buton gorunumunu ozellestirin"
+msgstr "Ürünler Sekmesi"
 
 #: includes/class-sudomock-admin.php:542
+msgid "Customize button appearance"
+msgstr "Buton görünümünü özelleştirin"
+
+#: includes/class-sudomock-admin.php:545
 msgid ""
 "Style the \"Customize\" button on product pages to match your store theme."
 msgstr ""
+"Ürün sayfalarındaki \"Özelleştir\" butonunu mağaza temanıza uyacak şekilde "
+"biçimlendirin."
 
-#: includes/class-sudomock-admin.php:546 includes/class-sudomock-admin.php:1067
+#: includes/class-sudomock-admin.php:549 includes/class-sudomock-admin.php:1082
 msgid "Open Customizer"
-msgstr "Ozellestiriciyi Ac"
+msgstr "Özelleştiriciyi Aç"
 
-#: includes/class-sudomock-admin.php:560
+#: includes/class-sudomock-admin.php:568
+#, php-format
+msgid ""
+"You have used %d%% of your free credits. They are granted once and do not "
+"renew."
+msgstr ""
+"Ücretsiz kredinizin %%%d kadarını kullandınız. Bu krediler tek seferlik "
+"verilir ve yenilenmez."
+
+#: includes/class-sudomock-admin.php:574
 #, php-format
 msgid "You have used %d%% of your monthly credits."
-msgstr "Aylik kredinizin %%%d kadarini kullandiniz."
+msgstr "Aylık kredinizin %%%d kadarını kullandınız."
 
-#: includes/class-sudomock-admin.php:581
+#: includes/class-sudomock-admin.php:596
 msgid "Setup Progress"
-msgstr "Kurulum Ilerlemesi"
+msgstr "Kurulum İlerlemesi"
 
-#: includes/class-sudomock-admin.php:586
+#: includes/class-sudomock-admin.php:601
 #, php-format
 msgid "%1$d of %2$d"
 msgstr "%1$d / %2$d"
 
-#: includes/class-sudomock-admin.php:599
+#: includes/class-sudomock-admin.php:614
 msgid "Account connected"
-msgstr "Hesap baglandi"
+msgstr "Hesap bağlandı"
 
-#: includes/class-sudomock-admin.php:607
+#: includes/class-sudomock-admin.php:622
 msgid "Map PSD mockups to products"
-msgstr "PSD mockup'lari urunlere atayin"
+msgstr "PSD mockup'ları ürünlere atayın"
 
-#: includes/class-sudomock-admin.php:609
+#: includes/class-sudomock-admin.php:624
 msgid "Map Products"
-msgstr "Urunleri Esle"
+msgstr "Ürünleri Eşle"
 
-#: includes/class-sudomock-admin.php:621
+#: includes/class-sudomock-admin.php:636
 msgid "Resources"
 msgstr "Kaynaklar"
 
-#: includes/class-sudomock-admin.php:625
+#: includes/class-sudomock-admin.php:640
 msgid "Upload PSD Mockups"
-msgstr "PSD Mockup Yukle"
+msgstr "PSD Mockup Yükle"
 
-#: includes/class-sudomock-admin.php:629
+#: includes/class-sudomock-admin.php:644
 msgid "PSD Preparation Guide"
-msgstr "PSD Hazirlama Kilavuzu"
+msgstr "PSD Hazırlama Kılavuzu"
 
-#: includes/class-sudomock-admin.php:633
+#: includes/class-sudomock-admin.php:648
 msgid "Integration Docs"
-msgstr "Entegrasyon Dokumanlari"
-
-#: includes/class-sudomock-admin.php:653
-#, php-format
-msgid "%1$d of %2$d mapped"
-msgstr "%1$d / %2$d eslenmis"
+msgstr "Entegrasyon Dokümanları"
 
 #: includes/class-sudomock-admin.php:668
-msgid "Browse PSD mockups"
-msgstr "PSD mockup'lara gozat"
+#, php-format
+msgid "%1$d of %2$d mapped"
+msgstr "%1$d / %2$d eşlenmiş"
 
-#: includes/class-sudomock-admin.php:677
+#: includes/class-sudomock-admin.php:683
+msgid "Browse PSD mockups"
+msgstr "PSD mockup'lara gözat"
+
+#: includes/class-sudomock-admin.php:692
 msgid "Settings & Billing"
 msgstr "Ayarlar ve Faturalama"
 
-#: includes/class-sudomock-admin.php:678
+#: includes/class-sudomock-admin.php:693
 msgid "Studio config and display settings"
-msgstr "Studio yapilandirmasi ve gorunum ayarlari"
+msgstr "Studio yapılandırması ve görünüm ayarları"
 
-#: includes/class-sudomock-admin.php:734
+#: includes/class-sudomock-admin.php:749
 msgid "Search products..."
-msgstr "Urun ara..."
+msgstr "Ürün ara..."
 
-#: includes/class-sudomock-admin.php:735
+#: includes/class-sudomock-admin.php:750
 msgid "Search"
 msgstr "Ara"
 
-#: includes/class-sudomock-admin.php:746
+#: includes/class-sudomock-admin.php:761
 #, php-format
 msgid "All (%d)"
-msgstr "Tumu (%d)"
+msgstr "Tümü (%d)"
 
-#: includes/class-sudomock-admin.php:752
+#: includes/class-sudomock-admin.php:767
 #, php-format
 msgid "Mapped (%d)"
-msgstr "Eslenmis (%d)"
+msgstr "Eşlenmiş (%d)"
 
-#: includes/class-sudomock-admin.php:758
+#: includes/class-sudomock-admin.php:773
 #, php-format
 msgid "Unmapped (%d)"
-msgstr "Eslenmemis (%d)"
+msgstr "Eşlenmemiş (%d)"
 
-#: includes/class-sudomock-admin.php:774
+#: includes/class-sudomock-admin.php:789
 msgid "No products yet"
-msgstr "Henuz urun yok"
+msgstr "Henüz ürün yok"
 
-#: includes/class-sudomock-admin.php:775
+#: includes/class-sudomock-admin.php:790
 msgid "Add products in WooCommerce, then come back to map mockups to them."
 msgstr ""
-"WooCommerce'de urunler ekleyin, sonra mockup'lari eslemek icin geri donun."
+"WooCommerce'de ürünler ekleyin, sonra mockup'ları eşlemek için geri dönün."
 
-#: includes/class-sudomock-admin.php:777
+#: includes/class-sudomock-admin.php:792
 msgid "Add Product"
-msgstr "Urun Ekle"
+msgstr "Ürün Ekle"
 
-#: includes/class-sudomock-admin.php:785
+#: includes/class-sudomock-admin.php:800
 msgid "Product"
-msgstr "Urun"
+msgstr "Ürün"
 
-#: includes/class-sudomock-admin.php:786
+#: includes/class-sudomock-admin.php:801
 msgid "Status"
 msgstr "Durum"
 
-#: includes/class-sudomock-admin.php:787
+#: includes/class-sudomock-admin.php:802
 #: includes/class-sudomock-product.php:101
 msgid "Mockup"
 msgstr "Mockup"
 
-#: includes/class-sudomock-admin.php:788
+#: includes/class-sudomock-admin.php:803
 msgid "Actions"
-msgstr "Islemler"
+msgstr "İşlemler"
 
-#: includes/class-sudomock-admin.php:797
+#: includes/class-sudomock-admin.php:812
 #, php-format
 msgid "No products found for \"%s\""
-msgstr ""
+msgstr "\"%s\" için ürün bulunamadı"
 
-#: includes/class-sudomock-admin.php:799
+#: includes/class-sudomock-admin.php:814
 msgid "No products in this filter."
-msgstr "Bu filtrede urun yok."
+msgstr "Bu filtrede ürün yok."
 
-#: includes/class-sudomock-admin.php:821
+#: includes/class-sudomock-admin.php:836
 msgid "Active"
 msgstr "Aktif"
 
-#: includes/class-sudomock-admin.php:874
+#: includes/class-sudomock-admin.php:889
 msgid "Mapped (invalid)"
-msgstr ""
+msgstr "Eşlendi (geçersiz)"
 
-#: includes/class-sudomock-admin.php:875
+#: includes/class-sudomock-admin.php:890
 msgid "This mockup is not in your account. Re-map it."
-msgstr ""
+msgstr "Bu mockup hesabınızda yok. Yeniden eşleyin."
 
-#: includes/class-sudomock-admin.php:884
+#: includes/class-sudomock-admin.php:899
 msgid "Mapped"
-msgstr "Eslenmis"
+msgstr "Eşlenmiş"
 
-#: includes/class-sudomock-admin.php:891
+#: includes/class-sudomock-admin.php:906
 msgid "Not mapped"
-msgstr "Eslenmemis"
+msgstr "Eşlenmemiş"
 
-#: includes/class-sudomock-admin.php:900
+#: includes/class-sudomock-admin.php:915
 msgid "Remap"
-msgstr ""
+msgstr "Yeniden eşle"
 
-#: includes/class-sudomock-admin.php:902
+#: includes/class-sudomock-admin.php:917
 #: includes/class-sudomock-product.php:122
 msgid "Change"
-msgstr "Degistir"
+msgstr "Değiştir"
 
-#: includes/class-sudomock-admin.php:904
+#: includes/class-sudomock-admin.php:919
 msgid "Map Mockup"
-msgstr "Mockup Esle"
+msgstr "Mockup Eşle"
 
-#: includes/class-sudomock-admin.php:911
+#: includes/class-sudomock-admin.php:926
 #: includes/class-sudomock-product.php:123
 msgid "Remove"
-msgstr "Kaldir"
+msgstr "Kaldır"
 
-#: includes/class-sudomock-admin.php:945
+#: includes/class-sudomock-admin.php:960
 #, php-format
 msgid "Page %1$d of %2$d (%3$d products)"
-msgstr ""
+msgstr "Sayfa %1$d / %2$d (%3$d ürün)"
 
-#: includes/class-sudomock-admin.php:969
+#: includes/class-sudomock-admin.php:984
 msgid "Select PSD Mockup"
-msgstr "PSD Mockup Sec"
+msgstr "PSD Mockup Seç"
 
-#: includes/class-sudomock-admin.php:975 includes/class-sudomock-admin.php:1010
+#: includes/class-sudomock-admin.php:990 includes/class-sudomock-admin.php:1025
 #: includes/class-sudomock-product.php:130
 msgid "Search mockups by name..."
-msgstr "Ada gore mockup ara..."
+msgstr "Ada göre mockup ara..."
 
-#: includes/class-sudomock-admin.php:979
+#: includes/class-sudomock-admin.php:994
 msgid "Cancel"
-msgstr "Iptal"
+msgstr "İptal"
 
-#: includes/class-sudomock-admin.php:998
+#: includes/class-sudomock-admin.php:1013
 msgid "PSD Mockups"
 msgstr "PSD Mockup'lar"
 
-#: includes/class-sudomock-admin.php:999
+#: includes/class-sudomock-admin.php:1014
 msgid "Browse and manage your uploaded PSD mockup files."
-msgstr "Yuklediginiz PSD mockup dosyalarini goruntuleyip yonetin."
+msgstr "Yüklediğiniz PSD mockup dosyalarını görüntüleyip yönetin."
 
-#: includes/class-sudomock-admin.php:1002
+#: includes/class-sudomock-admin.php:1017
 msgid "Upload PSD"
-msgstr "PSD Yukle"
+msgstr "PSD Yükle"
 
-#: includes/class-sudomock-admin.php:1023
+#: includes/class-sudomock-admin.php:1038
 msgid "About Mockups"
-msgstr "Mockup'lar Hakkinda"
+msgstr "Mockup'lar Hakkında"
 
-#: includes/class-sudomock-admin.php:1025
+#: includes/class-sudomock-admin.php:1040
 msgid ""
 "PSD mockups are uploaded via your SudoMock Dashboard. Each mockup's smart "
 "object layers become customizable areas where customers upload their artwork."
 msgstr ""
+"PSD mockup'lar SudoMock Paneli üzerinden yüklenir. Her mockup'ın akıllı "
+"nesne katmanları, müşterilerin kendi görsellerini yükleyeceği "
+"özelleştirilebilir alanlara dönüşür."
 
-#: includes/class-sudomock-admin.php:1028
+#: includes/class-sudomock-admin.php:1043
 msgid "Open SudoMock Dashboard"
-msgstr "SudoMock Panelini Ac"
+msgstr "SudoMock Panelini Aç"
 
-#: includes/class-sudomock-admin.php:1034
+#: includes/class-sudomock-admin.php:1049
 msgid "Tips"
-msgstr "Ipuclari"
+msgstr "İpuçları"
 
-#: includes/class-sudomock-admin.php:1035
+#: includes/class-sudomock-admin.php:1050
 msgid "Name your smart objects clearly (e.g. \"Front Logo\", \"Back Design\")"
 msgstr ""
+"Akıllı nesnelerinizi açık şekilde adlandırın (örneğin \"Ön Logo\", \"Arka "
+"Tasarım\")"
 
-#: includes/class-sudomock-admin.php:1036
+#: includes/class-sudomock-admin.php:1051
 msgid "Use high-resolution PSDs (3000px+) for best print quality"
 msgstr ""
+"En iyi baskı kalitesi için yüksek çözünürlüklü PSD'ler kullanın (3000px ve "
+"üzeri)"
 
-#: includes/class-sudomock-admin.php:1054
+#: includes/class-sudomock-admin.php:1069
 msgid "Button Appearance"
-msgstr "Buton Gorunumu"
+msgstr "Buton Görünümü"
 
-#: includes/class-sudomock-admin.php:1056
+#: includes/class-sudomock-admin.php:1071
 msgid ""
 "Add and customize the SudoMock Product Customizer block in the Site Editor "
 "on your Single Product template."
 msgstr ""
+"SudoMock Product Customizer bloğunu Site Düzenleyici'de Tekil Ürün "
+"şablonunuza ekleyin ve özelleştirin."
 
-#: includes/class-sudomock-admin.php:1058
+#: includes/class-sudomock-admin.php:1073
 msgid ""
 "Customize the storefront button colors, text, sizing, and placement in the "
 "WordPress Customizer."
 msgstr ""
-
-#: includes/class-sudomock-admin.php:1063
-msgid "Open Site Editor"
-msgstr ""
+"Mağaza butonunun renklerini, metnini, boyutunu ve konumunu WordPress "
+"Özelleştirici'de ayarlayın."
 
 #: includes/class-sudomock-admin.php:1078
-msgid "Loading studio config..."
-msgstr "Studio yapilandirmasi yukleniyor..."
+msgid "Open Site Editor"
+msgstr "Site Düzenleyici'yi aç"
 
-#: includes/class-sudomock-admin.php:1091
+#: includes/class-sudomock-admin.php:1093
+msgid "Loading studio config..."
+msgstr "Studio yapılandırması yükleniyor..."
+
+#: includes/class-sudomock-admin.php:1106
 msgid "Studio Branding"
 msgstr "Studio Markalama"
 
-#: includes/class-sudomock-admin.php:1093
+#: includes/class-sudomock-admin.php:1108
 msgid "Reset defaults"
-msgstr "Varsayilanlara sifirla"
+msgstr "Varsayılanlara sıfırla"
 
-#: includes/class-sudomock-admin.php:1096
+#: includes/class-sudomock-admin.php:1111
 msgid ""
 "Colors and branding for the customer-facing customizer. No SudoMock branding "
 "shown to customers."
 msgstr ""
+"Müşteriye görünen özelleştiricinin renkleri ve markalaması. Müşterilere "
+"SudoMock markası gösterilmez."
 
-#: includes/class-sudomock-admin.php:1102
+#: includes/class-sudomock-admin.php:1117
 msgid "Primary color"
 msgstr "Ana renk"
 
-#: includes/class-sudomock-admin.php:1102
+#: includes/class-sudomock-admin.php:1117
 msgid "Buttons, active states"
 msgstr "Butonlar, aktif durumlar"
 
-#: includes/class-sudomock-admin.php:1103
+#: includes/class-sudomock-admin.php:1118
 msgid "Accent color"
 msgstr "Vurgu rengi"
 
-#: includes/class-sudomock-admin.php:1103
+#: includes/class-sudomock-admin.php:1118
 msgid "CTA button (Add to Cart)"
 msgstr "CTA butonu (Sepete Ekle)"
 
-#: includes/class-sudomock-admin.php:1104
+#: includes/class-sudomock-admin.php:1119
 msgid "Success color"
-msgstr "Basari rengi"
+msgstr "Başarı rengi"
 
-#: includes/class-sudomock-admin.php:1104
+#: includes/class-sudomock-admin.php:1119
 msgid "Added to cart confirmation"
-msgstr "Sepete eklendi onayi"
+msgstr "Sepete eklendi onayı"
 
-#: includes/class-sudomock-admin.php:1105
+#: includes/class-sudomock-admin.php:1120
 #: includes/class-sudomock-customizer.php:216
 msgid "Background"
 msgstr "Arka plan"
 
-#: includes/class-sudomock-admin.php:1105
+#: includes/class-sudomock-admin.php:1120
 msgid "Canvas area"
-msgstr "Tuval alani"
+msgstr "Tuval alanı"
 
-#: includes/class-sudomock-admin.php:1106
+#: includes/class-sudomock-admin.php:1121
 msgid "Panel background"
-msgstr "Panel arka plani"
+msgstr "Panel arka planı"
 
-#: includes/class-sudomock-admin.php:1106
+#: includes/class-sudomock-admin.php:1121
 msgid "Side panels"
 msgstr "Yan paneller"
 
-#: includes/class-sudomock-admin.php:1107
+#: includes/class-sudomock-admin.php:1122
 msgid "Text color"
 msgstr "Metin rengi"
 
-#: includes/class-sudomock-admin.php:1107
+#: includes/class-sudomock-admin.php:1122
 msgid "Primary text"
 msgstr "Ana metin"
 
-#: includes/class-sudomock-admin.php:1108
+#: includes/class-sudomock-admin.php:1123
 msgid "Border color"
-msgstr "Kenarlik rengi"
+msgstr "Kenarlık rengi"
 
-#: includes/class-sudomock-admin.php:1108
+#: includes/class-sudomock-admin.php:1123
 msgid "Dividers"
-msgstr "Ayiricilar"
+msgstr "Ayırıcılar"
 
-#: includes/class-sudomock-admin.php:1126
+#: includes/class-sudomock-admin.php:1141
 msgid "Corner radius"
-msgstr "Kose yuvarlagi"
+msgstr "Köşe yuvarlağı"
 
-#: includes/class-sudomock-admin.php:1136
+#: includes/class-sudomock-admin.php:1151
 msgid "Logo URL"
 msgstr "Logo URL"
 
-#: includes/class-sudomock-admin.php:1140
+#: includes/class-sudomock-admin.php:1155
 msgid "Displayed in customizer header. Leave empty for no logo."
-msgstr ""
+msgstr "Özelleştirici başlığında gösterilir. Logo istemiyorsanız boş bırakın."
 
-#: includes/class-sudomock-admin.php:1146
+#: includes/class-sudomock-admin.php:1161
 msgid "Theme"
 msgstr "Tema"
 
-#: includes/class-sudomock-admin.php:1149
+#: includes/class-sudomock-admin.php:1164
 msgid "Light"
-msgstr "Acik"
+msgstr "Açık"
 
-#: includes/class-sudomock-admin.php:1150
+#: includes/class-sudomock-admin.php:1165
 msgid "Dark"
 msgstr "Koyu"
 
-#: includes/class-sudomock-admin.php:1159
+#: includes/class-sudomock-admin.php:1174
 msgid "Labels"
 msgstr "Etiketler"
 
-#: includes/class-sudomock-admin.php:1160
+#: includes/class-sudomock-admin.php:1175
 msgid ""
 "Customize all text shown to customers. Great for localization or brand voice."
 msgstr ""
+"Müşterilere gösterilen tüm metinleri özelleştirin. Yerelleştirme veya marka "
+"dili için idealdir."
 
-#: includes/class-sudomock-admin.php:1165
+#: includes/class-sudomock-admin.php:1180
 msgid "Header text"
-msgstr "Baslik metni"
+msgstr "Başlık metni"
 
-#: includes/class-sudomock-admin.php:1166
+#: includes/class-sudomock-admin.php:1181
 msgid "CTA button"
 msgstr "CTA butonu"
 
-#: includes/class-sudomock-admin.php:1167
+#: includes/class-sudomock-admin.php:1182
 msgid "Adding state text"
 msgstr "Ekleniyor durumu metni"
 
-#: includes/class-sudomock-admin.php:1168
+#: includes/class-sudomock-admin.php:1183
 msgid "Success text"
-msgstr "Basari metni"
+msgstr "Başarı metni"
 
-#: includes/class-sudomock-admin.php:1169
+#: includes/class-sudomock-admin.php:1184
 msgid "Render button"
 msgstr "Render butonu"
 
-#: includes/class-sudomock-admin.php:1170
+#: includes/class-sudomock-admin.php:1185
 msgid "Upload text"
-msgstr "Yukleme metni"
+msgstr "Yükleme metni"
 
-#: includes/class-sudomock-admin.php:1191
+#: includes/class-sudomock-admin.php:1206
 msgid "Feature Controls"
-msgstr "Ozellik Kontrolleri"
+msgstr "Özellik Kontrolleri"
 
-#: includes/class-sudomock-admin.php:1194
+#: includes/class-sudomock-admin.php:1209
 msgid "Hide features to simplify the experience for your customers."
-msgstr ""
+msgstr "Müşterilerinizin deneyimini sadeleştirmek için özellikleri gizleyin."
 
-#: includes/class-sudomock-admin.php:1199
+#: includes/class-sudomock-admin.php:1214
 msgid "Adjustments Panel"
 msgstr "Ayarlamalar Paneli"
 
-#: includes/class-sudomock-admin.php:1199
+#: includes/class-sudomock-admin.php:1214
 msgid "Brightness, contrast, saturation, vibrance, opacity, blur"
-msgstr ""
+msgstr "Parlaklık, kontrast, doygunluk, canlılık, saydamlık, bulanıklık"
 
-#: includes/class-sudomock-admin.php:1200
+#: includes/class-sudomock-admin.php:1215
 msgid "Color Overlay"
 msgstr "Renk Kaplama"
 
-#: includes/class-sudomock-admin.php:1200
+#: includes/class-sudomock-admin.php:1215
 msgid "Fill color with blend mode selector per layer"
-msgstr ""
+msgstr "Katman başına karışım modu seçicili dolgu rengi"
 
-#: includes/class-sudomock-admin.php:1201
+#: includes/class-sudomock-admin.php:1216
 msgid "Fit Mode"
-msgstr "Sigdirma Modu"
+msgstr "Sığdırma Modu"
 
-#: includes/class-sudomock-admin.php:1201
+#: includes/class-sudomock-admin.php:1216
 msgid "Fill / Fit / Cover selector for uploaded images"
-msgstr ""
+msgstr "Yüklenen görseller için Doldur / Sığdır / Kapla seçici"
 
-#: includes/class-sudomock-admin.php:1202
+#: includes/class-sudomock-admin.php:1217
 msgid "Position Controls"
 msgstr "Konum Kontrolleri"
 
-#: includes/class-sudomock-admin.php:1202
+#: includes/class-sudomock-admin.php:1217
 msgid "X, Y position fields for precise placement"
-msgstr ""
+msgstr "Hassas yerleşim için X ve Y konum alanları"
 
-#: includes/class-sudomock-admin.php:1203
+#: includes/class-sudomock-admin.php:1218
 msgid "Size Controls"
 msgstr "Boyut Kontrolleri"
 
-#: includes/class-sudomock-admin.php:1203
+#: includes/class-sudomock-admin.php:1218
 msgid "Width, height fields with aspect ratio lock"
-msgstr ""
+msgstr "En boy oranı kilidi olan genişlik ve yükseklik alanları"
 
-#: includes/class-sudomock-admin.php:1204
+#: includes/class-sudomock-admin.php:1219
 msgid "Rotation"
-msgstr "Dondurme"
+msgstr "Döndürme"
 
-#: includes/class-sudomock-admin.php:1204
+#: includes/class-sudomock-admin.php:1219
 msgid "Rotation slider for uploaded images"
-msgstr ""
+msgstr "Yüklenen görseller için döndürme kaydırıcısı"
 
-#: includes/class-sudomock-admin.php:1205
+#: includes/class-sudomock-admin.php:1220
 msgid "Flip"
-msgstr ""
+msgstr "Çevir"
 
-#: includes/class-sudomock-admin.php:1205
+#: includes/class-sudomock-admin.php:1220
 msgid "Flip horizontal/vertical buttons for uploaded images"
-msgstr ""
+msgstr "Yüklenen görseller için yatay ve dikey çevirme butonları"
 
-#: includes/class-sudomock-admin.php:1206
+#: includes/class-sudomock-admin.php:1221
 msgid "Export Options"
-msgstr "Disa Aktarma Secenekleri"
+msgstr "Dışa Aktarma Seçenekleri"
 
-#: includes/class-sudomock-admin.php:1206
+#: includes/class-sudomock-admin.php:1221
 msgid "Output format, size, and quality controls"
-msgstr ""
+msgstr "Çıktı biçimi, boyut ve kalite kontrolleri"
 
-#: includes/class-sudomock-admin.php:1207
+#: includes/class-sudomock-admin.php:1222
 msgid "Zoom Controls"
-msgstr "Yakinlastirma Kontrolleri"
+msgstr "Yakınlaştırma Kontrolleri"
 
-#: includes/class-sudomock-admin.php:1207
+#: includes/class-sudomock-admin.php:1222
 msgid "Zoom in/out and percentage on canvas toolbar"
-msgstr ""
+msgstr "Tuval araç çubuğunda yakınlaştırma, uzaklaştırma ve yüzde"
 
-#: includes/class-sudomock-admin.php:1208
+#: includes/class-sudomock-admin.php:1223
 msgid "Undo / Redo"
 msgstr "Geri Al / Yinele"
 
-#: includes/class-sudomock-admin.php:1208
+#: includes/class-sudomock-admin.php:1223
 msgid "Undo and redo buttons with keyboard shortcuts"
-msgstr ""
+msgstr "Klavye kısayollu geri al ve yinele butonları"
 
-#: includes/class-sudomock-admin.php:1226
+#: includes/class-sudomock-admin.php:1241
 msgid "Behavior"
-msgstr "Davranis"
-
-#: includes/class-sudomock-admin.php:1231
-msgid "Layout mode"
-msgstr "Yerlesim modu"
-
-#: includes/class-sudomock-admin.php:1234
-msgid "Full (3-panel desktop)"
-msgstr "Tam (3 panelli masaustu)"
-
-#: includes/class-sudomock-admin.php:1235
-msgid "Compact (mobile-first)"
-msgstr "Kompakt (mobil oncelikli)"
-
-#: includes/class-sudomock-admin.php:1238
-msgid "Full shows all panels side by side. Compact stacks for smaller screens."
-msgstr ""
+msgstr "Davranış"
 
 #: includes/class-sudomock-admin.php:1246
-msgid "Auto-render on changes"
-msgstr "Degisikliklerde otomatik render"
+msgid "Layout mode"
+msgstr "Yerleşim modu"
 
-#: includes/class-sudomock-admin.php:1247
+#: includes/class-sudomock-admin.php:1249
+msgid "Full (3-panel desktop)"
+msgstr "Tam (3 panelli masaüstü)"
+
+#: includes/class-sudomock-admin.php:1250
+msgid "Compact (mobile-first)"
+msgstr "Kompakt (mobil öncelikli)"
+
+#: includes/class-sudomock-admin.php:1253
+msgid "Full shows all panels side by side. Compact stacks for smaller screens."
+msgstr ""
+"Tam görünüm tüm panelleri yan yana gösterir. Kompakt görünüm küçük ekranlar "
+"için üst üste dizer."
+
+#: includes/class-sudomock-admin.php:1261
+msgid "Auto-render on changes"
+msgstr "Değişikliklerde otomatik render"
+
+#: includes/class-sudomock-admin.php:1262
 msgid ""
 "Automatically render preview when customer makes changes. Costs 1 credit per "
 "render."
 msgstr ""
+"Müşteri değişiklik yaptığında önizlemeyi otomatik render et. Her render 1 "
+"kredi harcar."
 
-#: includes/class-sudomock-admin.php:1254
+#: includes/class-sudomock-admin.php:1269
 msgid "Auto-render delay"
 msgstr "Otomatik render gecikmesi"
 
-#: includes/class-sudomock-admin.php:1261
+#: includes/class-sudomock-admin.php:1276
 msgid "Wait time after last change before auto-rendering."
-msgstr ""
+msgstr "Otomatik render öncesinde son değişiklikten sonra beklenecek süre."
 
-#: includes/class-sudomock-admin.php:1267
+#: includes/class-sudomock-admin.php:1282
 msgid "Max upload size"
-msgstr "Maksimum yukleme boyutu"
+msgstr "Maksimum yükleme boyutu"
 
-#: includes/class-sudomock-admin.php:1283
+#: includes/class-sudomock-admin.php:1298
 msgid "Discard Changes"
-msgstr "Degisiklikleri Iptal Et"
+msgstr "Değişiklikleri İptal Et"
 
-#: includes/class-sudomock-admin.php:1294
+#: includes/class-sudomock-admin.php:1309
 msgid "Need Help?"
-msgstr "Yardima mi ihtiyaciniz var?"
+msgstr "Yardıma mi ihtiyacınız var?"
 
-#: includes/class-sudomock-admin.php:1297
+#: includes/class-sudomock-admin.php:1312
 msgid "Send us a message and we will get back to you as soon as possible."
-msgstr ""
+msgstr "Bize mesaj gönderin, en kısa sürede size döneceğiz."
 
-#: includes/class-sudomock-admin.php:1302
+#: includes/class-sudomock-admin.php:1317
 msgid "Subject"
 msgstr "Konu"
 
-#: includes/class-sudomock-admin.php:1305
+#: includes/class-sudomock-admin.php:1320
 msgid "e.g. Issue with mockup rendering"
-msgstr ""
+msgstr "örneğin: Mockup render sorunu"
 
-#: includes/class-sudomock-admin.php:1309
+#: includes/class-sudomock-admin.php:1324
 msgid "Message"
 msgstr "Mesaj"
 
-#: includes/class-sudomock-admin.php:1312
+#: includes/class-sudomock-admin.php:1327
 msgid "Describe your issue or question in detail..."
-msgstr ""
+msgstr "Sorununuzu veya sorunuzu ayrıntılı olarak yazın..."
 
-#: includes/class-sudomock-admin.php:1339
+#: includes/class-sudomock-admin.php:1354
 msgid "Missing product ID or mockup UUID."
-msgstr "Urun ID veya mockup UUID eksik."
+msgstr "Ürün ID veya mockup UUID eksik."
 
-#: includes/class-sudomock-admin.php:1347
+#: includes/class-sudomock-admin.php:1362
 msgid "Mockup mapped successfully."
-msgstr "Mockup basariyla atandi."
+msgstr "Mockup başarıyla atandı."
 
-#: includes/class-sudomock-admin.php:1358
+#: includes/class-sudomock-admin.php:1373
 msgid "Missing product ID."
-msgstr "Urun ID eksik."
-
-#: includes/class-sudomock-admin.php:1366
-msgid "Mockup removed."
-msgstr "Mockup kaldirildi."
+msgstr "Ürün ID eksik."
 
 #: includes/class-sudomock-admin.php:1381
-msgid "Failed to load config."
-msgstr "Yapilandirma yuklenemedi."
+msgid "Mockup removed."
+msgstr "Mockup kaldırıldı."
 
 #: includes/class-sudomock-admin.php:1396
+msgid "Failed to load config."
+msgstr "Yapılandırma yüklenemedi."
+
+#: includes/class-sudomock-admin.php:1411
 msgid "Invalid config data."
-msgstr "Gecersiz yapilandirma verisi."
+msgstr "Geçersiz yapılandırma verisi."
 
-#: includes/class-sudomock-admin.php:1454
+#: includes/class-sudomock-admin.php:1469
 msgid "Logo URL must use HTTPS."
-msgstr "Logo URL'si HTTPS kullanmalidir."
+msgstr "Logo URL'si HTTPS kullanmalıdır."
 
-#: includes/class-sudomock-admin.php:1459
+#: includes/class-sudomock-admin.php:1474
 msgid "Failed to save config."
-msgstr "Yapilandirma kaydedilemedi."
+msgstr "Yapılandırma kaydedilemedi."
 
-#: includes/class-sudomock-admin.php:1463
+#: includes/class-sudomock-admin.php:1478
 msgid "Studio config saved."
-msgstr "Studio yapilandirmasi kaydedildi."
+msgstr "Studio yapılandırması kaydedildi."
 
-#: includes/class-sudomock-admin.php:1482
+#: includes/class-sudomock-admin.php:1497
 msgid ""
 "You have reached the limit of 3 messages per hour. Please wait before "
 "sending another message."
 msgstr ""
+"Saatte 3 mesaj sınırına ulaştınız. Yeni bir mesaj göndermeden önce lütfen "
+"bekleyin."
 
-#: includes/class-sudomock-admin.php:1540
+#: includes/class-sudomock-admin.php:1555
 msgid "Failed to send message. Please try again later."
-msgstr "Mesaj gonderilemedi. Lutfen daha sonra tekrar deneyin."
+msgstr "Mesaj gönderilemedi. Lütfen daha sonra tekrar deneyin."
 
 #: includes/class-sudomock-api-client.php:54
 msgid "No API key configured."
-msgstr "API anahtari yapilandirilmamis."
+msgstr "API anahtarı yapılandırılmamış."
 
 #: includes/class-sudomock-api-client.php:66
 msgid "Invalid API key."
-msgstr "Gecersiz API anahtari."
+msgstr "Geçersiz API anahtarı."
 
 #: includes/class-sudomock-api-client.php:104
 #: includes/class-sudomock-api-client.php:180
 msgid "Failed to fetch mockups."
-msgstr "Mockup'lar alinamadi."
+msgstr "Mockup'lar alınamadı."
 
 #: includes/class-sudomock-api-client.php:124
 msgid "Failed to fetch 2D mockups."
-msgstr ""
+msgstr "2D mockup'lar alınamadı."
 
 #: includes/class-sudomock-api-client.php:214
 msgid "No mockup UUID provided."
@@ -1020,86 +1067,86 @@ msgstr "Mockup UUID belirtilmedi."
 #: includes/class-sudomock-api-client.php:231
 #: includes/class-sudomock-api-client.php:250
 msgid "Failed to fetch mockup."
-msgstr "Mockup alinamadi."
+msgstr "Mockup alınamadı."
 
 #: includes/class-sudomock-api-client.php:267
 #: includes/class-sudomock-api-client.php:336
 msgid "Invalid mockup type."
-msgstr ""
+msgstr "Geçersiz mockup türü."
 
 #: includes/class-sudomock-api-client.php:340
 msgid "Invalid store."
-msgstr ""
+msgstr "Geçersiz mağaza."
 
 #: includes/class-sudomock-api-client.php:366
 #: includes/class-sudomock-storefront.php:259
 #: includes/class-sudomock-storefront.php:418
 #: includes/class-sudomock-storefront.php:446
 msgid "Could not open customizer. Please try again."
-msgstr "Ozellestirici acilamadi. Lutfen tekrar deneyin."
+msgstr "Özelleştirici açılamadı. Lütfen tekrar deneyin."
 
 #: includes/class-sudomock-api-client.php:402
 msgid "Failed to create session."
-msgstr "Oturum olusturulamadi."
+msgstr "Oturum oluşturulamadı."
 
 #: includes/class-sudomock-api-client.php:429
 msgid "Invalid action receipt."
-msgstr ""
+msgstr "Geçersiz işlem makbuzu."
 
 #: includes/class-sudomock-api-client.php:457
 msgid "Failed to fetch studio config."
-msgstr "Studio yapilandirmasi alinamadi."
+msgstr "Studio yapılandırması alınamadı."
 
 #: includes/class-sudomock-api-client.php:484
 msgid "Failed to update studio config."
-msgstr "Studio yapilandirmasi guncellenemedi."
+msgstr "Studio yapılandırması güncellenemedi."
 
 #: includes/class-sudomock-api-client.php:501
 msgid "Untitled 2D mockup"
-msgstr ""
+msgstr "Adsız 2D mockup"
 
 #: includes/class-sudomock-api-client.php:528
 msgid "API key not configured."
-msgstr "API anahtari yapilandirilmamis."
+msgstr "API anahtarı yapılandırılmamış."
 
 #: includes/class-sudomock-api-client.php:566
 #, php-format
 msgid "API error (HTTP %d)"
-msgstr ""
+msgstr "API hatası (HTTP %d)"
 
 #: includes/class-sudomock-cart.php:49
 msgid "Customization"
-msgstr "Ozellestirme"
+msgstr "Özelleştirme"
 
 #: includes/class-sudomock-cart.php:50
 msgid "Custom design applied"
-msgstr "Ozel tasarim uygulandi"
+msgstr "Özel tasarım uygulandı"
 
 #: includes/class-sudomock-cart.php:70
 msgid "Custom design preview"
-msgstr "Ozel tasarim onizlemesi"
+msgstr "Özel tasarım önizlemesi"
 
 #: includes/class-sudomock-cart.php:94 includes/class-sudomock-privacy.php:266
 msgid "Customization Preview"
-msgstr "Ozellestirme Onizlemesi"
+msgstr "Özelleştirme Önizlemesi"
 
 #: includes/class-sudomock-cart.php:109 includes/class-sudomock-privacy.php:267
 msgid "Source Design"
-msgstr ""
+msgstr "Kaynak Tasarım"
 
 #: includes/class-sudomock-cart.php:111 includes/class-sudomock-privacy.php:270
 #, php-format
 msgid "Source Design %d"
-msgstr ""
+msgstr "Kaynak Tasarım %d"
 
 #: includes/class-sudomock-customizer.php:103
 msgid "SudoMock Customizer"
-msgstr "SudoMock Ozellestirici"
+msgstr "SudoMock Özelleştirici"
 
 #: includes/class-sudomock-customizer.php:104
 msgid ""
 "Customize the product customization button appearance on your storefront."
-msgstr ""
+msgstr "Mağazanızdaki ürün özelleştirme butonunun görünümünü ayarlayın."
 
 #: includes/class-sudomock-customizer.php:110
 msgid "Button"
@@ -1111,11 +1158,11 @@ msgstr "Etiket"
 
 #: includes/class-sudomock-customizer.php:117
 msgid "Full width"
-msgstr "Tam genislik"
+msgstr "Tam genişlik"
 
 #: includes/class-sudomock-customizer.php:119
 msgid "Show icon"
-msgstr "Simge goster"
+msgstr "Simge göster"
 
 #: includes/class-sudomock-customizer.php:127
 msgid "Icon"
@@ -1135,11 +1182,11 @@ msgstr "Asa"
 
 #: includes/class-sudomock-customizer.php:134
 msgid "Brush"
-msgstr "Firca"
+msgstr "Fırça"
 
 #: includes/class-sudomock-customizer.php:135
 msgid "Sparkle"
-msgstr "Pariltili"
+msgstr "Parıltılı"
 
 #: includes/class-sudomock-customizer.php:146
 msgid "Icon position"
@@ -1153,11 +1200,11 @@ msgstr "Sol"
 #: includes/class-sudomock-customizer.php:151
 #: includes/class-sudomock-customizer.php:260
 msgid "Right"
-msgstr "Sag"
+msgstr "Sağ"
 
 #: includes/class-sudomock-customizer.php:162
 msgid "Weight"
-msgstr "Kalinlik"
+msgstr "Kalınlık"
 
 #: includes/class-sudomock-customizer.php:166
 msgid "Medium"
@@ -1165,15 +1212,15 @@ msgstr "Orta"
 
 #: includes/class-sudomock-customizer.php:167
 msgid "Semibold"
-msgstr "Yari kalin"
+msgstr "Yarı kalın"
 
 #: includes/class-sudomock-customizer.php:168
 msgid "Bold"
-msgstr "Kalin"
+msgstr "Kalın"
 
 #: includes/class-sudomock-customizer.php:179
 msgid "Case"
-msgstr "Harf bicimi"
+msgstr "Harf biçimi"
 
 #: includes/class-sudomock-customizer.php:183
 msgid "Normal"
@@ -1181,11 +1228,11 @@ msgstr "Normal"
 
 #: includes/class-sudomock-customizer.php:184
 msgid "UPPERCASE"
-msgstr "BUYUK HARF"
+msgstr "BÜYÜK HARF"
 
 #: includes/class-sudomock-customizer.php:189
 msgid "Drop shadow"
-msgstr "Golge"
+msgstr "Gölge"
 
 #: includes/class-sudomock-customizer.php:196
 msgid "Button placement"
@@ -1197,19 +1244,19 @@ msgstr "Sepete Ekle butonundan sonra"
 
 #: includes/class-sudomock-customizer.php:201
 msgid "Before Add to Cart button"
-msgstr "Sepete Ekle butonundan once"
+msgstr "Sepete Ekle butonundan önce"
 
 #: includes/class-sudomock-customizer.php:202
 msgid "After product summary"
-msgstr "Urun ozetinden sonra"
+msgstr "Ürün özetinden sonra"
 
 #: includes/class-sudomock-customizer.php:203
 msgid "Manual (shortcode only)"
-msgstr "Manuel (yalnizca kisa kod)"
+msgstr "Manuel (yalnızca kısa kod)"
 
 #: includes/class-sudomock-customizer.php:206
 msgid "Use [sudomock_button] shortcode for manual placement."
-msgstr ""
+msgstr "Elle yerleştirme için [sudomock_button] kısa kodunu kullanın."
 
 #: includes/class-sudomock-customizer.php:211
 msgid "Colors"
@@ -1221,39 +1268,39 @@ msgstr "Metin"
 
 #: includes/class-sudomock-customizer.php:218
 msgid "Border"
-msgstr "Kenarlik"
+msgstr "Kenarlık"
 
 #: includes/class-sudomock-customizer.php:219
 msgid "Hover background"
-msgstr "Uzerine gelince arka plan"
+msgstr "Üzerine gelince arka plan"
 
 #: includes/class-sudomock-customizer.php:220
 msgid "Hover text"
-msgstr "Uzerine gelince metin"
+msgstr "Üzerine gelince metin"
 
 #: includes/class-sudomock-customizer.php:224
 msgid "Sizing"
-msgstr "Boyutlandirma"
+msgstr "Boyutlandırma"
 
 #: includes/class-sudomock-customizer.php:229
 msgid "Font size (px)"
-msgstr "Yazi boyutu (px)"
+msgstr "Yazı boyutu (px)"
 
 #: includes/class-sudomock-customizer.php:230
 msgid "Vertical padding (px)"
-msgstr "Dikey ic bosluk (px)"
+msgstr "Dikey iç boşluk (px)"
 
 #: includes/class-sudomock-customizer.php:231
 msgid "Horizontal padding (px)"
-msgstr "Yatay ic bosluk (px)"
+msgstr "Yatay iç boşluk (px)"
 
 #: includes/class-sudomock-customizer.php:232
 msgid "Corner radius (px)"
-msgstr "Kose yuvarlagi (px)"
+msgstr "Köşe yuvarlağı (px)"
 
 #: includes/class-sudomock-customizer.php:233
 msgid "Border width (px)"
-msgstr "Kenarlik kalinligi (px)"
+msgstr "Kenarlık kalınlığı (px)"
 
 #: includes/class-sudomock-customizer.php:237
 msgid "Extra Text"
@@ -1261,19 +1308,19 @@ msgstr "Ek Metin"
 
 #: includes/class-sudomock-customizer.php:242
 msgid "Heading above"
-msgstr "Ustteki baslik"
+msgstr "Üstteki başlık"
 
 #: includes/class-sudomock-customizer.php:243
 msgid "Heading color"
-msgstr "Baslik rengi"
+msgstr "Başlık rengi"
 
 #: includes/class-sudomock-customizer.php:244
 msgid "Description above"
-msgstr "Ustteki aciklama"
+msgstr "Üstteki açıklama"
 
 #: includes/class-sudomock-customizer.php:245
 msgid "Description color"
-msgstr "Aciklama rengi"
+msgstr "Açıklama rengi"
 
 #: includes/class-sudomock-customizer.php:246
 msgid "Text below"
@@ -1289,54 +1336,56 @@ msgstr "Ortala"
 
 #: includes/class-sudomock-customizer.php:267
 msgid "Layout"
-msgstr "Yerlesim"
+msgstr "Yerleşim"
 
 #: includes/class-sudomock-customizer.php:272
 msgid "Divider above"
-msgstr "Ustteki ayirici"
+msgstr "Üstteki ayırıcı"
 
 #: includes/class-sudomock-customizer.php:273
 msgid "Divider below"
-msgstr "Alttaki ayirici"
+msgstr "Alttaki ayırıcı"
 
 #: includes/class-sudomock-customizer.php:274
 msgid "Divider color"
-msgstr "Ayirici rengi"
+msgstr "Ayırıcı rengi"
 
 #: includes/class-sudomock-customizer.php:275
 msgid "Top margin (px)"
-msgstr "Ust bosluk (px)"
+msgstr "Üst boşluk (px)"
 
 #: includes/class-sudomock-customizer.php:276
 msgid "Bottom margin (px)"
-msgstr "Alt bosluk (px)"
+msgstr "Alt boşluk (px)"
 
 #: includes/class-sudomock-encryption.php:39
 msgid ""
 "SudoMock requires the PHP OpenSSL extension to securely store your API key. "
 "Please contact your hosting provider to enable it."
 msgstr ""
+"SudoMock, API anahtarınızı güvenle saklamak için PHP OpenSSL eklentisine "
+"ihtiyaç duyar. Etkinleştirmek için hosting sağlayıcınızla iletişime geçin."
 
 #: includes/class-sudomock-encryption.php:40
-msgid "SudoMock — Missing Requirement"
-msgstr ""
+msgid "SudoMock: Missing Requirement"
+msgstr "SudoMock: Eksik Gereksinim"
 
 #: includes/class-sudomock-order.php:106
 msgid "Customer Design:"
-msgstr "Musteri Tasarimi:"
+msgstr "Müşteri Tasarımı:"
 
 #: includes/class-sudomock-order.php:109
 msgid "Customer customization preview"
-msgstr "Musteri ozellestirme onizlemesi"
+msgstr "Müşteri özelleştirme önizlemesi"
 
 #: includes/class-sudomock-order.php:115
 msgid "Source design file(s):"
-msgstr ""
+msgstr "Kaynak tasarım dosyaları:"
 
 #: includes/class-sudomock-order.php:122
 #, php-format
 msgid "Download artwork %d"
-msgstr ""
+msgstr "%d numaralı görseli indir"
 
 #: includes/class-sudomock-privacy.php:87
 msgid ""
@@ -1345,85 +1394,95 @@ msgid ""
 "generate a preview. The rendered preview URL and your uploaded design "
 "file(s) are stored alongside your order so the merchant can produce the item."
 msgstr ""
+"SudoMock düzenleyicisiyle bir ürünü özelleştirdiğinizde, önizleme oluşturmak "
+"için yüklediğiniz görselleri SudoMock render servisine (api.sudomock.com) "
+"iletiriz. Oluşan önizleme adresi ve yüklediğiniz tasarım dosyaları, "
+"satıcının ürünü üretebilmesi için siparişinizle birlikte saklanır."
 
 #: includes/class-sudomock-privacy.php:91
 msgid ""
 "No personal data beyond order information is shared with SudoMock. Stored "
 "images are retained for order fulfilment and can be deleted upon request."
 msgstr ""
+"Sipariş bilgileri dışında SudoMock ile hiçbir kişisel veri paylaşılmaz. "
+"Saklanan görseller sipariş karşılama amacıyla tutulur ve talep üzerine "
+"silinebilir."
 
 #: includes/class-sudomock-privacy.php:110
 #: includes/class-sudomock-privacy.php:124
 msgid "SudoMock Customization Data"
-msgstr "SudoMock Ozellestirme Verileri"
+msgstr "SudoMock Özelleştirme Verileri"
 
 #: includes/class-sudomock-privacy.php:159
 msgid "Order"
-msgstr "Siparis"
+msgstr "Sipariş"
 
 #: includes/class-sudomock-privacy.php:165
 msgid "Customization Preview URL"
-msgstr ""
+msgstr "Özelleştirme Önizleme Adresi"
 
 #: includes/class-sudomock-privacy.php:172
 #, php-format
 msgid "Uploaded Design URL %d"
-msgstr ""
+msgstr "Yüklenen Tasarım Adresi %d"
 
 #: includes/class-sudomock-privacy.php:179
 msgid "SudoMock Customizations"
-msgstr "SudoMock Ozellestirmeleri"
+msgstr "SudoMock Özelleştirmeleri"
 
 #: includes/class-sudomock-privacy.php:248
 msgid ""
 "Local order data was erased. Some stored design files could not be deleted "
 "from SudoMock immediately and are queued for automatic retry."
 msgstr ""
+"Yerel sipariş verileri silindi. Saklanan bazı tasarım dosyaları SudoMock "
+"tarafında hemen silinemedi ve otomatik yeniden deneme için sıraya alındı."
 
 #: includes/class-sudomock-product.php:78
 msgid "SudoMock not connected"
-msgstr "SudoMock bagli degil"
+msgstr "SudoMock bağlı değil"
 
 #: includes/class-sudomock-product.php:82
 #, php-format
 msgid "Connect your account in %s to enable product customization."
 msgstr ""
+"Ürün özelleştirmeyi etkinleştirmek için %s bölümünden hesabınızı bağlayın."
 
 #: includes/class-sudomock-product.php:84
 msgid "SudoMock Settings"
-msgstr "SudoMock Ayarlari"
+msgstr "SudoMock Ayarları"
 
 #: includes/class-sudomock-product.php:93
 msgid "Enable Customization"
-msgstr "Ozellestirmeyi Etkinlestir"
+msgstr "Özelleştirmeyi Etkinleştir"
 
 #: includes/class-sudomock-product.php:94
 msgid "Show the customize button on this product page."
-msgstr ""
+msgstr "Bu ürün sayfasında özelleştirme butonunu göster."
 
 #: includes/class-sudomock-product.php:111
 msgid "Preview"
-msgstr ""
+msgstr "Önizleme"
 
 #: includes/class-sudomock-product.php:222
 msgid "No mockups yet."
-msgstr "Henuz mockup yok."
+msgstr "Henüz mockup yok."
 
 #: includes/class-sudomock-product.php:223
 msgid "Create your first mockup"
-msgstr ""
+msgstr "İlk mockup'ınızı oluşturun"
 
 #: includes/class-sudomock-product.php:224
 msgid "Network error."
-msgstr "Ag hatasi."
+msgstr "Ağ hatası."
 
 #: includes/class-sudomock-storefront.php:255
 msgid "Loading..."
-msgstr "Yukleniyor..."
+msgstr "Yükleniyor..."
 
 #: includes/class-sudomock-storefront.php:256
 msgid "Customizer is temporarily unavailable. Please try again."
-msgstr "Ozellestirici gecici olarak kullanilamiyor. Lutfen tekrar deneyin."
+msgstr "Özelleştirici geçici olarak kullanılamıyor. Lütfen tekrar deneyin."
 
 #: includes/class-sudomock-storefront.php:257
 #: includes/class-sudomock-storefront.php:669
@@ -1433,73 +1492,79 @@ msgstr "Sepete eklendi!"
 #: includes/class-sudomock-storefront.php:258
 #: includes/class-sudomock-storefront.php:664
 msgid "Failed to add to cart. Please try again."
-msgstr "Sepete eklenemedi. Lutfen tekrar deneyin."
+msgstr "Sepete eklenemedi. Lütfen tekrar deneyin."
 
 #: includes/class-sudomock-storefront.php:260
 msgid "Network error adding to cart."
-msgstr "Sepete eklerken ag hatasi."
+msgstr "Sepete eklerken ağ hatası."
 
 #: includes/class-sudomock-storefront.php:261
 msgid "Please choose the product options first."
-msgstr ""
+msgstr "Lütfen önce ürün seçeneklerini belirleyin."
 
 #: includes/class-sudomock-storefront.php:262
 msgid "Cannot add to cart: no product ID."
-msgstr "Sepete eklenemiyor: urun ID'si yok."
+msgstr "Sepete eklenemiyor: ürün ID'si yok."
 
 #: includes/class-sudomock-storefront.php:263
 msgid "Missing product-id or mockup-uuid on button."
-msgstr "Butonda urun ID veya mockup UUID eksik."
+msgstr "Butonda ürün ID veya mockup UUID eksik."
 
 #: includes/class-sudomock-storefront.php:374
 #: includes/class-sudomock-storefront.php:382
 #: includes/class-sudomock-storefront.php:403
 #: includes/class-sudomock-storefront.php:467
 msgid "Invalid request."
-msgstr "Gecersiz istek."
+msgstr "Geçersiz istek."
 
 #: includes/class-sudomock-storefront.php:391
 #: includes/class-sudomock-storefront.php:394
 msgid "Invalid product option."
-msgstr ""
+msgstr "Geçersiz ürün seçeneği."
 
 #: includes/class-sudomock-storefront.php:483
 #: includes/class-sudomock-storefront.php:516
 msgid "Invalid customization action."
-msgstr ""
+msgstr "Geçersiz özelleştirme işlemi."
 
 #: includes/class-sudomock-storefront.php:533
 #: includes/class-sudomock-storefront.php:553
 msgid "Invalid customization session."
-msgstr ""
+msgstr "Geçersiz özelleştirme oturumu."
 
 #: includes/class-sudomock-storefront.php:558
 msgid "Product not found."
-msgstr "Urun bulunamadi."
+msgstr "Ürün bulunamadı."
 
 #: includes/class-sudomock-storefront.php:567
 #: includes/class-sudomock-storefront.php:570
 msgid "Product mapping changed."
-msgstr ""
+msgstr "Ürün eşlemesi değişti."
 
 #: includes/class-sudomock-storefront.php:615
 msgid "Could not verify this customization."
-msgstr ""
+msgstr "Bu özelleştirme doğrulanamadı."
 
 #: includes/class-sudomock-storefront.php:641
 msgid "Please choose the product options before adding to cart."
-msgstr ""
+msgstr "Sepete eklemeden önce lütfen ürün seçeneklerini belirleyin."
 
 #: sudomock-product-customizer.php:259
 msgid "Documentation"
-msgstr "Dokumantasyon"
+msgstr "Dokümantasyon"
 
 #: sudomock-product-customizer.php:279
 #, php-format
 msgid "%1$s requires %2$s to be installed and active."
-msgstr ""
+msgstr "%1$s için %2$s kurulu ve etkin olmalıdır."
 
 #: sudomock-product-customizer.php:301 sudomock-product-customizer.php:326
 #, php-format
 msgid "SudoMock Product Customizer requires PHP %s or higher."
-msgstr ""
+msgstr "SudoMock Product Customizer, PHP %s veya üzerini gerektirir."
+
+#~ msgid "free renders / month"
+#~ msgstr "ücretsiz render / ay"
+
+#~ msgid "Upgrade"
+#~ msgstr "Yükselt"

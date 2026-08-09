@@ -165,6 +165,12 @@ final class SudoMock_Admin {
         update_option( 'sudomock_credits_used', absint( $account['usage']['credits_used_this_month'] ) );
         update_option( 'sudomock_credits_limit', absint( $account['usage']['credits_limit'] ) );
         update_option( 'sudomock_credits_remaining', absint( $account['usage']['credits_remaining'] ) );
+        // An account is funded by a subscription allowance or by a prepaid
+        // balance. The credits_* fields above only describe the allowance, so
+        // an account paying as it goes reports all three as 0 while being able
+        // to pay. Stored as a float: this is money, not a credit count.
+        update_option( 'sudomock_prepaid_balance', (float) ( $account['usage']['prepaid_balance'] ?? 0 ) );
+        update_option( 'sudomock_prepaid_currency', sanitize_text_field( $account['usage']['prepaid_balance_currency'] ?? 'USD' ) );
         update_option( 'sudomock_connected_at', current_time( 'mysql' ) );
 
         wp_send_json_success( array(
@@ -199,6 +205,8 @@ final class SudoMock_Admin {
         delete_option( 'sudomock_credits_used' );
         delete_option( 'sudomock_credits_limit' );
         delete_option( 'sudomock_credits_remaining' );
+        delete_option( 'sudomock_prepaid_balance' );
+        delete_option( 'sudomock_prepaid_currency' );
         delete_option( 'sudomock_connected_at' );
         delete_option( 'sudomock_onboarding_dismissed' );
 
@@ -260,6 +268,8 @@ final class SudoMock_Admin {
                 update_option( 'sudomock_credits_used', $new_used );
                 update_option( 'sudomock_credits_limit', absint( $account['usage']['credits_limit'] ) );
                 update_option( 'sudomock_credits_remaining', absint( $account['usage']['credits_remaining'] ) );
+                update_option( 'sudomock_prepaid_balance', (float) ( $account['usage']['prepaid_balance'] ?? 0 ) );
+                update_option( 'sudomock_prepaid_currency', sanitize_text_field( $account['usage']['prepaid_balance_currency'] ?? 'USD' ) );
                 // Reset credits warning dismiss when a new billing period starts (usage drops)
                 if ( $new_used < $old_used ) {
                     delete_option( 'sudomock_credits_warning_dismissed' );
@@ -293,6 +303,15 @@ final class SudoMock_Admin {
         $button_label    = get_option( 'sudomock_button_label', __( 'Customize This Product', 'sudomock-product-customizer' ) );
         $credits_percent = $credits_limit > 0 ? min( round( ( $credits_used / $credits_limit ) * 100 ), 100 ) : 0;
 
+        // Two independent funding routes, and only the first has a denominator.
+        // An allowance can be drawn as a bar; a balance is an amount and cannot,
+        // so a store paying as it goes used to see a bar frozen at 0% under the
+        // words "0 / 0 credits" while its account was funded and working.
+        $prepaid_balance  = (float) get_option( 'sudomock_prepaid_balance', 0 );
+        $prepaid_currency = (string) get_option( 'sudomock_prepaid_currency', 'USD' );
+        $has_allotment    = $credits_limit > 0;
+        $has_balance      = $prepaid_balance > 0;
+
         // Product counts
         $total_count  = (int) wp_count_posts( 'product' )->publish;
         $mapped_count = 0;
@@ -312,6 +331,7 @@ final class SudoMock_Admin {
 
         $data = compact(
             'email', 'plan', 'plan_tier', 'credits_used', 'credits_limit', 'credits_percent',
+            'prepaid_balance', 'prepaid_currency', 'has_allotment', 'has_balance',
             'connected_at', 'button_label', 'mapped_count', 'total_count'
         );
         ?>
@@ -366,7 +386,7 @@ final class SudoMock_Admin {
                                 <?php esc_html_e( 'Product Customization, Powered by Your PSDs', 'sudomock-product-customizer' ); ?>
                             </h1>
                             <p class="sudomock-setup__desc">
-                                <?php esc_html_e( 'Let shoppers personalize products with their own artwork, logos, and text — rendered onto your PSD mockups in real time.', 'sudomock-product-customizer' ); ?>
+                                <?php esc_html_e( 'Let shoppers personalize products with their own artwork, logos, and text, rendered onto your PSD mockups in real time.', 'sudomock-product-customizer' ); ?>
                             </p>
                             <hr class="sudomock-divider" />
                             <h3 class="sudomock-setup__subtitle">
@@ -424,12 +444,15 @@ final class SudoMock_Admin {
                         <div class="sudomock-card__body">
                             <h3 class="sudomock-card__title"><?php esc_html_e( 'Pricing', 'sudomock-product-customizer' ); ?></h3>
                             <p class="sudomock-text--muted">
-                                <?php esc_html_e( 'Free to install. Pay per render from your credit balance — $0.002 per render.', 'sudomock-product-customizer' ); ?>
+                                <?php esc_html_e( 'Free to install. Pay as you go at $0.10 per PSD render, so $1 covers 10. $5 minimum, no subscription.', 'sudomock-product-customizer' ); ?>
+                            </p>
+                            <p class="sudomock-text--muted sudomock-text--sm">
+                                <?php esc_html_e( '2D Mockups and video renders are priced by cost, not at the flat render rate. Volume plans start at $25 per month.', 'sudomock-product-customizer' ); ?>
                             </p>
                             <hr class="sudomock-divider" />
                             <div class="sudomock-pricing__highlight">
                                 <span class="sudomock-pricing__number">500</span>
-                                <span class="sudomock-text--muted"><?php esc_html_e( 'free renders / month', 'sudomock-product-customizer' ); ?></span>
+                                <span class="sudomock-text--muted"><?php esc_html_e( 'free credits to start, one time', 'sudomock-product-customizer' ); ?></span>
                             </div>
                         </div>
                     </div>
@@ -459,7 +482,7 @@ final class SudoMock_Admin {
                         </div>
                         <div class="sudomock-account-row__right">
                             <a href="https://sudomock.com/dashboard/billing" target="_blank" rel="noopener" class="sudomock-btn sudomock-btn--sm">
-                                <?php echo esc_html( $d['plan_tier'] === 'free' ? __( 'Upgrade', 'sudomock-product-customizer' ) : __( 'Manage Plan', 'sudomock-product-customizer' ) ); ?>
+                                <?php echo esc_html( $d['plan_tier'] === 'free' ? __( 'Add a credit card', 'sudomock-product-customizer' ) : __( 'Manage Plan', 'sudomock-product-customizer' ) ); ?>
                             </a>
                             <button type="button" class="sudomock-btn sudomock-btn--sm sudomock-btn--danger-text" id="sudomock-disconnect-btn">
                                 <?php esc_html_e( 'Disconnect', 'sudomock-product-customizer' ); ?>
@@ -467,17 +490,39 @@ final class SudoMock_Admin {
                         </div>
                     </div>
                     <div class="sudomock-credits-bar">
-                        <div class="sudomock-bar <?php echo esc_attr( $bar_tone ); ?>">
-                            <div class="sudomock-bar__fill" style="width:<?php echo esc_attr( $d['credits_percent'] ); ?>%"></div>
-                        </div>
+                        <?php if ( $d['has_allotment'] ) : ?>
+                            <div class="sudomock-bar <?php echo esc_attr( $bar_tone ); ?>">
+                                <div class="sudomock-bar__fill" style="width:<?php echo esc_attr( $d['credits_percent'] ); ?>%"></div>
+                            </div>
+                        <?php endif; ?>
                         <span class="sudomock-text--muted sudomock-text--sm">
                             <?php
-                            printf(
-                                /* translators: %1$s: used credits, %2$s: total credits */
-                                esc_html__( '%1$s / %2$s credits', 'sudomock-product-customizer' ),
-                                esc_html( number_format_i18n( $d['credits_used'] ) ),
-                                esc_html( number_format_i18n( $d['credits_limit'] ) )
-                            );
+                            // Parts are assembled raw and escaped once at the end.
+                            $funding = array();
+                            if ( $d['has_allotment'] ) {
+                                $funding[] = sprintf(
+                                    /* translators: %1$s: used credits, %2$s: total credits */
+                                    __( '%1$s / %2$s credits', 'sudomock-product-customizer' ),
+                                    number_format_i18n( $d['credits_used'] ),
+                                    number_format_i18n( $d['credits_limit'] )
+                                );
+                            }
+                            if ( $d['has_balance'] ) {
+                                // Deliberately not wc_price(): this is the SudoMock
+                                // account balance in its own currency, not a store
+                                // amount, and formatting it as store currency would
+                                // state a number the merchant does not have.
+                                $funding[] = sprintf(
+                                    /* translators: %1$s: balance amount, %2$s: ISO currency code */
+                                    __( '%1$s %2$s balance', 'sudomock-product-customizer' ),
+                                    number_format_i18n( $d['prepaid_balance'], 2 ),
+                                    $d['prepaid_currency']
+                                );
+                            }
+                            if ( empty( $funding ) ) {
+                                $funding[] = __( 'No credits or balance', 'sudomock-product-customizer' );
+                            }
+                            echo esc_html( implode( '  ·  ', $funding ) );
                             ?>
                         </span>
                     </div>
@@ -555,13 +600,25 @@ final class SudoMock_Admin {
             <div class="sudomock-banner sudomock-banner--warning" id="sudomock-credits-warning">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
                 <?php
-                printf(
-                    /* translators: %d: percentage of credits used */
-                    esc_html__( 'You have used %d%% of your monthly credits.', 'sudomock-product-customizer' ),
-                    absint( $d['credits_percent'] )
-                );
+                // An account with no subscription is spending the one-time free credits,
+                // not a monthly allowance, and its way forward is a card rather than a
+                // plan change. Saying "monthly credits" to that account describes a
+                // renewal that never happens.
+                if ( $d['plan_tier'] === 'free' ) {
+                    printf(
+                        /* translators: %d: percentage of free credits used */
+                        esc_html__( 'You have used %d%% of your free credits. They are granted once and do not renew.', 'sudomock-product-customizer' ),
+                        absint( $d['credits_percent'] )
+                    );
+                } else {
+                    printf(
+                        /* translators: %d: percentage of credits used */
+                        esc_html__( 'You have used %d%% of your monthly credits.', 'sudomock-product-customizer' ),
+                        absint( $d['credits_percent'] )
+                    );
+                }
                 ?>
-                <a href="https://sudomock.com/dashboard/billing" target="_blank" rel="noopener" class="sudomock-btn sudomock-btn--sm"><?php esc_html_e( 'Manage Plan', 'sudomock-product-customizer' ); ?></a>
+                <a href="https://sudomock.com/dashboard/billing" target="_blank" rel="noopener" class="sudomock-btn sudomock-btn--sm"><?php echo esc_html( $d['plan_tier'] === 'free' ? __( 'Add a credit card', 'sudomock-product-customizer' ) : __( 'Manage Plan', 'sudomock-product-customizer' ) ); ?></a>
                 <button type="button" class="sudomock-banner__dismiss" id="sudomock-dismiss-credits-warning" aria-label="<?php esc_attr_e( 'Dismiss', 'sudomock-product-customizer' ); ?>">&times;</button>
             </div>
             <?php endif; ?>

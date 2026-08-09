@@ -37,7 +37,7 @@ final class SudoMock_Encryption {
             }
             wp_die(
                 esc_html__( 'SudoMock requires the PHP OpenSSL extension to securely store your API key. Please contact your hosting provider to enable it.', 'sudomock-product-customizer' ),
-                esc_html__( 'SudoMock — Missing Requirement', 'sudomock-product-customizer' ),
+                esc_html__( 'SudoMock: Missing Requirement', 'sudomock-product-customizer' ),
                 array( 'response' => 500 )
             );
         }

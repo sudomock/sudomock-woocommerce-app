@@ -20,9 +20,9 @@ https://www.youtube.com/watch?v=nmD0ePncAm4
 
 = Features =
 
-* **PSD Rendering** - High-fidelity mockups with 27 blend modes, CMYK support, and up to 10000px output resolution
-* **White-Label** - Fully customizable labels, button text, and colors. No third-party branding shown to customers
-* **Pay Per Render** - Credit-based rendering, pay only for what you use
+* **PSD Rendering** - High-fidelity mockups with 27 blend modes, CMYK support, and up to 10000px output resolution once a card is verified on your SudoMock account (1024px before that)
+* **White-Label** - Fully customizable labels, button text, and colors. Once a card is verified, no third-party branding is shown to customers
+* **Pay Per Render** - $0.10 per PSD render with no subscription, $5 minimum, or a volume plan from $25 per month
 * **Cart Integration** - Rendered mockup preview automatically attaches to cart and order
 * **HPOS Compatible** - Built for WooCommerce High-Performance Order Storage
 * **Blocks Compatible** - Works with both classic checkout and WooCommerce Blocks checkout
@@ -70,11 +70,15 @@ https://www.youtube.com/watch?v=nmD0ePncAm4
 
 = Do I need a SudoMock account? =
 
-Yes. Sign up at [sudomock.com/register](https://sudomock.com/register). A free tier is available with no credit card required.
+Yes. Sign up at [sudomock.com/register](https://sudomock.com/register). New accounts start with 500 free credits and no credit card. While the account is in trial, renders are watermarked and capped at 1024px, you can store 5 PSD templates, and one render runs at a time. Verifying a card and funding $5 removes all of it, and you then pay $0.10 per PSD render with no subscription.
+
+= What happens to my PSD templates on a trial account? =
+
+A template that has not been rendered for 7 days gets three warning emails, two days apart, and is deleted on day 13. Rendering it at any point resets the clock. Templates on an account with a funded balance or an active plan are never deleted.
 
 = Is the product customizer white-labeled? =
 
-Yes. No SudoMock branding is visible to your customers. You can customize the button label, colors, and all customer-facing text in the Settings tab.
+Once a card is verified on your SudoMock account, no SudoMock branding is visible to your customers. Trial renders carry a watermark. You can customize the button label, colors, and all customer-facing text in the Settings tab.
 
 = Does it work with WooCommerce Blocks checkout? =
 
@@ -86,7 +90,7 @@ PSD templates can contain multiple customizable areas for customer artwork. Supp
 
 = What output formats does the mockup renderer support? =
 
-PNG, JPEG, and WebP. You can configure quality (1-100), resolution up to 10000px, and transparency (alpha channel support).
+PNG, JPEG, and WebP. You can configure quality (1-100), resolution up to 10000px, and transparency (alpha channel support). A trial account is capped at 1024px; requests above that are rejected with an error rather than silently resized.
 
 = Is it GDPR compliant? =
 
@@ -128,7 +132,7 @@ No product limit. Map as many products as you want to mockup templates.
 * Fixed variable products so the shopper's chosen variation (and price) is added to the cart
 * Fixed the product quantity being ignored (always added 1)
 * Add-to-cart failures no longer discard the shopper's design; the editor stays open to retry
-* Orphaned mockup mappings are flagged in the admin ("Mapped (invalid) — Remap") and hide the storefront button instead of showing an error
+* Orphaned mockup mappings are flagged in the admin ("Mapped (invalid)", with a Remap action) and hide the storefront button instead of showing an error
 * Studio now always opens in an iframe modal; duplicate add-to-cart clicks are guarded; a fresh security token is fetched on cached pages
 * Fixed a fatal error on some classic themes' product pages
 * Security: restores stores affected by a rare saved-connection issue, prevents recurrence, and strengthens order links, admin displays, and error reporting
@@ -164,14 +168,14 @@ This plugin connects to the external SudoMock service to provide PSD mockup rend
 
 The plugin communicates with the SudoMock API at https://api.sudomock.com for the following operations:
 
-* **Account verification** — When the admin connects their SudoMock account, the plugin sends an API key to verify the account (GET /api/v1/me).
-* **Mockup listing** — When the admin opens the Products tab, the plugin fetches the list of available PSD mockup templates from the merchant's account (GET /api/v1/mockups).
-* **Mockup details and thumbnails** — When viewing mapped products, the plugin fetches mockup metadata including thumbnail image URLs to display in the admin panel (GET /api/v1/mockups/{uuid}). The thumbnail images are served from SudoMock servers.
-* **Studio session creation** — When a customer clicks the "Customize" button, the plugin creates a rendering session on the server (POST /api/v1/studio/create-session).
-* **Render processing** — When a mockup render is requested, the plugin sends the mockup UUID and smart object data to the rendering API (POST /api/v1/renders).
-* **Studio configuration** — The plugin reads and updates white-label editor settings stored on the SudoMock server (GET/PUT /api/v1/studio/config).
-* **Support tickets** — When the admin submits a support message via the plugin's Help tab, it is sent to the SudoMock support API (POST /api/v1/support/ticket). As a fallback, the message may be sent via email to support@sudomock.com.
-* **Account disconnect** — When the admin disconnects, a notification is sent to the SudoMock server (POST /api/v1/woocommerce/disconnect).
+* **Account verification**: When the admin connects their SudoMock account, the plugin sends an API key to verify the account (GET /api/v1/me).
+* **Mockup listing**: When the admin opens the Products tab, the plugin fetches the list of available PSD mockup templates from the merchant's account (GET /api/v1/mockups).
+* **Mockup details and thumbnails**: When viewing mapped products, the plugin fetches mockup metadata including thumbnail image URLs to display in the admin panel (GET /api/v1/mockups/{uuid}). The thumbnail images are served from SudoMock servers.
+* **Studio session creation**: When a customer clicks the "Customize" button, the plugin creates a rendering session on the server (POST /api/v1/studio/create-session).
+* **Render processing**: When a mockup render is requested, the plugin sends the mockup UUID and smart object data to the rendering API (POST /api/v1/renders).
+* **Studio configuration**: The plugin reads and updates white-label editor settings stored on the SudoMock server (GET/PUT /api/v1/studio/config).
+* **Support tickets**: When the admin submits a support message via the plugin's Help tab, it is sent to the SudoMock support API (POST /api/v1/support/ticket). As a fallback, the message may be sent via email to support@sudomock.com.
+* **Account disconnect**: When the admin disconnects, a notification is sent to the SudoMock server (POST /api/v1/woocommerce/disconnect).
 
 All API calls are made server-to-server using wp_remote_request. The API key is stored encrypted (AES-256-CBC) and is never exposed to the browser.
 
@@ -187,10 +191,10 @@ This service is provided by "SudoMock": [Terms of Service](https://sudomock.com/
 
 The plugin links to the SudoMock website at https://sudomock.com for the following purposes:
 
-* **OAuth connect flow** — The admin is redirected to sudomock.com/integrations/woocommerce/connect to authorize the WooCommerce integration and obtain an API key.
-* **Account registration** — Links to sudomock.com/register for new account signup.
-* **Dashboard links** — Links to sudomock.com/dashboard/playground for PSD mockup management and sudomock.com/dashboard/billing for plan management. These are navigational links that open in a new browser tab.
-* **Documentation links** — Links to sudomock.com/docs for integration guides and PSD preparation documentation.
+* **OAuth connect flow**: The admin is redirected to sudomock.com/integrations/woocommerce/connect to authorize the WooCommerce integration and obtain an API key.
+* **Account registration**: Links to sudomock.com/register for new account signup.
+* **Dashboard links**: Links to sudomock.com/dashboard/playground for PSD mockup management and sudomock.com/dashboard/billing for plan management. These are navigational links that open in a new browser tab.
+* **Documentation links**: Links to sudomock.com/docs for integration guides and PSD preparation documentation.
 
 These are browser-side navigational links only. No data is automatically transmitted to sudomock.com by the plugin.
 
