@@ -6,8 +6,8 @@ Let customers personalize products with professional PSD mockup designs in real-
 
 ## Features
 
-- **Real-Time PSD Rendering** — Sub-second renders with all 27 Photoshop blend modes
-- **White-Label Studio** — Zero SudoMock branding visible to customers. Customize colors, labels, logo
+- **Real-Time PSD Rendering** — Median render 2.0 seconds, with all 27 Photoshop blend modes (measured 2026-06-17)
+- **White-Label Studio** — Customize colors, labels, logo. Once a card is verified on your SudoMock account, renders carry no SudoMock branding
 - **WooCommerce Native** — HPOS compatible, Checkout Blocks compatible, Gutenberg block included
 - **Mobile Optimized** — Touch-friendly controls, responsive layout, works on all devices
 - **WordPress Customizer** — 30+ button styling options with live preview (classic themes)
@@ -39,20 +39,25 @@ Let customers personalize products with professional PSD mockup designs in real-
 1. **Upload PSD** — Upload Photoshop files with Smart Object layers to your SudoMock dashboard
 2. **Map to Products** — Assign mockups to WooCommerce products from the plugin admin
 3. **Customers Customize** — A "Customize" button opens Studio in an iframe modal. Customers upload artwork and preview in real-time
-4. **Render & Cart** — Final mockup renders in <1 second, attaches to cart item, persists to order
+4. **Render & Cart** — Final mockup renders in about 2 seconds, attaches to cart item, persists to order
 
 ## Pricing
 
-Free to install. Pay only for renders:
+Free to install. Pay only for renders.
+
+**Pay as you go.** $0.10 per PSD render, so $1 covers 10. $5 minimum, no subscription. 2D Mockups and video renders are priced by cost, not at the flat render rate.
+
+**Volume plans:**
 
 | Plan | Credits | Price/mo | Parallel Renders |
 |------|---------|----------|-----------------|
-| Free | 500 one-time | $0 | 1 |
-| Starter | 5K–10K/mo | $25–$39 | 3 |
-| Pro | 25K–50K/mo | $89–$145 | 10 |
-| Scale | 50K–100K/mo | $199–$309 | 25 |
+| Starter | 5K to 10K/mo | $25 to $39 | 3 |
+| Pro | 25K to 50K/mo | $89 to $145 | 10 |
+| Scale | 50K to 100K/mo | $199 to $309 | 25 |
 
-Renders start from **$0.002 each** at enterprise volume. Dashboard and playground are free and unlimited.
+The lowest self-serve rate is **$2.42 per 1,000 renders** on the annual Pro 50K plan ($1,450/year for 50,000 renders a month). Dashboard and playground are free and unlimited.
+
+New accounts start with 500 free credits, granted once. Until a card is verified, renders are watermarked and capped at 1,024 px; a card and $5 removes both.
 
 [View full pricing →](https://sudomock.com/pricing)
 

@@ -22,6 +22,8 @@ $sudomock_options = array(
     'sudomock_credits_used',
     'sudomock_credits_limit',
     'sudomock_credits_remaining',
+    'sudomock_prepaid_balance',
+    'sudomock_prepaid_currency',
     'sudomock_connected_at',
     'sudomock_button_label',
     // Legacy pre-iframe-only option.

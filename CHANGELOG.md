@@ -2,6 +2,27 @@
 
 All notable changes to this project will be documented in this file.
 
+## [Unreleased]
+
+### Fixed
+- The dashboard showed a store paying as it goes as `0 / 0 credits` under a
+  progress bar frozen at 0%, while its SudoMock account was funded and working.
+  An account is funded either by a subscription allowance or by a prepaid
+  balance, and the dashboard only ever read the allowance.
+
+### Added
+- The prepaid balance is read from the account endpoint, stored alongside the
+  credit options, and shown when the account holds one. A store with both sees
+  both.
+- The credits bar is drawn only when there is an allowance to draw it from. A
+  balance is an amount, not a fraction, so it has no denominator to be a
+  percentage of and is shown as a figure instead. An account with neither reads
+  "No credits or balance" rather than a row of zeroes.
+
+The balance is rendered in its own currency and deliberately not through
+`wc_price()`, which would restate it as a store amount the merchant does not
+hold.
+
 ## [1.3.0] - 2026-07-27
 
 ### Added
