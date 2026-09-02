@@ -171,11 +171,16 @@
 			return true;
 		}
 
+		// Validates the fields it acts on and ignores the rest. It used to demand an
+		// exact key set, which silently refused every real submitted design from the
+		// day the editor began sending its render parameters alongside them: the
+		// message was dropped, no cart line was created, and nothing said why. A
+		// receiver that enumerates the sender's whole message breaks on the next
+		// field the sender adds, so this one names only what it needs.
 		function handleDesignSubmitted(envelope) {
 			var payload = object(envelope.payload);
 			if (
 				!payload
-				|| !exact(payload, ['mockup_uuid', 'render_uuid', 'action_id'])
 				|| typeof payload.mockup_uuid !== 'string'
 				|| !UUID_RE.test(payload.mockup_uuid)
 				|| typeof payload.render_uuid !== 'string'
@@ -183,7 +188,14 @@
 				|| payload.action_id !== 'add-to-cart'
 			) return false;
 
-			var payloadKey = JSON.stringify(payload);
+			// The three fields this bridge acts on, not the whole message. A retry is
+			// the same action when it names the same design, and keying on the whole
+			// message would also serialise values this code has not inspected.
+			var payloadKey = JSON.stringify([
+				payload.mockup_uuid,
+				payload.render_uuid,
+				payload.action_id,
+			]);
 			var existing = actionRequests.get(envelope.request_id);
 			if (existing) {
 				if (existing.payloadKey !== payloadKey) return false;
