@@ -14,7 +14,15 @@ const uninstallSource = readFileSync(resolve(__dirname, '../uninstall.php'), 'ut
 
 const mockupUuid = '44444444-4444-4444-8444-444444444444';
 const renderUuid = '55555555-5555-4555-8555-555555555555';
+const surfaceUuid = '66666666-6666-4666-8666-666666666666';
 const childNonce = 'AAAAAAAAAAAAAAAAAAAAAA';
+// A customize submit always carries the design parameters, and carries the
+// sources only when an artwork has a public address.
+const renderParameters = {
+	print_areas: [{ surface_uuid: surfaceUuid, artwork_url: 'https://cdn.example/artwork.png' }],
+	export_options: { image_format: 'png', image_size: 2048 },
+};
+const artworkSources = [{ surface_uuid: surfaceUuid, url: 'https://cdn.example/artwork.png' }];
 
 function session(messageSessionId, secret) {
 	return {
@@ -298,6 +306,7 @@ test('Woo bridge accepts exact design payload once and posts correlated result',
 			{
 				mockup_uuid: mockupUuid,
 				render_uuid: renderUuid,
+				render_parameters: renderParameters,
 				action_id: 'delete-product',
 			}
 		),
@@ -308,6 +317,7 @@ test('Woo bridge accepts exact design payload once and posts correlated result',
 	const submitted = envelope('studio.design-submitted', requestId, messageSessionId, {
 		mockup_uuid: mockupUuid,
 		render_uuid: renderUuid,
+		render_parameters: renderParameters,
 		action_id: 'add-to-cart',
 	});
 	harness.message({ origin: 'https://studio.sudomock.com', source: frame, data: submitted });
@@ -368,6 +378,7 @@ test('Woo bridge uses the render UUID as the opaque receipt handle', async () =>
 		data: envelope('studio.design-submitted', requestId, messageSessionId, {
 			mockup_uuid: mockupUuid,
 			render_uuid: renderUuid,
+			render_parameters: renderParameters,
 			action_id: 'add-to-cart',
 		}),
 	});
@@ -389,6 +400,81 @@ test('Woo bridge uses the render UUID as the opaque receipt handle', async () =>
 	});
 });
 
+test('Woo bridge takes a submit carrying artwork sources and forwards neither extra field', async () => {
+	const messageSessionId = '11111111-1111-4111-8111-111111111111';
+	const harness = createHarness([session(messageSessionId, 'A'.repeat(43))]);
+	harness.click();
+	await flush();
+	const frame = harness.frames[0];
+	const requestId = '78787878-7878-4878-8878-787878787878';
+	harness.message({
+		origin: 'https://studio.sudomock.com',
+		source: frame,
+		data: envelope('studio.design-submitted', requestId, messageSessionId, {
+			mockup_uuid: mockupUuid,
+			render_uuid: renderUuid,
+			render_parameters: renderParameters,
+			artwork_sources: artworkSources,
+			action_id: 'add-to-cart',
+		}),
+	});
+	await flush();
+
+	const cartCalls = harness.fetchCalls.filter((call) => call.action === 'sudomock_add_to_cart');
+	assert.equal(cartCalls.length, 1);
+	const fields = Object.fromEntries(cartCalls[0].options.body.entries());
+	assert.deepEqual(fields, {
+		action: 'sudomock_add_to_cart',
+		nonce: 'nonce-fresh',
+		version: '1',
+		request_id: requestId,
+		message_session_id: messageSessionId,
+		type: 'studio.design-submitted',
+		mockup_uuid: mockupUuid,
+		render_uuid: renderUuid,
+		action_id: 'add-to-cart',
+		quantity: '2',
+	});
+});
+
+// The message is the editor's to grow. A field this bridge does not read cannot
+// cost the shopper their cart, and it cannot reach the shop either: the request
+// is built from named fields, never from the message as a whole. Refusing the
+// whole design over such a field is what silently emptied every cart once.
+test('Woo bridge ignores a field it does not read and never forwards it', async () => {
+	const messageSessionId = '11111111-1111-4111-8111-111111111111';
+	const harness = createHarness([session(messageSessionId, 'A'.repeat(43))]);
+	harness.click();
+	await flush();
+	const frame = harness.frames[0];
+	harness.message({
+		origin: 'https://studio.sudomock.com',
+		source: frame,
+		data: envelope(
+			'studio.design-submitted',
+			'89898989-8989-4989-8989-898989898989',
+			messageSessionId,
+			{
+				mockup_uuid: mockupUuid,
+				render_uuid: renderUuid,
+				render_parameters: renderParameters,
+				action_id: 'add-to-cart',
+				api_key: 'sk_live_unexpected',
+			}
+		),
+	});
+	await flush();
+
+	const cartCalls = harness.fetchCalls.filter((call) => call.action === 'sudomock_add_to_cart');
+	assert.equal(cartCalls.length, 1);
+	const fields = Object.fromEntries(cartCalls[0].options.body.entries());
+	assert.equal(fields.mockup_uuid, mockupUuid);
+	assert.equal(fields.render_uuid, renderUuid);
+	assert.equal(fields.action_id, 'add-to-cart');
+	assert.equal(fields.api_key, undefined);
+	assert.doesNotMatch(JSON.stringify(fields), /sk_live_unexpected/);
+});
+
 test('Woo bridge reports a failed platform action with correlated IDs', async () => {
 	const messageSessionId = '11111111-1111-4111-8111-111111111111';
 	const harness = createHarness([session(messageSessionId, 'A'.repeat(43))], false);
@@ -402,6 +488,7 @@ test('Woo bridge reports a failed platform action with correlated IDs', async ()
 		data: envelope('studio.design-submitted', requestId, messageSessionId, {
 			mockup_uuid: mockupUuid,
 			render_uuid: renderUuid,
+			render_parameters: renderParameters,
 			action_id: 'add-to-cart',
 		}),
 	});
@@ -412,6 +499,7 @@ test('Woo bridge reports a failed platform action with correlated IDs', async ()
 		data: envelope('studio.design-submitted', requestId, messageSessionId, {
 			mockup_uuid: mockupUuid,
 			render_uuid: renderUuid,
+			render_parameters: renderParameters,
 			action_id: 'add-to-cart',
 		}),
 	});
@@ -440,6 +528,7 @@ test('Woo bridge coalesces a pending retry and replays its terminal result', asy
 	const submitted = envelope('studio.design-submitted', requestId, messageSessionId, {
 		mockup_uuid: mockupUuid,
 		render_uuid: renderUuid,
+		render_parameters: renderParameters,
 		action_id: 'add-to-cart',
 	});
 
