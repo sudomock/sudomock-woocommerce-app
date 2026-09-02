@@ -6,7 +6,7 @@ Tested up to: 6.9
 Requires PHP: 7.4
 WC requires at least: 8.0
 WC tested up to: 10.9
-Stable tag: 1.3.0
+Stable tag: 1.3.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -121,6 +121,10 @@ No product limit. Map as many products as you want to mockup templates.
 9. **Order Detail** - Rendered mockup in order admin for fulfillment.
 
 == Changelog ==
+
+= 1.3.1 =
+* Fixed: a finished customization reaches the cart again. A design submitted from the customizer could be refused on its way to the cart, with nothing shown to explain why.
+* The credits panel shows a prepaid balance next to a subscription allowance, and reads correctly for an account that holds only one of the two.
 
 = 1.3.0 =
 * 2D mockups: create product mockups directly from a product photo, no PSD template required

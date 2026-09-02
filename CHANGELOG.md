@@ -4,7 +4,17 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+## [1.3.1] - 2026-09-02
+
 ### Fixed
+- A finished customization could not reach the cart. The storefront accepted a
+  submitted design only when its payload named exactly three fields, and the
+  customizer has sent its render parameters alongside them since 11 August, so
+  every real submission was refused: no cart line was created and nothing said
+  why. The bridge now validates the fields it acts on and ignores the rest,
+  which is also what keeps the next field the customizer adds from breaking it
+  again. The request the store authorizes still carries only the three
+  identifiers.
 - The dashboard showed a store paying as it goes as `0 / 0 credits` under a
   progress bar frozen at 0%, while its SudoMock account was funded and working.
   An account is funded either by a subscription allowance or by a prepaid
