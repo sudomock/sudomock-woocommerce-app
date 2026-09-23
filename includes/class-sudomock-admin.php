@@ -444,10 +444,10 @@ final class SudoMock_Admin {
                         <div class="sudomock-card__body">
                             <h3 class="sudomock-card__title"><?php esc_html_e( 'Pricing', 'sudomock-product-customizer' ); ?></h3>
                             <p class="sudomock-text--muted">
-                                <?php esc_html_e( 'Free to install. Pay as you go at $0.05 per PSD render, so $1 covers 20. $5 minimum, no subscription.', 'sudomock-product-customizer' ); ?>
+                                <?php esc_html_e( 'Free to install. Plans start at $25 per month for 5,000 renders, which is $0.005 per render, and annual billing brings it lower still.', 'sudomock-product-customizer' ); ?>
                             </p>
                             <p class="sudomock-text--muted sudomock-text--sm">
-                                <?php esc_html_e( '2D Mockups and video renders are priced by cost, not at the flat render rate. Volume plans start at $25 per month.', 'sudomock-product-customizer' ); ?>
+                                <?php esc_html_e( 'Without any subscription at all it is $0.05 per PSD render, so $1 covers 20, with a $5 minimum. 2D Mockups and video renders are priced by cost, not at the flat render rate.', 'sudomock-product-customizer' ); ?>
                             </p>
                             <hr class="sudomock-divider" />
                             <div class="sudomock-pricing__highlight">
