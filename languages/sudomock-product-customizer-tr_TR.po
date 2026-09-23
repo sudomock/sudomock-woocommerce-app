@@ -344,11 +344,11 @@ msgstr "Fiyatlandırma"
 
 #: includes/class-sudomock-admin.php:427
 msgid ""
-"Free to install. Pay as you go at $0.10 per PSD render, so $1 covers 10. $5 "
+"Free to install. Pay as you go at $0.05 per PSD render, so $1 covers 20. $5 "
 "minimum, no subscription."
 msgstr ""
-"Kurulum ücretsiz. Kullandıkça ödeyin: PSD render başına $0.10, yani $1 ile "
-"10 render. Minimum $5, abonelik yok."
+"Kurulum ücretsiz. Kullandıkça ödeyin: PSD render başına $0.05, yani $1 ile "
+"20 render. Minimum $5, abonelik yok."
 
 #: includes/class-sudomock-admin.php:430
 msgid ""

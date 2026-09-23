@@ -45,7 +45,7 @@ Let customers personalize products with professional PSD mockup designs in real-
 
 Free to install. Pay only for renders.
 
-**Pay as you go.** $0.10 per PSD render, so $1 covers 10. $5 minimum, no subscription. 2D Mockups and video renders are priced by cost, not at the flat render rate.
+**Pay as you go.** $0.05 per PSD render, so $1 covers 20. $5 minimum, no subscription. 2D Mockups and video renders are priced by cost, not at the flat render rate.
 
 **Volume plans:**
 
