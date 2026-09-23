@@ -334,7 +334,7 @@ msgstr "定价"
 
 #: includes/class-sudomock-admin.php:427
 msgid ""
-"Free to install. Pay as you go at $0.10 per PSD render, so $1 covers 10. $5 "
+"Free to install. Pay as you go at $0.05 per PSD render, so $1 covers 20. $5 "
 "minimum, no subscription."
 msgstr ""
 

@@ -22,7 +22,7 @@ https://www.youtube.com/watch?v=nmD0ePncAm4
 
 * **PSD Rendering** - High-fidelity mockups with 27 blend modes, CMYK support, and up to 10000px output resolution once a card is verified on your SudoMock account (1024px before that)
 * **White-Label** - Fully customizable labels, button text, and colors. Once a card is verified, no third-party branding is shown to customers
-* **Pay Per Render** - $0.10 per PSD render with no subscription, $5 minimum, or a volume plan from $25 per month
+* **Pay Per Render** - $0.05 per PSD render with no subscription, $5 minimum, or a volume plan from $25 per month
 * **Cart Integration** - Rendered mockup preview automatically attaches to cart and order
 * **HPOS Compatible** - Built for WooCommerce High-Performance Order Storage
 * **Blocks Compatible** - Works with both classic checkout and WooCommerce Blocks checkout
@@ -70,7 +70,7 @@ https://www.youtube.com/watch?v=nmD0ePncAm4
 
 = Do I need a SudoMock account? =
 
-Yes. Sign up at [sudomock.com/register](https://sudomock.com/register). New accounts start with 500 free credits and no credit card. While the account is in trial, renders are watermarked and capped at 1024px, you can store 5 PSD templates, and one render runs at a time. Verifying a card and funding $5 removes all of it, and you then pay $0.10 per PSD render with no subscription.
+Yes. Sign up at [sudomock.com/register](https://sudomock.com/register). New accounts start with 500 free credits and no credit card. While the account is in trial, renders are watermarked and capped at 1024px, you can store 5 PSD templates, and one render runs at a time. Verifying a card and funding $5 removes all of it, and you then pay $0.05 per PSD render with no subscription.
 
 = What happens to my PSD templates on a trial account? =
 

@@ -444,7 +444,7 @@ final class SudoMock_Admin {
                         <div class="sudomock-card__body">
                             <h3 class="sudomock-card__title"><?php esc_html_e( 'Pricing', 'sudomock-product-customizer' ); ?></h3>
                             <p class="sudomock-text--muted">
-                                <?php esc_html_e( 'Free to install. Pay as you go at $0.10 per PSD render, so $1 covers 10. $5 minimum, no subscription.', 'sudomock-product-customizer' ); ?>
+                                <?php esc_html_e( 'Free to install. Pay as you go at $0.05 per PSD render, so $1 covers 20. $5 minimum, no subscription.', 'sudomock-product-customizer' ); ?>
                             </p>
                             <p class="sudomock-text--muted sudomock-text--sm">
                                 <?php esc_html_e( '2D Mockups and video renders are priced by cost, not at the flat render rate. Volume plans start at $25 per month.', 'sudomock-product-customizer' ); ?>
@@ -1590,7 +1590,7 @@ final class SudoMock_Admin {
                 $email,
                 $message
             );
-            $sent = wp_mail( 'support@sudomock.com', '[WooCommerce Support] ' . $subject, $body, $headers );
+            $sent = wp_mail( 'hello@sudomock.com', '[WooCommerce Support] ' . $subject, $body, $headers );
         }
 
         if ( ! $sent ) {
