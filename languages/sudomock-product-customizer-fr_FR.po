@@ -41,18 +41,18 @@ msgstr "Enregistrement de la connexion..."
 
 #: includes/class-sudomock-admin.php:89
 msgid "Connected"
-msgstr "Connecte"
+msgstr "Connecté"
 
 #: includes/class-sudomock-admin.php:90
 msgid "Connection failed"
-msgstr "Connexion echouee"
+msgstr "Connexion échouée"
 
 #: includes/class-sudomock-admin.php:91
 msgid ""
 "Are you sure you want to disconnect? Product customizations will stop "
 "working."
 msgstr ""
-"Etes-vous sur de vouloir vous deconnecter ? Les personnalisations de "
+"Êtes-vous sûr de vouloir vous déconnecter ? Les personnalisations de "
 "produits cesseront de fonctionner."
 
 #: includes/class-sudomock-admin.php:92
@@ -61,11 +61,11 @@ msgid ""
 "SudoMock server. Product customization will stop working immediately."
 msgstr ""
 "Cela supprimera toutes les associations de mockup et notifiera le serveur "
-"SudoMock. La personnalisation cessera immediatement."
+"SudoMock. La personnalisation cessera immédiatement."
 
 #: includes/class-sudomock-admin.php:93
 msgid "Disconnecting..."
-msgstr "Deconnexion en cours..."
+msgstr "Déconnexion en cours..."
 
 #: includes/class-sudomock-admin.php:94
 msgid "Assigning..."
@@ -77,7 +77,7 @@ msgstr "Attribuer un mockup"
 
 #: includes/class-sudomock-admin.php:96
 msgid "No mockups found."
-msgstr "Aucun mockup trouve."
+msgstr "Aucun mockup trouvé."
 
 #: includes/class-sudomock-admin.php:97 includes/class-sudomock-admin.php:1028
 #: includes/class-sudomock-product.php:219
@@ -94,7 +94,7 @@ msgstr "Impossible d'associer le mockup."
 
 #: includes/class-sudomock-admin.php:100
 msgid "Network error. Please try again."
-msgstr "Erreur reseau. Veuillez reessayer."
+msgstr "Erreur réseau. Veuillez réessayer."
 
 #: includes/class-sudomock-admin.php:101
 msgid "Remove mockup mapping from this product?"
@@ -102,12 +102,12 @@ msgstr "Supprimer l'association du mockup de ce produit ?"
 
 #: includes/class-sudomock-admin.php:102
 msgid "Assigning mockup to:"
-msgstr "Association du mockup a :"
+msgstr "Association du mockup à :"
 
 #: includes/class-sudomock-admin.php:103
 #: includes/class-sudomock-product.php:225
 msgid "No preview"
-msgstr "Pas de previsualisation"
+msgstr "Pas de prévisualisation"
 
 #: includes/class-sudomock-admin.php:104
 #: includes/class-sudomock-product.php:226
@@ -156,7 +156,7 @@ msgstr "mockup"
 
 #: includes/class-sudomock-admin.php:114 includes/class-sudomock-admin.php:952
 msgid "Previous"
-msgstr "Precedent"
+msgstr "Précédent"
 
 #: includes/class-sudomock-admin.php:115 includes/class-sudomock-admin.php:970
 msgid "Next"
@@ -164,7 +164,7 @@ msgstr "Suivant"
 
 #: includes/class-sudomock-admin.php:116
 msgid "Popup blocked. Please allow popups for this site."
-msgstr "Popup bloque. Veuillez autoriser les popups pour ce site."
+msgstr "Popup bloqué. Veuillez autoriser les popups pour ce site."
 
 #: includes/class-sudomock-admin.php:117
 msgid "Configuration error."
@@ -172,15 +172,15 @@ msgstr "Erreur de configuration."
 
 #: includes/class-sudomock-admin.php:118
 msgid "Settings saved successfully."
-msgstr "Parametres enregistres avec succes."
+msgstr "Paramètres enregistrés avec succès."
 
 #: includes/class-sudomock-admin.php:119
 msgid "Reset all studio settings to defaults?"
-msgstr "Reinitialiser tous les parametres du studio ?"
+msgstr "Réinitialiser tous les paramètres du studio ?"
 
 #: includes/class-sudomock-admin.php:120
 msgid "Changes discarded."
-msgstr "Modifications annulees."
+msgstr "Modifications annulées."
 
 #: includes/class-sudomock-admin.php:121 includes/class-sudomock-admin.php:1295
 msgid "Save Studio Config"
@@ -188,11 +188,11 @@ msgstr "Enregistrer la configuration Studio"
 
 #: includes/class-sudomock-admin.php:122
 msgid "Network error saving config."
-msgstr "Erreur reseau lors de l'enregistrement."
+msgstr "Erreur réseau lors de l'enregistrement."
 
 #: includes/class-sudomock-admin.php:123
 msgid "Failed to save."
-msgstr "Echec de l'enregistrement."
+msgstr "Échec de l'enregistrement."
 
 #: includes/class-sudomock-admin.php:124
 msgid "text"
@@ -216,7 +216,7 @@ msgstr ""
 
 #: includes/class-sudomock-admin.php:130
 msgid "Failed to send message. Please try again."
-msgstr "Impossible d'envoyer le message. Veuillez reessayer."
+msgstr "Impossible d'envoyer le message. Veuillez réessayer."
 
 #: includes/class-sudomock-admin.php:131
 msgid "You have reached the limit. Please wait before sending another message."
@@ -230,7 +230,7 @@ msgstr "Envoyer"
 
 #: includes/class-sudomock-admin.php:134 includes/class-sudomock-admin.php:1579
 msgid "Onboarding dismissed."
-msgstr "Introduction fermee."
+msgstr "Introduction fermée."
 
 #: includes/class-sudomock-admin.php:146 includes/class-sudomock-admin.php:178
 #: includes/class-sudomock-admin.php:211 includes/class-sudomock-admin.php:1345
@@ -241,19 +241,19 @@ msgstr "Introduction fermee."
 #: includes/class-sudomock-admin.php:1573
 #: includes/class-sudomock-admin.php:1590
 msgid "Permission denied."
-msgstr "Acces refuse."
+msgstr "Accès refusé."
 
 #: includes/class-sudomock-admin.php:151
 msgid "Invalid API key format. Keys start with sm_"
-msgstr "Format de cle API invalide. Les cles commencent par sm_"
+msgstr "Format de clé API invalide. Les clés commencent par sm_"
 
 #: includes/class-sudomock-admin.php:171
 msgid "Connected successfully!"
-msgstr "Connecte avec succes !"
+msgstr "Connecté avec succès !"
 
 #: includes/class-sudomock-admin.php:205
 msgid "Disconnected."
-msgstr "Deconnecte."
+msgstr "Déconnecté."
 
 #: includes/class-sudomock-admin.php:275
 msgid "Dashboard"
@@ -269,11 +269,11 @@ msgstr "Mockups"
 
 #: includes/class-sudomock-admin.php:278 sudomock-product-customizer.php:241
 msgid "Settings"
-msgstr "Parametres"
+msgstr "Paramètres"
 
 #: includes/class-sudomock-admin.php:366
 msgid "Product Customization, Powered by Your PSDs"
-msgstr "Personnalisation produit, propulsee par vos PSDs"
+msgstr "Personnalisation produit, propulsée par vos PSDs"
 
 #: includes/class-sudomock-admin.php:369
 msgid ""
@@ -296,11 +296,11 @@ msgstr "ou %s"
 
 #: includes/class-sudomock-admin.php:385
 msgid "create a free account"
-msgstr "creer un compte gratuit"
+msgstr "créer un compte gratuit"
 
 #: includes/class-sudomock-admin.php:397
 msgid "How It Works"
-msgstr "Comment ca marche"
+msgstr "Comment ça marche"
 
 #: includes/class-sudomock-admin.php:401
 msgid "Upload PSDs"
@@ -316,7 +316,7 @@ msgstr "Associer aux produits"
 
 #: includes/class-sudomock-admin.php:402
 msgid "Assign a PSD mockup to each WooCommerce product."
-msgstr "Associez un mockup PSD a chaque produit WooCommerce."
+msgstr "Associez un mockup PSD à chaque produit WooCommerce."
 
 #: includes/class-sudomock-admin.php:403
 msgid "Customers Customize"
@@ -324,7 +324,7 @@ msgstr "Les clients personnalisent"
 
 #: includes/class-sudomock-admin.php:403
 msgid "Shoppers upload artwork and see a live preview."
-msgstr "Les clients importent leurs visuels et voient un apercu en direct."
+msgstr "Les clients importent leurs visuels et voient un aperçu en direct."
 
 #: includes/class-sudomock-admin.php:404
 msgid "Render & Cart"
@@ -332,7 +332,7 @@ msgstr "Rendu & Panier"
 
 #: includes/class-sudomock-admin.php:404
 msgid "Final mockup rendered and attached to cart."
-msgstr "Mockup final rendu et ajoute au panier."
+msgstr "Mockup final rendu et ajouté au panier."
 
 #: includes/class-sudomock-admin.php:425
 msgid "Pricing"
@@ -361,16 +361,16 @@ msgstr ""
 
 #: includes/class-sudomock-admin.php:465 includes/class-sudomock-admin.php:579
 msgid "Manage Plan"
-msgstr "Gerer l'abonnement"
+msgstr "Gérer l'abonnement"
 
 #: includes/class-sudomock-admin.php:468
 msgid "Disconnect"
-msgstr "Deconnecter"
+msgstr "Déconnecter"
 
 #: includes/class-sudomock-admin.php:480
 #, php-format
 msgid "%1$s / %2$s credits"
-msgstr "%1$s / %2$s credits"
+msgstr "%1$s / %2$s crédits"
 
 #: includes/class-sudomock-admin.php:500
 msgid "Get Started"
@@ -385,7 +385,7 @@ msgid ""
 "Complete these 3 steps to start offering product customization to your "
 "customers."
 msgstr ""
-"Completez ces 3 etapes pour commencer a offrir la personnalisation a vos "
+"Complétez ces 3 étapes pour commencer à offrir la personnalisation à vos "
 "clients."
 
 #: includes/class-sudomock-admin.php:514
@@ -413,7 +413,7 @@ msgid ""
 "Assign a PSD mockup to each WooCommerce product you want to offer "
 "customization for."
 msgstr ""
-"Associez un mockup PSD a chaque produit WooCommerce pour lequel vous "
+"Associez un mockup PSD à chaque produit WooCommerce pour lequel vous "
 "souhaitez offrir la personnalisation."
 
 #: includes/class-sudomock-admin.php:535
@@ -443,7 +443,7 @@ msgstr ""
 #: includes/class-sudomock-admin.php:574
 #, php-format
 msgid "You have used %d%% of your monthly credits."
-msgstr "Vous avez utilise %d%% de vos credits mensuels."
+msgstr "Vous avez utilisé %d%% de vos crédits mensuels."
 
 #: includes/class-sudomock-admin.php:596
 msgid "Setup Progress"
@@ -456,7 +456,7 @@ msgstr "%1$d sur %2$d"
 
 #: includes/class-sudomock-admin.php:614
 msgid "Account connected"
-msgstr "Compte connecte"
+msgstr "Compte connecté"
 
 #: includes/class-sudomock-admin.php:622
 msgid "Map PSD mockups to products"
@@ -476,16 +476,16 @@ msgstr "Importer des mockups PSD"
 
 #: includes/class-sudomock-admin.php:644
 msgid "PSD Preparation Guide"
-msgstr "Guide de preparation PSD"
+msgstr "Guide de préparation PSD"
 
 #: includes/class-sudomock-admin.php:648
 msgid "Integration Docs"
-msgstr "Documentation d'integration"
+msgstr "Documentation d'intégration"
 
 #: includes/class-sudomock-admin.php:668
 #, php-format
 msgid "%1$d of %2$d mapped"
-msgstr "%1$d sur %2$d associes"
+msgstr "%1$d sur %2$d associés"
 
 #: includes/class-sudomock-admin.php:683
 msgid "Browse PSD mockups"
@@ -493,11 +493,11 @@ msgstr "Parcourir les mockups PSD"
 
 #: includes/class-sudomock-admin.php:692
 msgid "Settings & Billing"
-msgstr "Parametres & Facturation"
+msgstr "Paramètres & Facturation"
 
 #: includes/class-sudomock-admin.php:693
 msgid "Studio config and display settings"
-msgstr "Configuration du studio et parametres d'affichage"
+msgstr "Configuration du studio et paramètres d'affichage"
 
 #: includes/class-sudomock-admin.php:749
 msgid "Search products..."
@@ -515,12 +515,12 @@ msgstr "Tous (%d)"
 #: includes/class-sudomock-admin.php:767
 #, php-format
 msgid "Mapped (%d)"
-msgstr "Associes (%d)"
+msgstr "Associés (%d)"
 
 #: includes/class-sudomock-admin.php:773
 #, php-format
 msgid "Unmapped (%d)"
-msgstr "Non associes (%d)"
+msgstr "Non associés (%d)"
 
 #: includes/class-sudomock-admin.php:789
 msgid "No products yet"
@@ -576,11 +576,11 @@ msgstr ""
 
 #: includes/class-sudomock-admin.php:899
 msgid "Mapped"
-msgstr "Associe"
+msgstr "Associé"
 
 #: includes/class-sudomock-admin.php:906
 msgid "Not mapped"
-msgstr "Non associe"
+msgstr "Non associé"
 
 #: includes/class-sudomock-admin.php:915
 msgid "Remap"
@@ -607,7 +607,7 @@ msgstr "Page %1$d sur %2$d (%3$d produits)"
 
 #: includes/class-sudomock-admin.php:984
 msgid "Select PSD Mockup"
-msgstr "Selectionner un mockup PSD"
+msgstr "Sélectionner un mockup PSD"
 
 #: includes/class-sudomock-admin.php:990 includes/class-sudomock-admin.php:1025
 #: includes/class-sudomock-product.php:130
@@ -624,7 +624,7 @@ msgstr "Mockups PSD"
 
 #: includes/class-sudomock-admin.php:1014
 msgid "Browse and manage your uploaded PSD mockup files."
-msgstr "Parcourez et gerez vos fichiers PSD importes."
+msgstr "Parcourez et gérez vos fichiers PSD importés."
 
 #: includes/class-sudomock-admin.php:1017
 msgid "Upload PSD"
@@ -632,7 +632,7 @@ msgstr "Importer un PSD"
 
 #: includes/class-sudomock-admin.php:1038
 msgid "About Mockups"
-msgstr "A propos des mockups"
+msgstr "À propos des mockups"
 
 #: includes/class-sudomock-admin.php:1040
 msgid ""
@@ -688,7 +688,7 @@ msgstr "Image de marque Studio"
 
 #: includes/class-sudomock-admin.php:1108
 msgid "Reset defaults"
-msgstr "Reinitialiser les valeurs par defaut"
+msgstr "Réinitialiser les valeurs par défaut"
 
 #: includes/class-sudomock-admin.php:1111
 msgid ""
@@ -704,7 +704,7 @@ msgstr "Couleur principale"
 
 #: includes/class-sudomock-admin.php:1117
 msgid "Buttons, active states"
-msgstr "Boutons, etats actifs"
+msgstr "Boutons, états actifs"
 
 #: includes/class-sudomock-admin.php:1118
 msgid "Accent color"
@@ -716,7 +716,7 @@ msgstr "Bouton CTA (Ajouter au panier)"
 
 #: includes/class-sudomock-admin.php:1119
 msgid "Success color"
-msgstr "Couleur de succes"
+msgstr "Couleur de succès"
 
 #: includes/class-sudomock-admin.php:1119
 msgid "Added to cart confirmation"
@@ -725,7 +725,7 @@ msgstr "Confirmation d'ajout au panier"
 #: includes/class-sudomock-admin.php:1120
 #: includes/class-sudomock-customizer.php:216
 msgid "Background"
-msgstr "Arriere-plan"
+msgstr "Arrière-plan"
 
 #: includes/class-sudomock-admin.php:1120
 msgid "Canvas area"
@@ -733,11 +733,11 @@ msgstr "Zone de travail"
 
 #: includes/class-sudomock-admin.php:1121
 msgid "Panel background"
-msgstr "Arriere-plan du panneau"
+msgstr "Arrière-plan du panneau"
 
 #: includes/class-sudomock-admin.php:1121
 msgid "Side panels"
-msgstr "Panneaux lateraux"
+msgstr "Panneaux latéraux"
 
 #: includes/class-sudomock-admin.php:1122
 msgid "Text color"
@@ -753,7 +753,7 @@ msgstr "Couleur de bordure"
 
 #: includes/class-sudomock-admin.php:1123
 msgid "Dividers"
-msgstr "Separateurs"
+msgstr "Séparateurs"
 
 #: includes/class-sudomock-admin.php:1141
 msgid "Corner radius"
@@ -765,11 +765,11 @@ msgstr "URL du logo"
 
 #: includes/class-sudomock-admin.php:1155
 msgid "Displayed in customizer header. Leave empty for no logo."
-msgstr "Affiche dans l'en-tete. Laisser vide pour pas de logo."
+msgstr "Affiché dans l'en-tête. Laisser vide pour pas de logo."
 
 #: includes/class-sudomock-admin.php:1161
 msgid "Theme"
-msgstr "Theme"
+msgstr "Thème"
 
 #: includes/class-sudomock-admin.php:1164
 msgid "Light"
@@ -781,7 +781,7 @@ msgstr "Sombre"
 
 #: includes/class-sudomock-admin.php:1174
 msgid "Labels"
-msgstr "Libelles"
+msgstr "Libellés"
 
 #: includes/class-sudomock-admin.php:1175
 msgid ""
@@ -790,7 +790,7 @@ msgstr ""
 
 #: includes/class-sudomock-admin.php:1180
 msgid "Header text"
-msgstr "Texte d'en-tete"
+msgstr "Texte d'en-tête"
 
 #: includes/class-sudomock-admin.php:1181
 msgid "CTA button"
@@ -798,11 +798,11 @@ msgstr "Bouton CTA"
 
 #: includes/class-sudomock-admin.php:1182
 msgid "Adding state text"
-msgstr "Texte d'etat d'ajout"
+msgstr "Texte d'état d'ajout"
 
 #: includes/class-sudomock-admin.php:1183
 msgid "Success text"
-msgstr "Texte de succes"
+msgstr "Texte de succès"
 
 #: includes/class-sudomock-admin.php:1184
 msgid "Render button"
@@ -814,12 +814,12 @@ msgstr "Texte d'import"
 
 #: includes/class-sudomock-admin.php:1206
 msgid "Feature Controls"
-msgstr "Controle des fonctionnalites"
+msgstr "Contrôle des fonctionnalités"
 
 #: includes/class-sudomock-admin.php:1209
 msgid "Hide features to simplify the experience for your customers."
 msgstr ""
-"Masquez des fonctionnalites pour simplifier l'experience de vos clients."
+"Masquez des fonctionnalités pour simplifier l'expérience de vos clients."
 
 #: includes/class-sudomock-admin.php:1214
 msgid "Adjustments Panel"
@@ -827,7 +827,7 @@ msgstr "Panneau d'ajustements"
 
 #: includes/class-sudomock-admin.php:1214
 msgid "Brightness, contrast, saturation, vibrance, opacity, blur"
-msgstr "Luminosite, contraste, saturation, eclat, opacite, flou"
+msgstr "Luminosité, contraste, saturation, éclat, opacité, flou"
 
 #: includes/class-sudomock-admin.php:1215
 msgid "Color Overlay"
@@ -835,7 +835,7 @@ msgstr "Superposition de couleur"
 
 #: includes/class-sudomock-admin.php:1215
 msgid "Fill color with blend mode selector per layer"
-msgstr "Couleur de remplissage avec selecteur de mode de fusion par calque"
+msgstr "Couleur de remplissage avec sélecteur de mode de fusion par calque"
 
 #: includes/class-sudomock-admin.php:1216
 msgid "Fit Mode"
@@ -843,19 +843,19 @@ msgstr "Mode d'ajustement"
 
 #: includes/class-sudomock-admin.php:1216
 msgid "Fill / Fit / Cover selector for uploaded images"
-msgstr "Selecteur Remplir / Ajuster / Couvrir pour les images importees"
+msgstr "Sélecteur Remplir / Ajuster / Couvrir pour les images importées"
 
 #: includes/class-sudomock-admin.php:1217
 msgid "Position Controls"
-msgstr "Controles de position"
+msgstr "Contrôles de position"
 
 #: includes/class-sudomock-admin.php:1217
 msgid "X, Y position fields for precise placement"
-msgstr "Champs de position X, Y pour un placement precis"
+msgstr "Champs de position X, Y pour un placement précis"
 
 #: includes/class-sudomock-admin.php:1218
 msgid "Size Controls"
-msgstr "Controles de taille"
+msgstr "Contrôles de taille"
 
 #: includes/class-sudomock-admin.php:1218
 msgid "Width, height fields with aspect ratio lock"
@@ -867,7 +867,7 @@ msgstr "Rotation"
 
 #: includes/class-sudomock-admin.php:1219
 msgid "Rotation slider for uploaded images"
-msgstr "Curseur de rotation pour les images importees"
+msgstr "Curseur de rotation pour les images importées"
 
 #: includes/class-sudomock-admin.php:1220
 msgid "Flip"
@@ -883,11 +883,11 @@ msgstr "Options d'exportation"
 
 #: includes/class-sudomock-admin.php:1221
 msgid "Output format, size, and quality controls"
-msgstr "Controles de format, taille et qualite de sortie"
+msgstr "Contrôles de format, taille et qualité de sortie"
 
 #: includes/class-sudomock-admin.php:1222
 msgid "Zoom Controls"
-msgstr "Controles de zoom"
+msgstr "Contrôles de zoom"
 
 #: includes/class-sudomock-admin.php:1222
 msgid "Zoom in/out and percentage on canvas toolbar"
@@ -895,11 +895,11 @@ msgstr "Zoom et pourcentage dans la barre d'outils du canevas"
 
 #: includes/class-sudomock-admin.php:1223
 msgid "Undo / Redo"
-msgstr "Annuler / Retablir"
+msgstr "Annuler / Rétablir"
 
 #: includes/class-sudomock-admin.php:1223
 msgid "Undo and redo buttons with keyboard shortcuts"
-msgstr "Boutons annuler et retablir avec raccourcis clavier"
+msgstr "Boutons annuler et rétablir avec raccourcis clavier"
 
 #: includes/class-sudomock-admin.php:1241
 msgid "Behavior"
@@ -915,13 +915,13 @@ msgstr "Complet (bureau 3 panneaux)"
 
 #: includes/class-sudomock-admin.php:1250
 msgid "Compact (mobile-first)"
-msgstr "Compact (priorite mobile)"
+msgstr "Compact (priorité mobile)"
 
 #: includes/class-sudomock-admin.php:1253
 msgid "Full shows all panels side by side. Compact stacks for smaller screens."
 msgstr ""
-"Complet affiche les panneaux cote a cote. Compact les empile pour les petits "
-"ecrans."
+"Complet affiche les panneaux côte à côte. Compact les empile pour les petits "
+"écrans."
 
 #: includes/class-sudomock-admin.php:1261
 msgid "Auto-render on changes"
@@ -932,20 +932,20 @@ msgid ""
 "Automatically render preview when customer makes changes. Costs 1 credit per "
 "render."
 msgstr ""
-"Rendre automatiquement l'apercu quand le client fait des modifications. "
-"Coute 1 credit par rendu."
+"Rendre automatiquement l'aperçu quand le client fait des modifications. "
+"Coûte 1 crédit par rendu."
 
 #: includes/class-sudomock-admin.php:1269
 msgid "Auto-render delay"
-msgstr "Delai de rendu automatique"
+msgstr "Délai de rendu automatique"
 
 #: includes/class-sudomock-admin.php:1276
 msgid "Wait time after last change before auto-rendering."
-msgstr "Delai apres la derniere modification avant le rendu automatique."
+msgstr "Délai après la dernière modification avant le rendu automatique."
 
 #: includes/class-sudomock-admin.php:1282
 msgid "Max upload size"
-msgstr "Taille maximale de telechargement"
+msgstr "Taille maximale de téléchargement"
 
 #: includes/class-sudomock-admin.php:1298
 msgid "Discard Changes"
@@ -957,7 +957,7 @@ msgstr "Besoin d'aide ?"
 
 #: includes/class-sudomock-admin.php:1312
 msgid "Send us a message and we will get back to you as soon as possible."
-msgstr "Envoyez-nous un message et nous vous repondrons rapidement."
+msgstr "Envoyez-nous un message et nous vous répondrons rapidement."
 
 #: includes/class-sudomock-admin.php:1317
 msgid "Subject"
@@ -965,7 +965,7 @@ msgstr "Sujet"
 
 #: includes/class-sudomock-admin.php:1320
 msgid "e.g. Issue with mockup rendering"
-msgstr "ex. Probleme de rendu du mockup"
+msgstr "ex. Problème de rendu du mockup"
 
 #: includes/class-sudomock-admin.php:1324
 msgid "Message"
@@ -973,7 +973,7 @@ msgstr "Message"
 
 #: includes/class-sudomock-admin.php:1327
 msgid "Describe your issue or question in detail..."
-msgstr "Decrivez votre probleme ou question en detail..."
+msgstr "Décrivez votre problème ou question en détail..."
 
 #: includes/class-sudomock-admin.php:1354
 msgid "Missing product ID or mockup UUID."
@@ -981,7 +981,7 @@ msgstr "ID produit ou UUID mockup manquant."
 
 #: includes/class-sudomock-admin.php:1362
 msgid "Mockup mapped successfully."
-msgstr "Mockup associe avec succes."
+msgstr "Mockup associé avec succès."
 
 #: includes/class-sudomock-admin.php:1373
 msgid "Missing product ID."
@@ -989,7 +989,7 @@ msgstr "ID produit manquant."
 
 #: includes/class-sudomock-admin.php:1381
 msgid "Mockup removed."
-msgstr "Mockup supprime."
+msgstr "Mockup supprimé."
 
 #: includes/class-sudomock-admin.php:1396
 msgid "Failed to load config."
@@ -997,7 +997,7 @@ msgstr "Impossible de charger la configuration."
 
 #: includes/class-sudomock-admin.php:1411
 msgid "Invalid config data."
-msgstr "Donnees de configuration invalides."
+msgstr "Données de configuration invalides."
 
 #: includes/class-sudomock-admin.php:1469
 msgid "Logo URL must use HTTPS."
@@ -1009,7 +1009,7 @@ msgstr "Impossible d'enregistrer la configuration."
 
 #: includes/class-sudomock-admin.php:1478
 msgid "Studio config saved."
-msgstr "Configuration du studio enregistree."
+msgstr "Configuration du studio enregistrée."
 
 #: includes/class-sudomock-admin.php:1497
 msgid ""
@@ -1023,16 +1023,16 @@ msgstr ""
 
 #: includes/class-sudomock-api-client.php:54
 msgid "No API key configured."
-msgstr "Aucune cle API configuree."
+msgstr "Aucune clé API configurée."
 
 #: includes/class-sudomock-api-client.php:66
 msgid "Invalid API key."
-msgstr "Cle API invalide."
+msgstr "Clé API invalide."
 
 #: includes/class-sudomock-api-client.php:104
 #: includes/class-sudomock-api-client.php:180
 msgid "Failed to fetch mockups."
-msgstr "Impossible de recuperer les mockups."
+msgstr "Impossible de récupérer les mockups."
 
 #: includes/class-sudomock-api-client.php:124
 msgid "Failed to fetch 2D mockups."
@@ -1045,7 +1045,7 @@ msgstr ""
 #: includes/class-sudomock-api-client.php:231
 #: includes/class-sudomock-api-client.php:250
 msgid "Failed to fetch mockup."
-msgstr "Impossible de recuperer le mockup."
+msgstr "Impossible de récupérer le mockup."
 
 #: includes/class-sudomock-api-client.php:267
 #: includes/class-sudomock-api-client.php:336
@@ -1061,11 +1061,11 @@ msgstr ""
 #: includes/class-sudomock-storefront.php:418
 #: includes/class-sudomock-storefront.php:446
 msgid "Could not open customizer. Please try again."
-msgstr "Impossible d'ouvrir le personnalisateur. Veuillez reessayer."
+msgstr "Impossible d'ouvrir le personnalisateur. Veuillez réessayer."
 
 #: includes/class-sudomock-api-client.php:402
 msgid "Failed to create session."
-msgstr "Impossible de creer la session."
+msgstr "Impossible de créer la session."
 
 #: includes/class-sudomock-api-client.php:429
 msgid "Invalid action receipt."
@@ -1085,7 +1085,7 @@ msgstr ""
 
 #: includes/class-sudomock-api-client.php:528
 msgid "API key not configured."
-msgstr "Cle API non configuree."
+msgstr "Clé API non configurée."
 
 #: includes/class-sudomock-api-client.php:566
 #, php-format
@@ -1098,15 +1098,15 @@ msgstr "Personnalisation"
 
 #: includes/class-sudomock-cart.php:50
 msgid "Custom design applied"
-msgstr "Design personnalise applique"
+msgstr "Design personnalisé appliqué"
 
 #: includes/class-sudomock-cart.php:70
 msgid "Custom design preview"
-msgstr "Apercu du design personnalise"
+msgstr "Aperçu du design personnalisé"
 
 #: includes/class-sudomock-cart.php:94 includes/class-sudomock-privacy.php:266
 msgid "Customization Preview"
-msgstr "Previsualisation de la personnalisation"
+msgstr "Prévisualisation de la personnalisation"
 
 #: includes/class-sudomock-cart.php:109 includes/class-sudomock-privacy.php:267
 msgid "Source Design"
@@ -1133,7 +1133,7 @@ msgstr "Bouton"
 
 #: includes/class-sudomock-customizer.php:115
 msgid "Label"
-msgstr "Libelle"
+msgstr "Libellé"
 
 #: includes/class-sudomock-customizer.php:117
 msgid "Full width"
@@ -1141,11 +1141,11 @@ msgstr "Pleine largeur"
 
 #: includes/class-sudomock-customizer.php:119
 msgid "Show icon"
-msgstr "Afficher l'icone"
+msgstr "Afficher l'icône"
 
 #: includes/class-sudomock-customizer.php:127
 msgid "Icon"
-msgstr "Icone"
+msgstr "Icône"
 
 #: includes/class-sudomock-customizer.php:131
 msgid "Pencil"
@@ -1169,7 +1169,7 @@ msgstr "Scintillement"
 
 #: includes/class-sudomock-customizer.php:146
 msgid "Icon position"
-msgstr "Position de l'icone"
+msgstr "Position de l'icône"
 
 #: includes/class-sudomock-customizer.php:150
 #: includes/class-sudomock-customizer.php:258
@@ -1183,7 +1183,7 @@ msgstr "Droite"
 
 #: includes/class-sudomock-customizer.php:162
 msgid "Weight"
-msgstr "Epaisseur"
+msgstr "Épaisseur"
 
 #: includes/class-sudomock-customizer.php:166
 msgid "Medium"
@@ -1211,7 +1211,7 @@ msgstr "MAJUSCULES"
 
 #: includes/class-sudomock-customizer.php:189
 msgid "Drop shadow"
-msgstr "Ombre portee"
+msgstr "Ombre portée"
 
 #: includes/class-sudomock-customizer.php:196
 msgid "Button placement"
@@ -1219,7 +1219,7 @@ msgstr "Emplacement du bouton"
 
 #: includes/class-sudomock-customizer.php:200
 msgid "After Add to Cart button"
-msgstr "Apres le bouton Ajouter au panier"
+msgstr "Après le bouton Ajouter au panier"
 
 #: includes/class-sudomock-customizer.php:201
 msgid "Before Add to Cart button"
@@ -1227,7 +1227,7 @@ msgstr "Avant le bouton Ajouter au panier"
 
 #: includes/class-sudomock-customizer.php:202
 msgid "After product summary"
-msgstr "Apres le resume du produit"
+msgstr "Après le résumé du produit"
 
 #: includes/class-sudomock-customizer.php:203
 msgid "Manual (shortcode only)"
@@ -1251,7 +1251,7 @@ msgstr "Bordure"
 
 #: includes/class-sudomock-customizer.php:219
 msgid "Hover background"
-msgstr "Arriere-plan au survol"
+msgstr "Arrière-plan au survol"
 
 #: includes/class-sudomock-customizer.php:220
 msgid "Hover text"
@@ -1279,11 +1279,11 @@ msgstr "Rayon des coins (px)"
 
 #: includes/class-sudomock-customizer.php:233
 msgid "Border width (px)"
-msgstr "Epaisseur de bordure (px)"
+msgstr "Épaisseur de bordure (px)"
 
 #: includes/class-sudomock-customizer.php:237
 msgid "Extra Text"
-msgstr "Texte supplementaire"
+msgstr "Texte supplémentaire"
 
 #: includes/class-sudomock-customizer.php:242
 msgid "Heading above"
@@ -1319,23 +1319,23 @@ msgstr "Mise en page"
 
 #: includes/class-sudomock-customizer.php:272
 msgid "Divider above"
-msgstr "Separateur au-dessus"
+msgstr "Séparateur au-dessus"
 
 #: includes/class-sudomock-customizer.php:273
 msgid "Divider below"
-msgstr "Separateur en dessous"
+msgstr "Séparateur en dessous"
 
 #: includes/class-sudomock-customizer.php:274
 msgid "Divider color"
-msgstr "Couleur du separateur"
+msgstr "Couleur du séparateur"
 
 #: includes/class-sudomock-customizer.php:275
 msgid "Top margin (px)"
-msgstr "Marge superieure (px)"
+msgstr "Marge supérieure (px)"
 
 #: includes/class-sudomock-customizer.php:276
 msgid "Bottom margin (px)"
-msgstr "Marge inferieure (px)"
+msgstr "Marge inférieure (px)"
 
 #: includes/class-sudomock-encryption.php:39
 msgid ""
@@ -1353,7 +1353,7 @@ msgstr "Design client :"
 
 #: includes/class-sudomock-order.php:109
 msgid "Customer customization preview"
-msgstr "Apercu de la personnalisation client"
+msgstr "Aperçu de la personnalisation client"
 
 #: includes/class-sudomock-order.php:115
 msgid "Source design file(s):"
@@ -1381,7 +1381,7 @@ msgstr ""
 #: includes/class-sudomock-privacy.php:110
 #: includes/class-sudomock-privacy.php:124
 msgid "SudoMock Customization Data"
-msgstr "Donnees de personnalisation SudoMock"
+msgstr "Données de personnalisation SudoMock"
 
 #: includes/class-sudomock-privacy.php:159
 msgid "Order"
@@ -1408,7 +1408,7 @@ msgstr ""
 
 #: includes/class-sudomock-product.php:78
 msgid "SudoMock not connected"
-msgstr "SudoMock non connecte"
+msgstr "SudoMock non connecté"
 
 #: includes/class-sudomock-product.php:82
 #, php-format
@@ -1417,7 +1417,7 @@ msgstr "Connectez votre compte dans %s pour activer la personnalisation."
 
 #: includes/class-sudomock-product.php:84
 msgid "SudoMock Settings"
-msgstr "Parametres SudoMock"
+msgstr "Paramètres SudoMock"
 
 #: includes/class-sudomock-product.php:93
 msgid "Enable Customization"
@@ -1441,7 +1441,7 @@ msgstr ""
 
 #: includes/class-sudomock-product.php:224
 msgid "Network error."
-msgstr "Erreur reseau."
+msgstr "Erreur réseau."
 
 #: includes/class-sudomock-storefront.php:255
 msgid "Loading..."
@@ -1450,21 +1450,21 @@ msgstr "Chargement..."
 #: includes/class-sudomock-storefront.php:256
 msgid "Customizer is temporarily unavailable. Please try again."
 msgstr ""
-"Le personnalisateur est temporairement indisponible. Veuillez reessayer."
+"Le personnalisateur est temporairement indisponible. Veuillez réessayer."
 
 #: includes/class-sudomock-storefront.php:257
 #: includes/class-sudomock-storefront.php:669
 msgid "Added to cart!"
-msgstr "Ajoute au panier !"
+msgstr "Ajouté au panier !"
 
 #: includes/class-sudomock-storefront.php:258
 #: includes/class-sudomock-storefront.php:664
 msgid "Failed to add to cart. Please try again."
-msgstr "Impossible d'ajouter au panier. Veuillez reessayer."
+msgstr "Impossible d'ajouter au panier. Veuillez réessayer."
 
 #: includes/class-sudomock-storefront.php:260
 msgid "Network error adding to cart."
-msgstr "Erreur reseau lors de l'ajout au panier."
+msgstr "Erreur réseau lors de l'ajout au panier."
 
 #: includes/class-sudomock-storefront.php:261
 msgid "Please choose the product options first."
@@ -1483,7 +1483,7 @@ msgstr "Product-id ou mockup-uuid manquant sur le bouton."
 #: includes/class-sudomock-storefront.php:403
 #: includes/class-sudomock-storefront.php:467
 msgid "Invalid request."
-msgstr "Requete invalide."
+msgstr "Requête invalide."
 
 #: includes/class-sudomock-storefront.php:391
 #: includes/class-sudomock-storefront.php:394
@@ -1524,12 +1524,12 @@ msgstr "Documentation"
 #: sudomock-product-customizer.php:279
 #, php-format
 msgid "%1$s requires %2$s to be installed and active."
-msgstr "%1$s necessite que %2$s soit installe et actif."
+msgstr "%1$s nécessite que %2$s soit installé et actif."
 
 #: sudomock-product-customizer.php:301 sudomock-product-customizer.php:326
 #, php-format
 msgid "SudoMock Product Customizer requires PHP %s or higher."
-msgstr "SudoMock Product Customizer necessite PHP %s ou superieur."
+msgstr "SudoMock Product Customizer nécessite PHP %s ou supérieur."
 
 #~ msgid "free renders / month"
 #~ msgstr "rendus gratuits / mois"

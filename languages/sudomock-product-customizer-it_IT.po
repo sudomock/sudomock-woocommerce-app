@@ -208,7 +208,7 @@ msgstr "Invio in corso..."
 
 #: includes/class-sudomock-admin.php:129 includes/class-sudomock-admin.php:1562
 msgid "Your message has been sent. We will get back to you soon."
-msgstr "Il tuo messaggio e stato inviato. Ti risponderemo al piu presto."
+msgstr "Il tuo messaggio è stato inviato. Ti risponderemo al più presto."
 
 #: includes/class-sudomock-admin.php:130
 msgid "Failed to send message. Please try again."
@@ -796,7 +796,7 @@ msgstr ""
 
 #: includes/class-sudomock-admin.php:1206
 msgid "Feature Controls"
-msgstr "Controllo funzionalita"
+msgstr "Controllo funzionalità"
 
 #: includes/class-sudomock-admin.php:1209
 msgid "Hide features to simplify the experience for your customers."
@@ -820,7 +820,7 @@ msgstr ""
 
 #: includes/class-sudomock-admin.php:1216
 msgid "Fit Mode"
-msgstr "Modalita adattamento"
+msgstr "Modalità adattamento"
 
 #: includes/class-sudomock-admin.php:1216
 msgid "Fill / Fit / Cover selector for uploaded images"
@@ -888,7 +888,7 @@ msgstr "Comportamento"
 
 #: includes/class-sudomock-admin.php:1246
 msgid "Layout mode"
-msgstr "Modalita layout"
+msgstr "Modalità layout"
 
 #: includes/class-sudomock-admin.php:1249
 msgid "Full (3-panel desktop)"
@@ -1425,7 +1425,7 @@ msgstr "Caricamento..."
 
 #: includes/class-sudomock-storefront.php:256
 msgid "Customizer is temporarily unavailable. Please try again."
-msgstr "Il personalizzatore e temporaneamente non disponibile. Riprova."
+msgstr "Il personalizzatore è temporaneamente non disponibile. Riprova."
 
 #: includes/class-sudomock-storefront.php:257
 #: includes/class-sudomock-storefront.php:669
