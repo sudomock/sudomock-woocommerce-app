@@ -2,10 +2,10 @@
 Contributors: sudomock
 Tags: product customizer, mockup generator, product personalization, print on demand, custom products
 Requires at least: 6.0
-Tested up to: 6.9
+Tested up to: 7.1
 Requires PHP: 7.4
 WC requires at least: 8.0
-WC tested up to: 10.9
+WC tested up to: 11.1
 Stable tag: 1.3.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
