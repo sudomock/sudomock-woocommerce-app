@@ -6,7 +6,7 @@ Tested up to: 7.1
 Requires PHP: 7.4
 WC requires at least: 8.0
 WC tested up to: 11.1
-Stable tag: 1.3.1
+Stable tag: 1.4.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -27,7 +27,7 @@ https://www.youtube.com/watch?v=nmD0ePncAm4
 * **HPOS Compatible** - Built for WooCommerce High-Performance Order Storage
 * **Blocks Compatible** - Works with both classic checkout and WooCommerce Blocks checkout
 * **GDPR Compliant** - Full data export and erasure for customer personalization data
-* **Internationalization** - Translation-ready with EN and DE included
+* **Internationalization** - Translation-ready, with 10 translations included
 
 = How It Works =
 
@@ -122,6 +122,12 @@ No product limit. Map as many products as you want to mockup templates.
 
 == Changelog ==
 
+= 1.4.0 =
+* The cart shows the customization preview again: a customized cart line carries the shopper's finished design as its thumbnail. The Cart block shows it too, on WooCommerce 9.6 and later.
+* The order carries the customization preview and the source design links again, as "Customization Preview" and "Source Design" on the order line, ready for production.
+* The Turkish, Dutch, Japanese, Korean and Simplified Chinese translations now load in the store's language.
+* A personal data erasure removes every SudoMock key from the customer's order lines, including a line that carries no links.
+
 = 1.3.1 =
 * Fixed: a finished customization reaches the cart again. A design submitted from the customizer could be refused on its way to the cart, with nothing shown to explain why.
 * The credits panel shows a prepaid balance next to a subscription allowance, and reads correctly for an account that holds only one of the two.
@@ -170,18 +176,19 @@ This plugin connects to the external SudoMock service to provide PSD mockup rend
 
 = SudoMock API (api.sudomock.com) =
 
-The plugin communicates with the SudoMock API at https://api.sudomock.com for the following operations:
+The plugin communicates with the SudoMock API at https://api.sudomock.com for the following operations. Every request carries the store's API key and the plugin's version number.
 
-* **Account verification**: When the admin connects their SudoMock account, the plugin sends an API key to verify the account (GET /api/v1/me).
-* **Mockup listing**: When the admin opens the Products tab, the plugin fetches the list of available PSD mockup templates from the merchant's account (GET /api/v1/mockups).
-* **Mockup details and thumbnails**: When viewing mapped products, the plugin fetches mockup metadata including thumbnail image URLs to display in the admin panel (GET /api/v1/mockups/{uuid}). The thumbnail images are served from SudoMock servers.
-* **Studio session creation**: When a customer clicks the "Customize" button, the plugin creates a rendering session on the server (POST /api/v1/studio/create-session).
-* **Render processing**: When a mockup render is requested, the plugin sends the mockup UUID and smart object data to the rendering API (POST /api/v1/renders).
-* **Studio configuration**: The plugin reads and updates white-label editor settings stored on the SudoMock server (GET/PUT /api/v1/studio/config).
-* **Support tickets**: When the admin submits a support message via the plugin's Help tab, it is sent to the SudoMock support API (POST /api/v1/support/ticket). As a fallback, the message may be sent via email to support@sudomock.com.
-* **Account disconnect**: When the admin disconnects, a notification is sent to the SudoMock server (POST /api/v1/woocommerce/disconnect).
+* **Account verification**: When the admin connects their SudoMock account, and when a connected admin opens the plugin screen, the plugin sends the API key and reads back the account email, the plan, the credit usage and the prepaid balance (GET /api/v1/me). The answer is reused for 5 minutes.
+* **Mockup listing**: When the admin opens the Mockups tab, opens the mockup picker in the Products tab, or opens the edit screen of a product, the plugin fetches the PSD mockups and the photo mockups in the merchant's account (GET /api/v1/mockups and GET /api/v1/sudoai/2d-mockups). Only paging and filter values are sent. Text typed into the mockup search is matched on the store and is not sent.
+* **Mockup details and thumbnails**: When the admin opens the Products tab, or the edit screen of a product that has a mockup, the plugin sends the mockup ID and fetches the mockup name and its thumbnail image addresses (GET /api/v1/mockups/{uuid} for a PSD mockup, GET /api/v1/sudoai/2d-mockups/{uuid} for a photo mockup). The thumbnail images are served from SudoMock servers.
+* **Studio session creation**: When a customer clicks the "Customize" button, the plugin opens an editor session (POST /api/v1/studio/create-session). It sends the mockup ID and type, the store's web address, the WooCommerce product and variation IDs, and the purpose of the session (customizing a product to add it to the cart).
+* **Add to cart confirmation**: When a customer adds a finished design to the cart, the plugin confirms it with SudoMock before the cart line is created (POST /api/v1/studio/actions/consume). It sends the session and request IDs, the mockup ID, the ID of the finished design, the store's host name, the product and variation IDs, and the name of the action (add to cart). The answer carries the links to the customization preview and the source design files, which are saved with the cart line and the order.
+* **Studio configuration**: When the admin opens the Settings tab, the plugin reads the white-label editor settings stored on the SudoMock server (GET /api/v1/studio/config). When the admin saves them, it sends the new settings: colors, texts, logo address and editor options (PUT /api/v1/studio/config).
+* **Support messages**: When the admin submits the "Need Help?" form in the Settings tab, the subject and the message are sent to SudoMock with the site address and the SudoMock account email (POST /api/v1/support/ticket). If that request does not succeed, the same message is sent by email from the site to hello@sudomock.com, with the site address and the account email, or the site administrator's email when no account email is stored.
+* **Stored design file deletion**: When a personal data erasure request is processed for a customer, the plugin asks SudoMock to delete the preview and source design files linked to that customer's orders (POST /api/v1/artworks/delete). It sends the links of those files. A deletion that cannot be confirmed is retried once a day.
+* **Account disconnect**: When the admin disconnects, the plugin notifies the SudoMock server (POST /api/v1/woocommerce/disconnect). Nothing but the API key and the version number is sent.
 
-All API calls are made server-to-server using wp_remote_request. The API key is stored encrypted (AES-256-CBC) and is never exposed to the browser.
+All API calls are made server-to-server using wp_remote_request. The API key is stored encrypted (AES-256-CBC).
 
 This service is provided by "SudoMock": [Terms of Service](https://sudomock.com/legal/terms), [Privacy Policy](https://sudomock.com/legal/privacy).
 
@@ -195,11 +202,11 @@ This service is provided by "SudoMock": [Terms of Service](https://sudomock.com/
 
 The plugin links to the SudoMock website at https://sudomock.com for the following purposes:
 
-* **OAuth connect flow**: The admin is redirected to sudomock.com/integrations/woocommerce/connect to authorize the WooCommerce integration and obtain an API key.
+* **OAuth connect flow**: The admin is redirected to sudomock.com/integrations/woocommerce/connect to authorize the WooCommerce integration and obtain an API key. Clicking it sends the store's web address and a return address (the plugin's admin page) to sudomock.com.
 * **Account registration**: Links to sudomock.com/register for new account signup.
 * **Dashboard links**: Links to sudomock.com/dashboard/playground for PSD mockup management and sudomock.com/dashboard/billing for plan management. These are navigational links that open in a new browser tab.
 * **Documentation links**: Links to sudomock.com/docs for integration guides and PSD preparation documentation.
 
-These are browser-side navigational links only. No data is automatically transmitted to sudomock.com by the plugin.
+These are browser-side navigational links only. Nothing is sent to sudomock.com until the admin follows one of these links.
 
 This service is provided by "SudoMock": [Terms of Service](https://sudomock.com/legal/terms), [Privacy Policy](https://sudomock.com/legal/privacy).

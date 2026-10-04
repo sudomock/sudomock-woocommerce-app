@@ -3,7 +3,7 @@
  * Plugin Name: SudoMock Product Customizer
  * Plugin URI: https://sudomock.com/woocommerce
  * Description: Connect your WooCommerce store to SudoMock's PSD mockup rendering engine. Let customers customize products with professional mockup designs.
- * Version: 1.3.1
+ * Version: 1.4.0
  * Requires at least: 6.0
  * Requires PHP: 7.4
  * Author: SudoMock
@@ -27,7 +27,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 // Plugin constants
-define( 'SUDOMOCK_VERSION', '1.3.1' );
+define( 'SUDOMOCK_VERSION', '1.4.0' );
 define( 'SUDOMOCK_PLUGIN_FILE', __FILE__ );
 define( 'SUDOMOCK_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 define( 'SUDOMOCK_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
@@ -178,14 +178,14 @@ final class SudoMock_Product_Customizer {
     }
 
     /**
-     * Load plugin textdomain for translations.
+     * Load the translations that ship in the plugin's languages folder.
      *
-     * Since WordPress 4.6, translations are automatically loaded from
-     * wp-content/languages/plugins/ for plugins hosted on WordPress.org,
-     * so load_plugin_textdomain() is not needed.
+     * WordPress.org serves no language pack for this plugin, so the
+     * translations are read from the plugin's own folder. A language pack,
+     * should one appear, takes priority over this folder.
      */
     public function load_textdomain() {
-        // Intentionally empty — WordPress 4.6+ loads translations automatically.
+        load_plugin_textdomain( 'sudomock-product-customizer', false, dirname( SUDOMOCK_PLUGIN_BASENAME ) . '/languages' );
     }
 
     /**

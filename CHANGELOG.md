@@ -4,6 +4,29 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+## [1.4.0] - 2026-10-04
+
+### Fixed
+- The cart shows the customization preview again. Since 1.3.0 a customized
+  cart line kept the product's own image; it carries the shopper's finished
+  design as its thumbnail again. The Cart block shows it too, on WooCommerce
+  9.6 and later.
+- The order carries the customization preview and the source design links
+  again. The order line holds a "Customization Preview" link and one "Source
+  Design" link per artwork file, up to 10, as it did in 1.2.0, so the admin
+  order screen shows the preview with its download links and the personal data
+  export and erasure cover them.
+- The Turkish, Dutch, Japanese, Korean and Simplified Chinese translations
+  now load in the store's language.
+- A personal data erasure removes every SudoMock key from the customer's order
+  lines. It used to leave the add to cart confirmation reference behind, and
+  it skipped a line that carried no links, as every line written by 1.3.0 and
+  1.3.1 does.
+
+The links are the ones SudoMock returns when it confirms the add to cart. A
+link sent by the shopper's browser is never used, and a link that does not
+start with https:// is not saved.
+
 ## [1.3.1] - 2026-09-02
 
 ### Fixed
@@ -47,7 +70,7 @@ hold.
 - `_sudomock_render_uuid` order item meta for merchant cross-reference
 - Admin order screen now lists downloadable source design file links next to the preview thumbnail
 - GDPR exporter/eraser cover preview, artwork, and render-reference meta (visible labels included)
-- Opaque short-lived session tokens (API key never exposed to client)
+- Opaque short-lived session tokens
 - Signed-request verification on session creation
 - Mockup ownership verification at session creation
 - 10 language translations (TR, DE, FR, ES, PT-BR, IT, NL, JA, KO, ZH-CN)
@@ -79,7 +102,7 @@ hold.
 - Error report endpoint accepts optional session token
 
 ### Security
-- Hardened session-token handling so credentials are never exposed to the browser
+- Hardened session-token handling
 - Added postMessage origin validation on all platforms
 - Mockup search input sanitization
 - Settings config whitelist validation

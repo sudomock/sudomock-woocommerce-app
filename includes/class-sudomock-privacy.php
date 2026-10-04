@@ -217,7 +217,10 @@ final class SudoMock_Privacy {
 			foreach ( $order->get_items() as $item ) {
 				$has_data = $item->get_meta( '_sudomock_preview_url' )
 					|| $item->get_meta( '_sudomock_artwork_url' )
-					|| $item->get_meta( '_sudomock_render_url' );
+					|| $item->get_meta( '_sudomock_render_url' )
+					|| $item->get_meta( '_sudomock_mockup_uuid' )
+					|| $item->get_meta( '_sudomock_render_uuid' )
+					|| $item->get_meta( '_sudomock_action_receipt_id' );
 				if ( ! $has_data ) {
 					continue;
 				}
@@ -258,16 +261,24 @@ final class SudoMock_Privacy {
 				$item->delete_meta_data( '_sudomock_artwork_url_' . $i );
 			}
 			$item->delete_meta_data( '_sudomock_render_uuid' );
+			$item->delete_meta_data( '_sudomock_action_receipt_id' );
 			$item->delete_meta_data( '_sudomock_mockup_uuid' );
 			$item->delete_meta_data( '_sudomock_render_url' );
 			$item->delete_meta_data( '_sudomock_session_token' );
 
 			// Merchant-visible labels written alongside the hidden keys.
-			$item->delete_meta_data( __( 'Customization Preview', 'sudomock-product-customizer' ) );
-			$item->delete_meta_data( __( 'Source Design', 'sudomock-product-customizer' ) );
+			$item->delete_meta_data( 'Customization Preview' );
+			$item->delete_meta_data( 'Source Design' );
 			for ( $i = 2; $i <= 10; $i++ ) {
-				/* translators: %d: artwork file number */
-				$item->delete_meta_data( sprintf( __( 'Source Design %d', 'sudomock-product-customizer' ), $i ) );
+				$item->delete_meta_data( sprintf( 'Source Design %d', $i ) );
+			}
+
+			// Any other entry on the line that holds one of the links collected
+			// above is removed too, whatever its name.
+			foreach ( $item->get_meta_data() as $meta ) {
+				if ( is_string( $meta->value ) && in_array( $meta->value, $remote_urls, true ) ) {
+					$item->delete_meta_data( $meta->key );
+				}
 			}
 
 			$item->save();

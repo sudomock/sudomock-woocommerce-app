@@ -3,7 +3,7 @@
  * Storefront — renders the customize button and Studio iframe modal on product pages.
  *
  * SECURITY: Creates session via WP AJAX → PHP → API (server-to-server).
- * API key NEVER reaches the browser. Browser only gets a short-lived, opaque session token; the API key stays server-side.
+ * Browser only gets a short-lived, opaque session token.
  *
  * @package SudoMock_Product_Customizer
  * @since   1.0.0
@@ -364,9 +364,52 @@ final class SudoMock_Storefront {
     }
 
     /**
+     * Check one order file address before it is stored on a cart line.
+     *
+     * The customization preview and the source design arrive as addresses
+     * beside the action receipt, server to server. The preview becomes the
+     * cart line image, and both become links the merchant opens from the
+     * order. An address is dropped when it is not a string, does not start
+     * with https:// once WordPress has cleaned it, has no host, points at
+     * localhost or at a loopback, private or reserved IPv4 address, or is
+     * 2000 characters or longer. Plain http, any other scheme and an address
+     * with no scheme are all dropped; leading spaces and the letter case of
+     * the scheme do not matter.
+     *
+     * Every other https address is kept. That includes a host written as an
+     * IPv6 address in brackets or as one decimal number, and an address that
+     * carries user info: no rule here looks at those forms.
+     *
+     * @param mixed $raw_url Address returned beside the action receipt.
+     * @return string The address, or '' if it fails validation.
+     */
+    private static function sanitize_asset_url( $raw_url ) {
+        if ( ! is_string( $raw_url ) ) {
+            return '';
+        }
+        $url = esc_url_raw( $raw_url, array( 'https' ) );
+        if ( 0 !== strpos( $url, 'https://' ) || strlen( $url ) >= 2000 ) {
+            return '';
+        }
+        $host = wp_parse_url( $url, PHP_URL_HOST );
+        if ( empty( $host ) ) {
+            return '';
+        }
+        // Reject loopback / obviously private hosts (defence in depth; these
+        // links are merchant-clicked, and legit assets live on public CDNs).
+        if ( in_array( strtolower( $host ), array( 'localhost', '127.0.0.1', '::1' ), true ) ) {
+            return '';
+        }
+        if ( filter_var( $host, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4 | FILTER_FLAG_IPV6 )
+            && ! filter_var( $host, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE ) ) {
+            return '';
+        }
+        return $url;
+    }
+
+    /**
      * AJAX: Create Studio session (PHP → API, server-to-server).
      * Browser gets the opaque session and its one-time parent bootstrap secret.
-     * The merchant API key never leaves this server.
      */
     public function ajax_create_session() {
         check_ajax_referer( 'sudomock_storefront', 'nonce' );
@@ -625,12 +668,33 @@ final class SudoMock_Storefront {
             wp_send_json_success( $previous_cart );
         }
 
+        // Customization preview and source design links for the order. They
+        // come only from the answer whose receipt was verified above: the
+        // browser's request has no field that can set them.
+        $order_assets = isset( $consumed['data']['order_assets'] ) && is_array( $consumed['data']['order_assets'] )
+            ? $consumed['data']['order_assets']
+            : array();
+        $preview_url  = isset( $order_assets['preview_url'] )
+            ? self::sanitize_asset_url( $order_assets['preview_url'] )
+            : '';
+        $artwork_urls = array();
+        if ( isset( $order_assets['artwork_urls'] ) && is_array( $order_assets['artwork_urls'] ) ) {
+            foreach ( array_slice( $order_assets['artwork_urls'], 0, 10 ) as $raw_url ) {
+                $url = self::sanitize_asset_url( $raw_url );
+                if ( '' !== $url ) {
+                    $artwork_urls[] = $url;
+                }
+            }
+        }
+
         // Cart item data — stored in WC session, visible in cart/order
         $cart_item_data = array(
             'sudomock_customization' => array(
                 'mockup_uuid'      => $mockup_uuid,
                 'render_uuid'      => $render_uuid,
                 'action_receipt_id' => $request_id,
+                'preview_url'      => $preview_url,
+                'artwork_urls'     => $artwork_urls,
             ),
         );
 

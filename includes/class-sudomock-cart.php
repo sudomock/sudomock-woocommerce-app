@@ -29,6 +29,9 @@ final class SudoMock_Cart {
         // Show preview thumbnail in cart
         add_filter( 'woocommerce_cart_item_thumbnail', array( $this, 'cart_item_thumbnail' ), 10, 3 );
 
+        // Show preview thumbnail in the block cart
+        add_filter( 'woocommerce_store_api_cart_item_images', array( $this, 'store_api_cart_item_images' ), 10, 2 );
+
         // Persist customization data to order
         add_action( 'woocommerce_checkout_create_order_line_item', array( $this, 'add_order_item_meta' ), 10, 4 );
 
@@ -74,6 +77,36 @@ final class SudoMock_Cart {
     }
 
     /**
+     * Replace the block cart line image with the customization preview.
+     *
+     * The line gets this one image. Its responsive size lists stay empty so
+     * the browser loads the preview and not a size of the product photo.
+     *
+     * @param array $images    Image objects for the cart line.
+     * @param array $cart_item Cart item data.
+     * @return array
+     */
+    public function store_api_cart_item_images( $images, $cart_item ) {
+        if ( ! empty( $cart_item['sudomock_customization']['preview_url'] ) ) {
+            $preview_url = $cart_item['sudomock_customization']['preview_url'];
+            return array(
+                (object) array(
+                    'id'               => 0,
+                    'src'              => $preview_url,
+                    'thumbnail'        => $preview_url,
+                    'srcset'           => '',
+                    'sizes'            => '',
+                    'thumbnail_srcset' => '',
+                    'thumbnail_sizes'  => '',
+                    'name'             => '',
+                    'alt'              => __( 'Custom design preview', 'sudomock-product-customizer' ),
+                ),
+            );
+        }
+        return $images;
+    }
+
+    /**
      * Persist customization data to order line item meta.
      *
      * @param WC_Order_Item_Product $item      Order item.
@@ -91,7 +124,7 @@ final class SudoMock_Cart {
                 $item->add_meta_data( '_sudomock_preview_url', $custom['preview_url'], true );
                 // Visible meta for merchant
                 $item->add_meta_data(
-                    __( 'Customization Preview', 'sudomock-product-customizer' ),
+                    'Customization Preview',
                     $custom['preview_url'],
                     true
                 );
@@ -106,9 +139,8 @@ final class SudoMock_Cart {
                     $i++;
                     $suffix = ( 1 === $i ) ? '' : '_' . $i;
                     $label  = ( 1 === $i )
-                        ? __( 'Source Design', 'sudomock-product-customizer' )
-                        /* translators: %d: artwork file number */
-                        : sprintf( __( 'Source Design %d', 'sudomock-product-customizer' ), $i );
+                        ? 'Source Design'
+                        : sprintf( 'Source Design %d', $i );
                     $item->add_meta_data( '_sudomock_artwork_url' . $suffix, $artwork_url, true );
                     $item->add_meta_data( $label, $artwork_url, true );
                 }

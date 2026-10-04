@@ -18,6 +18,10 @@ function __( $value ) { return $value; }
 function check_ajax_referer() {}
 function home_url() { return 'https://shop.example/'; }
 function wp_parse_url( $url, $component = -1 ) { return parse_url( $url, $component ); }
+// Stands in for WordPress: an address survives only when its scheme is on the caller's list.
+function esc_url_raw( $url, $protocols ) {
+    return in_array( strtolower( (string) parse_url( $url, PHP_URL_SCHEME ) ), $protocols, true ) ? $url : '';
+}
 function wp_unslash( $value ) { return $value; }
 function sanitize_text_field( $value ) { return trim( (string) $value ); }
 function absint( $value ) { return abs( (int) $value ); }
@@ -297,5 +301,43 @@ reset_case( 'psd' );
 SudoMock_API_Client::$response['data']['receipt']['action_context']['variant_id'] = '201';
 $reply = invoke();
 check( true === $reply->success, 'legacy PSD mapping receipt failed' );
+
+reset_case();
+SudoMock_API_Client::$response['data']['order_assets'] = array(
+    'preview_url'  => 'https://cdn.example/files/preview.png',
+    'artwork_urls' => array(
+        'https://cdn.example/files/artwork-1.png',
+        'http://cdn.example/files/plain-http.png',
+        'https://localhost/files/loopback.png',
+        array( 'https://cdn.example/files/not-a-string.png' ),
+        'https://cdn.example/files/artwork-2.png',
+    ),
+);
+$reply = invoke();
+check( true === $reply->success, 'action with order links did not add to cart' );
+check(
+    'https://cdn.example/files/preview.png'
+        === WC()->cart->adds[0]['data']['sudomock_customization']['preview_url'],
+    'server preview link missing from cart item'
+);
+check(
+    array(
+        'https://cdn.example/files/artwork-1.png',
+        'https://cdn.example/files/artwork-2.png',
+    ) === WC()->cart->adds[0]['data']['sudomock_customization']['artwork_urls'],
+    'cart item artwork links are not exactly the valid server links'
+);
+
+reset_case();
+SudoMock_API_Client::$response['data']['order_assets'] = array(
+    'preview_url'  => 'https://localhost/files/preview.png',
+    'artwork_urls' => array(),
+);
+$reply = invoke();
+check( true === $reply->success, 'action with a malformed preview link did not add to cart' );
+check(
+    '' === WC()->cart->adds[0]['data']['sudomock_customization']['preview_url'],
+    'malformed preview link reached the cart item'
+);
 
 echo "action receipt checks passed\n";
