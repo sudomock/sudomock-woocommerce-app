@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+## [1.4.1] - 2026-10-04
+
+### Fixed
+- The German, Spanish, French, Italian and Brazilian Portuguese translations
+  now load in the store's language, with their accented letters restored.
+
 ## [1.4.0] - 2026-10-04
 
 ### Fixed

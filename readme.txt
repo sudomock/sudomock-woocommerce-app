@@ -6,7 +6,7 @@ Tested up to: 7.1
 Requires PHP: 7.4
 WC requires at least: 8.0
 WC tested up to: 11.1
-Stable tag: 1.4.0
+Stable tag: 1.4.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -121,6 +121,9 @@ No product limit. Map as many products as you want to mockup templates.
 9. **Order Detail** - Rendered mockup in order admin for fulfillment.
 
 == Changelog ==
+
+= 1.4.1 =
+* The German, Spanish, French, Italian and Brazilian Portuguese translations now load in the store's language, with their accented letters restored.
 
 = 1.4.0 =
 * The cart shows the customization preview again: a customized cart line carries the shopper's finished design as its thumbnail. The Cart block shows it too, on WooCommerce 9.6 and later.
