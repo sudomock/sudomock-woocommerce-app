@@ -6,7 +6,7 @@ Tested up to: 7.1
 Requires PHP: 7.4
 WC requires at least: 8.0
 WC tested up to: 11.1
-Stable tag: 1.4.1
+Stable tag: 1.4.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -20,9 +20,9 @@ https://www.youtube.com/watch?v=nmD0ePncAm4
 
 = Features =
 
-* **PSD Rendering** - High-fidelity mockups with 27 blend modes, CMYK support, and up to 10000px output resolution once a card is verified on your SudoMock account (1024px before that)
+* **PSD Rendering** - High-fidelity mockups with 27 blend modes, CMYK support, and up to 10000px output resolution once a card is verified on your SudoMock account
 * **White-Label** - Fully customizable labels, button text, and colors. Once a card is verified, no third-party branding is shown to customers
-* **Plans From $25 Per Month** - 5,000 renders a month, which is $0.005 per render, and without any subscription at all it is $0.05 per PSD render with a $5 minimum
+* **Plans start at $25/month** - Subscriptions from $0.002 per render. Without one, $0.05 per PSD render with a $5 minimum
 * **Cart Integration** - Rendered mockup preview automatically attaches to cart and order
 * **HPOS Compatible** - Built for WooCommerce High-Performance Order Storage
 * **Blocks Compatible** - Works with both classic checkout and WooCommerce Blocks checkout
@@ -61,7 +61,7 @@ https://www.youtube.com/watch?v=nmD0ePncAm4
 
 1. Upload the plugin files to `/wp-content/plugins/sudomock-product-customizer/` or install through the WordPress plugins screen.
 2. Activate the plugin through the 'Plugins' screen in WordPress.
-3. Go to **WooCommerce > SudoMock** and click "Connect Account" to link your SudoMock account.
+3. Open **SudoMock** in the WordPress admin menu and click "Connect Account" to link your SudoMock account.
 4. Sign up for a free account at [sudomock.com](https://sudomock.com/register) if you do not have one.
 5. Map PSD mockups to your products in the Products tab.
 6. Customers will see a "Customize" button on mapped product pages.
@@ -70,7 +70,7 @@ https://www.youtube.com/watch?v=nmD0ePncAm4
 
 = Do I need a SudoMock account? =
 
-Yes. Sign up at [sudomock.com/register](https://sudomock.com/register). New accounts start with 500 free credits and no credit card. While the account is in trial, renders are watermarked and capped at 1024px, you can store 5 PSD templates, and one render runs at a time. Verifying a card and funding $5 removes all of it. Plans start at $25 per month for 5,000 renders, which is $0.005 per render, and without any subscription at all it is $0.05 per PSD render.
+Yes. Sign up at [sudomock.com/register](https://sudomock.com/register). New accounts start with 500 free credits and no credit card. Plans start at $25/month. Subscriptions from $0.002 per render. Without one, $0.05 per PSD render.
 
 = What happens to my PSD templates on a trial account? =
 
@@ -78,7 +78,7 @@ A template that has not been rendered for 7 days gets three warning emails, two 
 
 = Is the product customizer white-labeled? =
 
-Once a card is verified on your SudoMock account, no SudoMock branding is visible to your customers. Trial renders carry a watermark. You can customize the button label, colors, and all customer-facing text in the Settings tab.
+Once a card is verified on your SudoMock account, no SudoMock branding is visible to your customers. You can customize the button label, colors, and all customer-facing text in the Settings tab.
 
 = Does it work with WooCommerce Blocks checkout? =
 
@@ -90,7 +90,7 @@ PSD templates can contain multiple customizable areas for customer artwork. Supp
 
 = What output formats does the mockup renderer support? =
 
-PNG, JPEG, and WebP. You can configure quality (1-100), resolution up to 10000px, and transparency (alpha channel support). A trial account is capped at 1024px; requests above that are rejected with an error rather than silently resized.
+PNG, JPEG, and WebP. You can configure quality (1-100), resolution up to 10000px, and transparency (alpha channel support).
 
 = Is it GDPR compliant? =
 
@@ -121,6 +121,9 @@ No product limit. Map as many products as you want to mockup templates.
 9. **Order Detail** - Rendered mockup in order admin for fulfillment.
 
 == Changelog ==
+
+= 1.4.2 =
+* The plugin page states plans and prices the way the SudoMock site does, and the installation steps name the SudoMock menu the plugin adds to the WordPress admin.
 
 = 1.4.1 =
 * The German, Spanish, French, Italian and Brazilian Portuguese translations now load in the store's language, with their accented letters restored.
