@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+## [1.4.2] - 2026-10-05
+
+### Changed
+- The plugin page states plans and prices the way the SudoMock site does, and
+  the installation steps name the SudoMock menu the plugin adds to the
+  WordPress admin.
+
 ## [1.4.1] - 2026-10-04
 
 ### Fixed
