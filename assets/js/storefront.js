@@ -43,7 +43,7 @@
 	}
 
 	/**
-	 * Create a session via WP AJAX (server-to-server, API key never in browser).
+	 * Create a session via WP AJAX (server-to-server).
 	 *
 	 * @param {string} productId   WooCommerce product ID.
 	 * @param {string} variationId Bound variation ID, or 0 for a simple product.
