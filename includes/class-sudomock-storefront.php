@@ -686,6 +686,18 @@ final class SudoMock_Storefront {
                 }
             }
         }
+        // Print files: one per design area whose inner layers the shopper
+        // filled. Their own list, with the same checks as the artwork links
+        // and no count limit.
+        $print_file_urls = array();
+        if ( isset( $order_assets['print_file_urls'] ) && is_array( $order_assets['print_file_urls'] ) ) {
+            foreach ( $order_assets['print_file_urls'] as $raw_url ) {
+                $url = self::sanitize_asset_url( $raw_url );
+                if ( '' !== $url ) {
+                    $print_file_urls[] = $url;
+                }
+            }
+        }
 
         // Cart item data — stored in WC session, visible in cart/order
         $cart_item_data = array(
@@ -697,6 +709,11 @@ final class SudoMock_Storefront {
                 'artwork_urls'     => $artwork_urls,
             ),
         );
+        // Added only when present, so a cart line without print files is
+        // stored exactly as before.
+        if ( ! empty( $print_file_urls ) ) {
+            $cart_item_data['sudomock_customization']['print_file_urls'] = $print_file_urls;
+        }
 
         // Variable products need the parent product_id AND a real variation_id
         // (never the variation id as the product_id, which silently fails).

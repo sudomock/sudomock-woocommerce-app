@@ -84,7 +84,7 @@ final class SudoMock_Privacy {
 		$content = sprintf(
 			'<p>%s</p><p>%s</p>',
 			esc_html__(
-				'When you customise a product using the SudoMock editor, we transmit your uploaded image(s) to the SudoMock rendering service (api.sudomock.com) to generate a preview. The rendered preview URL and your uploaded design file(s) are stored alongside your order so the merchant can produce the item.',
+				'When you customise a product using the SudoMock editor, we transmit your uploaded image(s) to the SudoMock rendering service (api.sudomock.com) to generate a preview. The rendered preview URL, your uploaded design file(s) and any print file made from your design are stored alongside your order so the merchant can produce the item.',
 				'sudomock-product-customizer'
 			),
 			esc_html__(
@@ -147,10 +147,11 @@ final class SudoMock_Privacy {
 
 		foreach ( $orders as $order ) {
 			foreach ( $order->get_items() as $item ) {
-				$preview_url  = SudoMock_Order::get_preview_url( $item );
-				$artwork_urls = SudoMock_Order::get_artwork_urls( $item );
+				$preview_url     = SudoMock_Order::get_preview_url( $item );
+				$artwork_urls    = SudoMock_Order::get_artwork_urls( $item );
+				$print_file_urls = SudoMock_Order::get_print_file_urls( $item );
 
-				if ( empty( $preview_url ) && empty( $artwork_urls ) ) {
+				if ( empty( $preview_url ) && empty( $artwork_urls ) && empty( $print_file_urls ) ) {
 					continue;
 				}
 
@@ -171,6 +172,13 @@ final class SudoMock_Privacy {
 						/* translators: %d: artwork file number */
 						'name'  => sprintf( __( 'Uploaded Design URL %d', 'sudomock-product-customizer' ), $idx + 1 ),
 						'value' => $artwork_url,
+					);
+				}
+				foreach ( $print_file_urls as $idx => $print_file_url ) {
+					$row[] = array(
+						/* translators: %d: print file number */
+						'name'  => sprintf( __( 'Print File URL %d', 'sudomock-product-customizer' ), $idx + 1 ),
+						'value' => $print_file_url,
 					);
 				}
 
@@ -217,6 +225,7 @@ final class SudoMock_Privacy {
 			foreach ( $order->get_items() as $item ) {
 				$has_data = $item->get_meta( '_sudomock_preview_url' )
 					|| $item->get_meta( '_sudomock_artwork_url' )
+					|| $item->get_meta( '_sudomock_print_file_url' )
 					|| $item->get_meta( '_sudomock_render_url' )
 					|| $item->get_meta( '_sudomock_mockup_uuid' )
 					|| $item->get_meta( '_sudomock_render_uuid' )
@@ -236,6 +245,8 @@ final class SudoMock_Privacy {
 						$remote_urls[] = $v;
 					}
 				}
+				// Print files have no count limit.
+				$remote_urls       = array_merge( $remote_urls, SudoMock_Order::get_print_file_urls( $item ) );
 				$items_with_data[] = $item;
 			}
 		}
@@ -259,6 +270,12 @@ final class SudoMock_Privacy {
 			$item->delete_meta_data( '_sudomock_artwork_url' );
 			for ( $i = 2; $i <= 10; $i++ ) {
 				$item->delete_meta_data( '_sudomock_artwork_url_' . $i );
+			}
+			// Print files have no count limit: every numbered key and label goes.
+			foreach ( $item->get_meta_data() as $meta ) {
+				if ( preg_match( '/^(_sudomock_print_file_url(_[0-9]+)?|Print File( [0-9]+)?)$/', $meta->key ) ) {
+					$item->delete_meta_data( $meta->key );
+				}
 			}
 			$item->delete_meta_data( '_sudomock_render_uuid' );
 			$item->delete_meta_data( '_sudomock_action_receipt_id' );
