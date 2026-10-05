@@ -146,6 +146,22 @@ final class SudoMock_Cart {
                 }
             }
 
+            // Print-ready file of each design area whose inner layers the
+            // shopper filled. Same key pattern as the artwork links, own list,
+            // no count limit.
+            if ( ! empty( $custom['print_file_urls'] ) && is_array( $custom['print_file_urls'] ) ) {
+                $i = 0;
+                foreach ( $custom['print_file_urls'] as $print_file_url ) {
+                    $i++;
+                    $suffix = ( 1 === $i ) ? '' : '_' . $i;
+                    $label  = ( 1 === $i )
+                        ? 'Print File'
+                        : sprintf( 'Print File %d', $i );
+                    $item->add_meta_data( '_sudomock_print_file_url' . $suffix, $print_file_url, true );
+                    $item->add_meta_data( $label, $print_file_url, true );
+                }
+            }
+
             // Render id for merchant cross-reference (support, re-render, audit).
             if ( ! empty( $custom['render_uuid'] ) ) {
                 $item->add_meta_data( '_sudomock_render_uuid', $custom['render_uuid'], true );

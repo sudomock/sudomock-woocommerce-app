@@ -6,7 +6,7 @@ Tested up to: 7.1
 Requires PHP: 7.4
 WC requires at least: 8.0
 WC tested up to: 11.1
-Stable tag: 1.4.2
+Stable tag: 1.4.3
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -122,6 +122,10 @@ No product limit. Map as many products as you want to mockup templates.
 
 == Changelog ==
 
+= 1.4.3 =
+* The order carries a print file for each design area whose inner layers the shopper filled, as "Print File" on the order line next to "Source Design", numbered when there are several. The personal data export lists them and the erasure deletes them.
+* The suggested privacy policy text names the print file too, in all ten translations.
+
 = 1.4.2 =
 * The plugin page states plans and prices the way the SudoMock site does, and the installation steps name the SudoMock menu the plugin adds to the WordPress admin.
 
@@ -188,10 +192,10 @@ The plugin communicates with the SudoMock API at https://api.sudomock.com for th
 * **Mockup listing**: When the admin opens the Mockups tab, opens the mockup picker in the Products tab, or opens the edit screen of a product, the plugin fetches the PSD mockups and the photo mockups in the merchant's account (GET /api/v1/mockups and GET /api/v1/sudoai/2d-mockups). Only paging and filter values are sent. Text typed into the mockup search is matched on the store and is not sent.
 * **Mockup details and thumbnails**: When the admin opens the Products tab, or the edit screen of a product that has a mockup, the plugin sends the mockup ID and fetches the mockup name and its thumbnail image addresses (GET /api/v1/mockups/{uuid} for a PSD mockup, GET /api/v1/sudoai/2d-mockups/{uuid} for a photo mockup). The thumbnail images are served from SudoMock servers.
 * **Studio session creation**: When a customer clicks the "Customize" button, the plugin opens an editor session (POST /api/v1/studio/create-session). It sends the mockup ID and type, the store's web address, the WooCommerce product and variation IDs, and the purpose of the session (customizing a product to add it to the cart).
-* **Add to cart confirmation**: When a customer adds a finished design to the cart, the plugin confirms it with SudoMock before the cart line is created (POST /api/v1/studio/actions/consume). It sends the session and request IDs, the mockup ID, the ID of the finished design, the store's host name, the product and variation IDs, and the name of the action (add to cart). The answer carries the links to the customization preview and the source design files, which are saved with the cart line and the order.
+* **Add to cart confirmation**: When a customer adds a finished design to the cart, the plugin confirms it with SudoMock before the cart line is created (POST /api/v1/studio/actions/consume). It sends the session and request IDs, the mockup ID, the ID of the finished design, the store's host name, the product and variation IDs, and the name of the action (add to cart). The answer carries the links to the customization preview, the source design files and the print files, which are saved with the cart line and the order.
 * **Studio configuration**: When the admin opens the Settings tab, the plugin reads the white-label editor settings stored on the SudoMock server (GET /api/v1/studio/config). When the admin saves them, it sends the new settings: colors, texts, logo address and editor options (PUT /api/v1/studio/config).
 * **Support messages**: When the admin submits the "Need Help?" form in the Settings tab, the subject and the message are sent to SudoMock with the site address and the SudoMock account email (POST /api/v1/support/ticket). If that request does not succeed, the same message is sent by email from the site to hello@sudomock.com, with the site address and the account email, or the site administrator's email when no account email is stored.
-* **Stored design file deletion**: When a personal data erasure request is processed for a customer, the plugin asks SudoMock to delete the preview and source design files linked to that customer's orders (POST /api/v1/artworks/delete). It sends the links of those files. A deletion that cannot be confirmed is retried once a day.
+* **Stored design file deletion**: When a personal data erasure request is processed for a customer, the plugin asks SudoMock to delete the preview, source design and print files linked to that customer's orders (POST /api/v1/artworks/delete). It sends the links of those files. A deletion that cannot be confirmed is retried once a day.
 * **Account disconnect**: When the admin disconnects, the plugin notifies the SudoMock server (POST /api/v1/woocommerce/disconnect). Nothing but the API key and the version number is sent.
 
 All API calls are made server-to-server using wp_remote_request. The API key is stored encrypted (AES-256-CBC).
@@ -200,7 +204,7 @@ This service is provided by "SudoMock": [Terms of Service](https://sudomock.com/
 
 = SudoMock Studio (studio.sudomock.com) =
 
-The product editor at https://studio.sudomock.com opens in an iframe modal only when a customer clicks the "Customize" button. Customers can upload artwork to preview their customized product. The preview and source-design file links are returned to the store and saved with the order for fulfilment.
+The product editor at https://studio.sudomock.com opens in an iframe modal only when a customer clicks the "Customize" button. Customers can upload artwork to preview their customized product. The preview, source-design file and print file links are returned to the store and saved with the order for fulfilment.
 
 This service is provided by "SudoMock": [Terms of Service](https://sudomock.com/legal/terms), [Privacy Policy](https://sudomock.com/legal/privacy).
 

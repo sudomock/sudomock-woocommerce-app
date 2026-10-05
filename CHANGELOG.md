@@ -4,6 +4,18 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+## [1.4.3] - 2026-10-05
+
+### Added
+- The order carries a print file for each design area whose inner layers the
+  shopper filled. The order line holds a "Print File" link next to "Source
+  Design", numbered "Print File 2", "Print File 3" when there are several. The
+  admin order screen shows their download links, and the personal data export
+  lists them and the erasure deletes them like the artwork files.
+- An order without print files is saved exactly as before.
+- The privacy policy text the plugin suggests to the store names the print
+  file too, and it is now translated in all ten languages.
+
 ## [1.4.2] - 2026-10-05
 
 ### Changed

@@ -64,34 +64,58 @@ final class SudoMock_Order {
 	 * @return string[]
 	 */
 	public static function get_artwork_urls( $item ) {
-		$artwork_urls  = array();
-		$first_artwork = $item->get_meta( '_sudomock_artwork_url' );
-		if ( ! empty( $first_artwork ) ) {
-			$artwork_urls[] = $first_artwork;
-		}
-		for ( $i = 2; $i <= 10; $i++ ) {
-			$extra = $item->get_meta( '_sudomock_artwork_url_' . $i );
-			if ( empty( $extra ) ) {
-				break;
-			}
-			$artwork_urls[] = $extra;
-		}
-		return $artwork_urls;
+		return self::get_numbered_urls( $item, '_sudomock_artwork_url' );
 	}
 
 	/**
-	 * Show the customization preview thumbnail and the original artwork
-	 * file link(s) in the admin order screen.
+	 * Print file URLs for an order item (_sudomock_print_file_url, _2, _3 ...).
+	 * Their count has no limit.
+	 *
+	 * @param object $item Order item object.
+	 * @return string[]
+	 */
+	public static function get_print_file_urls( $item ) {
+		return self::get_numbered_urls( $item, '_sudomock_print_file_url', PHP_INT_MAX );
+	}
+
+	/**
+	 * URLs stored under a key and its numbered siblings (_2 ... _$max).
+	 *
+	 * @param object $item Order item object.
+	 * @param string $key  First key.
+	 * @param int    $max  Highest number read.
+	 * @return string[]
+	 */
+	private static function get_numbered_urls( $item, $key, $max = 10 ) {
+		$urls  = array();
+		$first = $item->get_meta( $key );
+		if ( ! empty( $first ) ) {
+			$urls[] = $first;
+		}
+		for ( $i = 2; $i <= $max; $i++ ) {
+			$extra = $item->get_meta( $key . '_' . $i );
+			if ( empty( $extra ) ) {
+				break;
+			}
+			$urls[] = $extra;
+		}
+		return $urls;
+	}
+
+	/**
+	 * Show the customization preview thumbnail, the original artwork
+	 * file link(s) and the print file link(s) in the admin order screen.
 	 *
 	 * @param int            $item_id  Order item ID.
 	 * @param object         $item     Order item object.
 	 * @param \WC_Product|null $product Product object (may be null).
 	 */
 	public function display_admin_order_item_meta( $item_id, $item, $product ) {
-		$preview_url  = self::get_preview_url( $item );
-		$artwork_urls = self::get_artwork_urls( $item );
+		$preview_url     = self::get_preview_url( $item );
+		$artwork_urls    = self::get_artwork_urls( $item );
+		$print_file_urls = self::get_print_file_urls( $item );
 
-		if ( empty( $preview_url ) && empty( $artwork_urls ) ) {
+		if ( empty( $preview_url ) && empty( $artwork_urls ) && empty( $print_file_urls ) ) {
 			return;
 		}
 
@@ -120,6 +144,21 @@ final class SudoMock_Order {
 					esc_url( $artwork_url ),
 					/* translators: %d: artwork file number */
 					esc_html( sprintf( __( 'Download artwork %d', 'sudomock-product-customizer' ), $idx + 1 ) )
+				);
+			}
+			echo '</div>';
+		}
+
+		if ( ! empty( $print_file_urls ) ) {
+			echo '<div style="margin-top:6px;"><strong>'
+				. esc_html__( 'Print file(s):', 'sudomock-product-customizer' )
+				. '</strong><br>';
+			foreach ( $print_file_urls as $idx => $print_file_url ) {
+				printf(
+					'<a href="%s" target="_blank" rel="noopener">%s</a><br>',
+					esc_url( $print_file_url ),
+					/* translators: %d: print file number */
+					esc_html( sprintf( __( 'Download print file %d', 'sudomock-product-customizer' ), $idx + 1 ) )
 				);
 			}
 			echo '</div>';
