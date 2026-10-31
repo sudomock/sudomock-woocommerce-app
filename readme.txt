@@ -6,7 +6,7 @@ Tested up to: 7.1
 Requires PHP: 7.4
 WC requires at least: 8.0
 WC tested up to: 11.1
-Stable tag: 1.4.3
+Stable tag: 1.4.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -121,6 +121,9 @@ No product limit. Map as many products as you want to mockup templates.
 9. **Order Detail** - Rendered mockup in order admin for fulfillment.
 
 == Changelog ==
+
+= 1.4.4 =
+* Maintenance release: the logo image and the translation file headers carry tidied metadata. The plugin works exactly as in 1.4.3.
 
 = 1.4.3 =
 * The order carries a print file for each design area whose inner layers the shopper filled, as "Print File" on the order line next to "Source Design", numbered when there are several. The personal data export lists them and the erasure deletes them.

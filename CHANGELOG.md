@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+## [1.4.4] - 2026-10-31
+
+### Changed
+- Maintenance release. The logo image and the translation file headers carry
+  tidied metadata, and the translation dates are stated in UTC. The plugin
+  works exactly as in 1.4.3.
+
 ## [1.4.3] - 2026-10-05
 
 ### Added
