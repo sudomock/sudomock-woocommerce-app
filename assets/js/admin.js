@@ -578,6 +578,7 @@
 		showAdjustments: true, showColorOverlay: true, showFitMode: true,
 		showPosition: true, showSize: true, showRotation: true, showFlip: true,
 		showExportOptions: true, showZoomControls: true, showUndoRedo: true,
+		showSeamCheck: true, showSeamFix: true,
 		layout: 'full', autoRender: true,
 		autoRenderDelay: 800, maxFileSize: 15
 	};
@@ -684,8 +685,19 @@
 		var delayRow = document.getElementById('sudomock-autorender-delay-row');
 		if (delayRow) delayRow.style.display = cfg.autoRender ? '' : 'none';
 
+		syncSeamFix(cfg);
+
 		// Toggle count
 		updateToggleCount();
+	}
+
+	// Seam fix needs Seam check: with the check off, the fix is off and its toggle disabled.
+	function syncSeamFix(cfg) {
+		if (!cfg.showSeamCheck) cfg.showSeamFix = false;
+		var fix = document.querySelector('#sudomock-config-form input[data-config-key="showSeamFix"]');
+		if (!fix) return;
+		fix.checked = !!cfg.showSeamFix;
+		fix.disabled = !cfg.showSeamCheck;
 	}
 
 	function bindConfigInputs() {
@@ -753,6 +765,7 @@
 					var delayRow = document.getElementById('sudomock-autorender-delay-row');
 					if (delayRow) delayRow.style.display = el.checked ? '' : 'none';
 				}
+				if (key === 'showSeamCheck') syncSeamFix(currentConfig);
 				updateToggleCount();
 				markDirty();
 			});
@@ -780,7 +793,8 @@
 
 	function updateToggleCount() {
 		var toggleKeys = ['showAdjustments', 'showColorOverlay', 'showFitMode', 'showPosition',
-			'showSize', 'showRotation', 'showFlip', 'showExportOptions', 'showZoomControls', 'showUndoRedo'];
+			'showSize', 'showRotation', 'showFlip', 'showExportOptions', 'showZoomControls', 'showUndoRedo',
+			'showSeamCheck', 'showSeamFix'];
 		var active = 0;
 		toggleKeys.forEach(function (k) { if (currentConfig && currentConfig[k]) active++; });
 		var el = document.getElementById('sudomock-toggle-count');

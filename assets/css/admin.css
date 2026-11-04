@@ -1299,6 +1299,11 @@
     background: #f6f6f7;
 }
 
+.sudomock-toggle-item:has(.sudomock-toggle-checkbox:disabled) {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
 .sudomock-toggle-checkbox {
     margin-top: 2px;
     flex-shrink: 0;

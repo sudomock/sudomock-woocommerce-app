@@ -1246,7 +1246,7 @@ final class SudoMock_Admin {
                     <div class="sudomock-card__body">
                         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;">
                             <h2 class="sudomock-card__title" style="margin-bottom:0;"><?php esc_html_e( 'Feature Controls', 'sudomock-product-customizer' ); ?></h2>
-                            <span id="sudomock-toggle-count" class="sudomock-badge sudomock-badge--info">0 / 9 active</span>
+                            <span id="sudomock-toggle-count" class="sudomock-badge sudomock-badge--info">0 / 12 active</span>
                         </div>
                         <p class="sudomock-text--muted" style="margin-bottom:16px;"><?php esc_html_e( 'Hide features to simplify the experience for your customers.', 'sudomock-product-customizer' ); ?></p>
                         <hr class="sudomock-divider" />
@@ -1265,6 +1265,24 @@ final class SudoMock_Admin {
                                 'showUndoRedo'      => array( __( 'Undo / Redo', 'sudomock-product-customizer' ), __( 'Undo and redo buttons with keyboard shortcuts', 'sudomock-product-customizer' ) ),
                             );
                             foreach ( $toggles as $key => $meta ) : ?>
+                                <label class="sudomock-toggle-item">
+                                    <input type="checkbox" data-config-key="<?php echo esc_attr( $key ); ?>" class="sudomock-toggle-checkbox" />
+                                    <div>
+                                        <span class="sudomock-toggle-item__label"><?php echo esc_html( $meta[0] ); ?></span>
+                                        <span class="sudomock-toggle-item__desc"><?php echo esc_html( $meta[1] ); ?></span>
+                                    </div>
+                                </label>
+                            <?php endforeach; ?>
+                        </div>
+                        <hr class="sudomock-divider" />
+                        <div class="sudomock-toggle-grid">
+                            <?php
+                            // Seam fix needs Seam check; admin.js disables the fix while the check is off.
+                            $seam_toggles = array(
+                                'showSeamCheck' => array( __( 'Seam check', 'sudomock-product-customizer' ), __( "Checks a shopper's repeating pattern for visible seams at no credit cost.", 'sudomock-product-customizer' ) ),
+                                'showSeamFix'   => array( __( 'Seam fix', 'sudomock-product-customizer' ), __( 'Lets shoppers smooth out a visible seam for 60 credits per fix.', 'sudomock-product-customizer' ) ),
+                            );
+                            foreach ( $seam_toggles as $key => $meta ) : ?>
                                 <label class="sudomock-toggle-item">
                                     <input type="checkbox" data-config-key="<?php echo esc_attr( $key ); ?>" class="sudomock-toggle-checkbox" />
                                     <div>
@@ -1461,6 +1479,7 @@ final class SudoMock_Admin {
             'addingText', 'successText',
             'showAdjustments', 'showColorOverlay', 'showFitMode', 'showPosition',
             'showSize', 'showRotation', 'showFlip', 'showExportOptions', 'showZoomControls', 'showUndoRedo',
+            'showSeamCheck', 'showSeamFix',
             'theme', 'layout', 'autoRender', 'autoRenderDelay', 'maxFileSize',
         );
         $config = array();
@@ -1498,12 +1517,17 @@ final class SudoMock_Admin {
         $bool_keys = array(
             'showAdjustments', 'showColorOverlay', 'showFitMode', 'showPosition',
             'showSize', 'showRotation', 'showFlip', 'showExportOptions', 'showZoomControls', 'showUndoRedo',
-            'autoRender',
+            'showSeamCheck', 'showSeamFix', 'autoRender',
         );
         foreach ( $bool_keys as $key ) {
             if ( isset( $config[ $key ] ) ) {
                 $config[ $key ] = (bool) $config[ $key ];
             }
+        }
+
+        // Seam fix needs Seam check.
+        if ( isset( $config['showSeamCheck'] ) && false === $config['showSeamCheck'] ) {
+            $config['showSeamFix'] = false;
         }
 
         // Validate logo URL scheme
