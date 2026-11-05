@@ -4,6 +4,26 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+## [1.5.0] - 2026-11-05
+
+### Added
+- Seam check and Seam fix in the Settings tab, both on by default. The editor
+  checks a customer's repeating pattern for visible seams for free, and a
+  customer's fix uses the merchant's SudoMock credits. Seam fix needs Seam
+  check. The labels and help texts are translated in all ten languages.
+
+### Changed
+- The Settings tab reads and saves the editor settings under their current
+  names, and a save sends only the settings that changed, with the version of
+  the settings the tab read. A changed button label, export option or zoom
+  control still applies to photo mockups too.
+- A save that settings changed elsewhere have overtaken is not applied. The
+  tab shows the latest saved settings and says they changed elsewhere; that
+  message is translated in all ten languages.
+
+### Fixed
+- Clearing the logo address no longer stops the settings from saving.
+
 ## [1.4.4] - 2026-10-31
 
 ### Changed
