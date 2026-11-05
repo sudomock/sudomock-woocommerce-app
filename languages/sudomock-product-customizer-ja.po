@@ -882,6 +882,25 @@ msgstr "元に戻す / やり直し"
 msgid "Undo and redo buttons with keyboard shortcuts"
 msgstr ""
 
+#: includes/class-sudomock-admin.php:1282
+msgid "Seam check"
+msgstr "継ぎ目チェック"
+
+#: includes/class-sudomock-admin.php:1282
+msgid ""
+"Checks a shopper's repeating pattern for visible seams at no credit cost."
+msgstr ""
+"顧客のリピートパターンに目立つ継ぎ目がないかを、クレジットを消費せずにチェックします。"
+
+#: includes/class-sudomock-admin.php:1283
+msgid "Seam fix"
+msgstr "継ぎ目の修正"
+
+#: includes/class-sudomock-admin.php:1283
+msgid "Lets shoppers smooth out a visible seam for 60 credits per fix."
+msgstr ""
+"顧客が目立つ継ぎ目をなめらかに修正できます。修正1回につき60クレジットを消費します。"
+
 #: includes/class-sudomock-admin.php:1241
 msgid "Behavior"
 msgstr "動作"
@@ -987,6 +1006,13 @@ msgstr ""
 #: includes/class-sudomock-admin.php:1478
 msgid "Studio config saved."
 msgstr ""
+
+#: includes/class-sudomock-admin.php:1613
+msgid ""
+"These settings were changed elsewhere. The latest saved settings are shown. "
+"Make your changes again and save."
+msgstr ""
+"これらの設定は別の場所で変更されました。最後に保存された設定を表示しています。もう一度変更してから保存してください。"
 
 #: includes/class-sudomock-admin.php:1497
 msgid ""

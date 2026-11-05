@@ -882,6 +882,26 @@ msgstr "Ongedaan maken / Opnieuw"
 msgid "Undo and redo buttons with keyboard shortcuts"
 msgstr ""
 
+#: includes/class-sudomock-admin.php:1282
+msgid "Seam check"
+msgstr "Naadcontrole"
+
+#: includes/class-sudomock-admin.php:1282
+msgid ""
+"Checks a shopper's repeating pattern for visible seams at no credit cost."
+msgstr ""
+"Controleert of het herhalende patroon van een klant zichtbare naden heeft, "
+"zonder credits te verbruiken."
+
+#: includes/class-sudomock-admin.php:1283
+msgid "Seam fix"
+msgstr "Naadcorrectie"
+
+#: includes/class-sudomock-admin.php:1283
+msgid "Lets shoppers smooth out a visible seam for 60 credits per fix."
+msgstr ""
+"Laat klanten een zichtbare naad gladstrijken, voor 60 credits per correctie."
+
 #: includes/class-sudomock-admin.php:1241
 msgid "Behavior"
 msgstr "Gedrag"
@@ -987,6 +1007,14 @@ msgstr ""
 #: includes/class-sudomock-admin.php:1478
 msgid "Studio config saved."
 msgstr ""
+
+#: includes/class-sudomock-admin.php:1613
+msgid ""
+"These settings were changed elsewhere. The latest saved settings are shown. "
+"Make your changes again and save."
+msgstr ""
+"Deze instellingen zijn elders gewijzigd. De laatst opgeslagen instellingen "
+"worden getoond. Breng je wijzigingen opnieuw aan en sla ze op."
 
 #: includes/class-sudomock-admin.php:1497
 msgid ""

@@ -901,6 +901,27 @@ msgstr "Annuler / Rétablir"
 msgid "Undo and redo buttons with keyboard shortcuts"
 msgstr "Boutons annuler et rétablir avec raccourcis clavier"
 
+#: includes/class-sudomock-admin.php:1282
+msgid "Seam check"
+msgstr "Vérification des raccords"
+
+#: includes/class-sudomock-admin.php:1282
+msgid ""
+"Checks a shopper's repeating pattern for visible seams at no credit cost."
+msgstr ""
+"Vérifie si le motif répété d'un client présente des raccords visibles, sans "
+"utiliser de crédits."
+
+#: includes/class-sudomock-admin.php:1283
+msgid "Seam fix"
+msgstr "Correction des raccords"
+
+#: includes/class-sudomock-admin.php:1283
+msgid "Lets shoppers smooth out a visible seam for 60 credits per fix."
+msgstr ""
+"Permet aux clients de lisser un raccord visible, pour 60 crédits par "
+"correction."
+
 #: includes/class-sudomock-admin.php:1241
 msgid "Behavior"
 msgstr "Comportement"
@@ -1010,6 +1031,14 @@ msgstr "Impossible d'enregistrer la configuration."
 #: includes/class-sudomock-admin.php:1478
 msgid "Studio config saved."
 msgstr "Configuration du studio enregistrée."
+
+#: includes/class-sudomock-admin.php:1613
+msgid ""
+"These settings were changed elsewhere. The latest saved settings are shown. "
+"Make your changes again and save."
+msgstr ""
+"Ces paramètres ont été modifiés ailleurs. Les derniers paramètres "
+"enregistrés sont affichés. Refaites vos modifications, puis enregistrez."
 
 #: includes/class-sudomock-admin.php:1497
 msgid ""

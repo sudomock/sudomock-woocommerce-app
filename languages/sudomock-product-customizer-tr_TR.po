@@ -923,6 +923,27 @@ msgstr "Geri Al / Yinele"
 msgid "Undo and redo buttons with keyboard shortcuts"
 msgstr "Klavye kısayollu geri al ve yinele butonları"
 
+#: includes/class-sudomock-admin.php:1282
+msgid "Seam check"
+msgstr "Dikiş kontrolü"
+
+#: includes/class-sudomock-admin.php:1282
+msgid ""
+"Checks a shopper's repeating pattern for visible seams at no credit cost."
+msgstr ""
+"Müşterinin tekrarlayan deseninde görünür dikiş olup olmadığını kredi "
+"harcamadan kontrol eder."
+
+#: includes/class-sudomock-admin.php:1283
+msgid "Seam fix"
+msgstr "Dikiş düzeltme"
+
+#: includes/class-sudomock-admin.php:1283
+msgid "Lets shoppers smooth out a visible seam for 60 credits per fix."
+msgstr ""
+"Müşterilerin görünür bir dikişi yumuşatmasını sağlar; her düzeltme 60 kredi "
+"harcar."
+
 #: includes/class-sudomock-admin.php:1241
 msgid "Behavior"
 msgstr "Davranış"
@@ -1032,6 +1053,14 @@ msgstr "Yapılandırma kaydedilemedi."
 #: includes/class-sudomock-admin.php:1478
 msgid "Studio config saved."
 msgstr "Studio yapılandırması kaydedildi."
+
+#: includes/class-sudomock-admin.php:1613
+msgid ""
+"These settings were changed elsewhere. The latest saved settings are shown. "
+"Make your changes again and save."
+msgstr ""
+"Bu ayarlar başka bir yerde değiştirildi. Son kaydedilen ayarlar "
+"gösteriliyor. Değişikliklerinizi yeniden yapıp kaydedin."
 
 #: includes/class-sudomock-admin.php:1497
 msgid ""

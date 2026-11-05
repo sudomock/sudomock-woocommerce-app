@@ -902,6 +902,26 @@ msgstr "Rückgängig / Wiederherstellen"
 msgid "Undo and redo buttons with keyboard shortcuts"
 msgstr "Rückgängig/Wiederherstellen mit Tastenkürzeln"
 
+#: includes/class-sudomock-admin.php:1282
+msgid "Seam check"
+msgstr "Nahtprüfung"
+
+#: includes/class-sudomock-admin.php:1282
+msgid ""
+"Checks a shopper's repeating pattern for visible seams at no credit cost."
+msgstr ""
+"Prüft das sich wiederholende Muster eines Kunden auf sichtbare Nähte, ohne "
+"Guthaben zu verbrauchen."
+
+#: includes/class-sudomock-admin.php:1283
+msgid "Seam fix"
+msgstr "Nahtkorrektur"
+
+#: includes/class-sudomock-admin.php:1283
+msgid "Lets shoppers smooth out a visible seam for 60 credits per fix."
+msgstr ""
+"Kunden können eine sichtbare Naht glätten, für 60 Guthaben pro Korrektur."
+
 #: includes/class-sudomock-admin.php:1241
 msgid "Behavior"
 msgstr "Verhalten"
@@ -1011,6 +1031,15 @@ msgstr "Konfiguration konnte nicht gespeichert werden."
 #: includes/class-sudomock-admin.php:1478
 msgid "Studio config saved."
 msgstr "Studio-Konfiguration gespeichert."
+
+#: includes/class-sudomock-admin.php:1613
+msgid ""
+"These settings were changed elsewhere. The latest saved settings are shown. "
+"Make your changes again and save."
+msgstr ""
+"Diese Einstellungen wurden an anderer Stelle geändert. Die zuletzt "
+"gespeicherten Einstellungen werden angezeigt. Nehmen Sie Ihre Änderungen "
+"erneut vor und speichern Sie."
 
 #: includes/class-sudomock-admin.php:1497
 msgid ""

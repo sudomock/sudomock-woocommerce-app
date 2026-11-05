@@ -907,6 +907,27 @@ msgstr "Deshacer / Rehacer"
 msgid "Undo and redo buttons with keyboard shortcuts"
 msgstr "Botones deshacer y rehacer con atajos de teclado"
 
+#: includes/class-sudomock-admin.php:1282
+msgid "Seam check"
+msgstr "Comprobación de costuras"
+
+#: includes/class-sudomock-admin.php:1282
+msgid ""
+"Checks a shopper's repeating pattern for visible seams at no credit cost."
+msgstr ""
+"Comprueba si el patrón repetido de un cliente tiene costuras visibles, sin "
+"gastar créditos."
+
+#: includes/class-sudomock-admin.php:1283
+msgid "Seam fix"
+msgstr "Corrección de costuras"
+
+#: includes/class-sudomock-admin.php:1283
+msgid "Lets shoppers smooth out a visible seam for 60 credits per fix."
+msgstr ""
+"Permite a los clientes suavizar una costura visible, con un coste de 60 "
+"créditos por corrección."
+
 #: includes/class-sudomock-admin.php:1241
 msgid "Behavior"
 msgstr "Comportamiento"
@@ -1015,6 +1036,14 @@ msgstr "No se pudo guardar la configuración."
 #: includes/class-sudomock-admin.php:1478
 msgid "Studio config saved."
 msgstr "Configuración del studio guardada."
+
+#: includes/class-sudomock-admin.php:1613
+msgid ""
+"These settings were changed elsewhere. The latest saved settings are shown. "
+"Make your changes again and save."
+msgstr ""
+"Esta configuración se ha cambiado en otro lugar. Se muestra la última "
+"configuración guardada. Vuelva a hacer sus cambios y guárdelos."
 
 #: includes/class-sudomock-admin.php:1497
 msgid ""
