@@ -568,24 +568,29 @@
 	/* ────────────────────────────────────────────
 	 * 6) Studio Config Editor (Settings tab)
 	 * ──────────────────────────────────────────── */
+	// Keys as GET and PUT /api/v1/studio/config name them; the server reads a
+	// config saved under the older names into these.
 	var DEFAULTS = {
 		primaryColor: '#0f172a', accentColor: '#da7756', successColor: '#16a34a',
 		backgroundColor: '#f1f5f9', panelBackground: '#ffffff', textColor: '#0f172a',
-		borderColor: '#e2e8f0', borderRadius: 10, logoUrl: '', theme: 'light',
-		buttonText: 'Add to Cart', addingText: 'Adding...', successText: 'Added!',
-		renderButtonText: 'Render Preview', uploadText: 'Drop image or click to upload',
+		borderColor: '#e2e8f0', borderRadius: 10, logoUrl: null, theme: 'light',
+		psdPrimaryActionLabel: 'Add to Cart', loadingText: 'Adding...', successText: 'Added!',
+		secondaryActionLabel: 'Render Preview', uploadText: 'Drop image or click to upload',
 		headerText: 'Customize Your Design',
-		showAdjustments: true, showColorOverlay: true, showFitMode: true,
-		showPosition: true, showSize: true, showRotation: true, showFlip: true,
-		showExportOptions: true, showZoomControls: true, showUndoRedo: true,
+		psdShowAdjustments: true, psdShowColorOverlay: true, psdShowFitMode: true,
+		psdShowPosition: true, psdShowSize: true, psdShowRotation: true, psdShowFlip: true,
+		psdShowExportOptions: true, psdShowZoomControls: true, psdShowUndoRedo: true,
 		showSeamCheck: true, showSeamFix: true,
-		layout: 'full', autoRender: true,
-		autoRenderDelay: 800, maxFileSize: 15
+		psdLayout: 'full', psdAutoRender: true,
+		psdAutoRenderDelay: 800, maxFileSize: 15
 	};
 
 	var savedConfig = null;
 	var currentConfig = null;
 	var configDirty = false;
+	// The version the settings were read at, sent back with each save.
+	var configVersion = 0;
+	var configInputsBound = false;
 
 	function initStudioConfig() {
 		var container = document.getElementById('sudomock-studio-config');
@@ -612,7 +617,7 @@
 		});
 	}
 
-	function loadStudioConfig() {
+	function loadStudioConfig(notice) {
 		var params = 'action=sudomock_get_studio_config&nonce=' + encodeURIComponent(nonce);
 		fetch(ajaxUrl + '?' + params)
 			.then(function (r) { return r.json(); })
@@ -627,22 +632,41 @@
 					var merged = {};
 					for (var k in DEFAULTS) { merged[k] = DEFAULTS[k]; }
 					var cfg = json.data.config || json.data;
-					for (var ck in cfg) { if (DEFAULTS.hasOwnProperty(ck)) merged[ck] = cfg[ck]; }
+					for (var ck in cfg) { if (DEFAULTS.hasOwnProperty(ck) && cfg[ck] !== null) merged[ck] = cfg[ck]; }
 					savedConfig = merged;
+					configVersion = json.data.config_version || 0;
+					if (notice) showConfigBanner('warning', notice);
 				}
-				currentConfig = JSON.parse(JSON.stringify(savedConfig));
-				populateForm(currentConfig);
-				bindConfigInputs();
+				showLoadedConfig();
 			})
 			.catch(function () {
 				document.getElementById('sudomock-config-loading').style.display = 'none';
 				document.getElementById('sudomock-config-form').style.display = '';
 				showConfigBanner('error', 'Network error loading studio config.');
 				savedConfig = JSON.parse(JSON.stringify(DEFAULTS));
-				currentConfig = JSON.parse(JSON.stringify(savedConfig));
-				populateForm(currentConfig);
-				bindConfigInputs();
+				showLoadedConfig();
 			});
+	}
+
+	function showLoadedConfig() {
+		currentConfig = JSON.parse(JSON.stringify(savedConfig));
+		populateForm(currentConfig);
+		configDirty = false;
+		var discardBtn = document.getElementById('sudomock-config-discard');
+		if (discardBtn) discardBtn.style.display = 'none';
+		if (!configInputsBound) {
+			bindConfigInputs();
+			configInputsBound = true;
+		}
+	}
+
+	// Only the settings that differ from the ones read are saved.
+	function changedConfig() {
+		var changed = {};
+		for (var k in currentConfig) {
+			if (currentConfig[k] !== savedConfig[k]) changed[k] = currentConfig[k];
+		}
+		return changed;
 	}
 
 	function populateForm(cfg) {
@@ -683,7 +707,7 @@
 
 		// Auto-render delay visibility
 		var delayRow = document.getElementById('sudomock-autorender-delay-row');
-		if (delayRow) delayRow.style.display = cfg.autoRender ? '' : 'none';
+		if (delayRow) delayRow.style.display = cfg.psdAutoRender ? '' : 'none';
 
 		syncSeamFix(cfg);
 
@@ -761,7 +785,7 @@
 			el.addEventListener('change', function () {
 				var key = el.getAttribute('data-config-key');
 				currentConfig[key] = el.checked;
-				if (key === 'autoRender') {
+				if (key === 'psdAutoRender') {
 					var delayRow = document.getElementById('sudomock-autorender-delay-row');
 					if (delayRow) delayRow.style.display = el.checked ? '' : 'none';
 				}
@@ -786,14 +810,14 @@
 		var span = document.querySelector('.sudomock-range-value[data-config-key="' + key + '"]');
 		if (!span) return;
 		if (key === 'borderRadius') span.textContent = value + 'px';
-		else if (key === 'autoRenderDelay') span.textContent = value + 'ms';
+		else if (key === 'psdAutoRenderDelay') span.textContent = value + 'ms';
 		else if (key === 'maxFileSize') span.textContent = value + ' MB';
 		else span.textContent = value;
 	}
 
 	function updateToggleCount() {
-		var toggleKeys = ['showAdjustments', 'showColorOverlay', 'showFitMode', 'showPosition',
-			'showSize', 'showRotation', 'showFlip', 'showExportOptions', 'showZoomControls', 'showUndoRedo',
+		var toggleKeys = ['psdShowAdjustments', 'psdShowColorOverlay', 'psdShowFitMode', 'psdShowPosition',
+			'psdShowSize', 'psdShowRotation', 'psdShowFlip', 'psdShowExportOptions', 'psdShowZoomControls', 'psdShowUndoRedo',
 			'showSeamCheck', 'showSeamFix'];
 		var active = 0;
 		toggleKeys.forEach(function (k) { if (currentConfig && currentConfig[k]) active++; });
@@ -814,17 +838,22 @@
 		var body = new FormData();
 		body.append('action', 'sudomock_save_studio_config');
 		body.append('nonce', nonce);
-		body.append('config', JSON.stringify(currentConfig));
+		body.append('config', JSON.stringify(changedConfig()));
+		body.append('config_version', String(configVersion));
 
 		fetch(ajaxUrl, { method: 'POST', body: body })
 			.then(function (r) { return r.json(); })
 			.then(function (json) {
 				if (json.success) {
 					savedConfig = JSON.parse(JSON.stringify(currentConfig));
+					configVersion = json.data.config_version;
 					configDirty = false;
 					var discardBtn = document.getElementById('sudomock-config-discard');
 					if (discardBtn) discardBtn.style.display = 'none';
 					showConfigBanner('success', json.data.message || 'Studio config saved.');
+				} else if (json.data && json.data.conflict) {
+					// Saved elsewhere since this tab read the settings: read them again.
+					loadStudioConfig(json.data.message);
 				} else {
 					showConfigBanner('error', (json.data && json.data.message) || (i18n.failedToSave || 'Failed to save.'));
 				}
@@ -852,6 +881,7 @@
 		var cls = 'sudomock-banner';
 		if (type === 'success') cls += ' sudomock-banner--success';
 		else if (type === 'error') cls += ' sudomock-banner--error';
+		else if (type === 'warning') cls += ' sudomock-banner--warning';
 		else cls += ' sudomock-banner--info';
 		container.innerHTML = '<div class="' + cls + '">' + escapeHtml(msg) + '</div>';
 		setTimeout(function () { container.innerHTML = ''; }, 5000);

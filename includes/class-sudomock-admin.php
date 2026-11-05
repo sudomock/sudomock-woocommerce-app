@@ -1219,12 +1219,12 @@ final class SudoMock_Admin {
                         <div class="sudomock-labels-grid">
                             <?php
                             $labels = array(
-                                'headerText'       => array( __( 'Header text', 'sudomock-product-customizer' ), 'Customize Your Design' ),
-                                'buttonText'       => array( __( 'CTA button', 'sudomock-product-customizer' ), 'Add to Cart' ),
-                                'addingText'       => array( __( 'Adding state text', 'sudomock-product-customizer' ), 'Adding...' ),
-                                'successText'      => array( __( 'Success text', 'sudomock-product-customizer' ), 'Added!' ),
-                                'renderButtonText' => array( __( 'Render button', 'sudomock-product-customizer' ), 'Render Preview' ),
-                                'uploadText'       => array( __( 'Upload text', 'sudomock-product-customizer' ), 'Drop image or click to upload' ),
+                                'headerText'            => array( __( 'Header text', 'sudomock-product-customizer' ), 'Customize Your Design' ),
+                                'psdPrimaryActionLabel' => array( __( 'CTA button', 'sudomock-product-customizer' ), 'Add to Cart' ),
+                                'loadingText'           => array( __( 'Adding state text', 'sudomock-product-customizer' ), 'Adding...' ),
+                                'successText'           => array( __( 'Success text', 'sudomock-product-customizer' ), 'Added!' ),
+                                'secondaryActionLabel'  => array( __( 'Render button', 'sudomock-product-customizer' ), 'Render Preview' ),
+                                'uploadText'            => array( __( 'Upload text', 'sudomock-product-customizer' ), 'Drop image or click to upload' ),
                             );
                             foreach ( $labels as $key => $meta ) : ?>
                                 <div class="sudomock-form-row" style="margin-bottom:0;">
@@ -1253,16 +1253,16 @@ final class SudoMock_Admin {
                         <div class="sudomock-toggle-grid">
                             <?php
                             $toggles = array(
-                                'showAdjustments'   => array( __( 'Adjustments Panel', 'sudomock-product-customizer' ), __( 'Brightness, contrast, saturation, vibrance, opacity, blur', 'sudomock-product-customizer' ) ),
-                                'showColorOverlay'  => array( __( 'Color Overlay', 'sudomock-product-customizer' ), __( 'Fill color with blend mode selector per layer', 'sudomock-product-customizer' ) ),
-                                'showFitMode'       => array( __( 'Fit Mode', 'sudomock-product-customizer' ), __( 'Fill / Fit / Cover selector for uploaded images', 'sudomock-product-customizer' ) ),
-                                'showPosition'      => array( __( 'Position Controls', 'sudomock-product-customizer' ), __( 'X, Y position fields for precise placement', 'sudomock-product-customizer' ) ),
-                                'showSize'          => array( __( 'Size Controls', 'sudomock-product-customizer' ), __( 'Width, height fields with aspect ratio lock', 'sudomock-product-customizer' ) ),
-                                'showRotation'      => array( __( 'Rotation', 'sudomock-product-customizer' ), __( 'Rotation slider for uploaded images', 'sudomock-product-customizer' ) ),
-                                'showFlip'          => array( __( 'Flip', 'sudomock-product-customizer' ), __( 'Flip horizontal/vertical buttons for uploaded images', 'sudomock-product-customizer' ) ),
-                                'showExportOptions' => array( __( 'Export Options', 'sudomock-product-customizer' ), __( 'Output format, size, and quality controls', 'sudomock-product-customizer' ) ),
-                                'showZoomControls'  => array( __( 'Zoom Controls', 'sudomock-product-customizer' ), __( 'Zoom in/out and percentage on canvas toolbar', 'sudomock-product-customizer' ) ),
-                                'showUndoRedo'      => array( __( 'Undo / Redo', 'sudomock-product-customizer' ), __( 'Undo and redo buttons with keyboard shortcuts', 'sudomock-product-customizer' ) ),
+                                'psdShowAdjustments'   => array( __( 'Adjustments Panel', 'sudomock-product-customizer' ), __( 'Brightness, contrast, saturation, vibrance, opacity, blur', 'sudomock-product-customizer' ) ),
+                                'psdShowColorOverlay'  => array( __( 'Color Overlay', 'sudomock-product-customizer' ), __( 'Fill color with blend mode selector per layer', 'sudomock-product-customizer' ) ),
+                                'psdShowFitMode'       => array( __( 'Fit Mode', 'sudomock-product-customizer' ), __( 'Fill / Fit / Cover selector for uploaded images', 'sudomock-product-customizer' ) ),
+                                'psdShowPosition'      => array( __( 'Position Controls', 'sudomock-product-customizer' ), __( 'X, Y position fields for precise placement', 'sudomock-product-customizer' ) ),
+                                'psdShowSize'          => array( __( 'Size Controls', 'sudomock-product-customizer' ), __( 'Width, height fields with aspect ratio lock', 'sudomock-product-customizer' ) ),
+                                'psdShowRotation'      => array( __( 'Rotation', 'sudomock-product-customizer' ), __( 'Rotation slider for uploaded images', 'sudomock-product-customizer' ) ),
+                                'psdShowFlip'          => array( __( 'Flip', 'sudomock-product-customizer' ), __( 'Flip horizontal/vertical buttons for uploaded images', 'sudomock-product-customizer' ) ),
+                                'psdShowExportOptions' => array( __( 'Export Options', 'sudomock-product-customizer' ), __( 'Output format, size, and quality controls', 'sudomock-product-customizer' ) ),
+                                'psdShowZoomControls'  => array( __( 'Zoom Controls', 'sudomock-product-customizer' ), __( 'Zoom in/out and percentage on canvas toolbar', 'sudomock-product-customizer' ) ),
+                                'psdShowUndoRedo'      => array( __( 'Undo / Redo', 'sudomock-product-customizer' ), __( 'Undo and redo buttons with keyboard shortcuts', 'sudomock-product-customizer' ) ),
                             );
                             foreach ( $toggles as $key => $meta ) : ?>
                                 <label class="sudomock-toggle-item">
@@ -1305,7 +1305,7 @@ final class SudoMock_Admin {
                             <label class="sudomock-form-row__label" for="sudomock-cfg-layout">
                                 <?php esc_html_e( 'Layout mode', 'sudomock-product-customizer' ); ?>
                             </label>
-                            <select id="sudomock-cfg-layout" data-config-key="layout" class="sudomock-select">
+                            <select id="sudomock-cfg-layout" data-config-key="psdLayout" class="sudomock-select">
                                 <option value="full"><?php esc_html_e( 'Full (3-panel desktop)', 'sudomock-product-customizer' ); ?></option>
                                 <option value="compact"><?php esc_html_e( 'Compact (mobile-first)', 'sudomock-product-customizer' ); ?></option>
                             </select>
@@ -1316,7 +1316,7 @@ final class SudoMock_Admin {
 
                         <div class="sudomock-form-row">
                             <label class="sudomock-toggle-item" style="margin-bottom:0;">
-                                <input type="checkbox" id="sudomock-cfg-autoRender" data-config-key="autoRender" class="sudomock-toggle-checkbox" />
+                                <input type="checkbox" id="sudomock-cfg-autoRender" data-config-key="psdAutoRender" class="sudomock-toggle-checkbox" />
                                 <div>
                                     <span class="sudomock-toggle-item__label"><?php esc_html_e( 'Auto-render on changes', 'sudomock-product-customizer' ); ?></span>
                                     <span class="sudomock-toggle-item__desc"><?php esc_html_e( 'Automatically render preview when customer makes changes. Costs 1 credit per render.', 'sudomock-product-customizer' ); ?></span>
@@ -1329,8 +1329,8 @@ final class SudoMock_Admin {
                                 <?php esc_html_e( 'Auto-render delay', 'sudomock-product-customizer' ); ?>
                             </label>
                             <div class="sudomock-range-row">
-                                <input type="range" id="sudomock-cfg-autoRenderDelay" data-config-key="autoRenderDelay" min="300" max="3000" step="100" class="sudomock-range" />
-                                <span class="sudomock-range-value" data-config-key="autoRenderDelay">800ms</span>
+                                <input type="range" id="sudomock-cfg-autoRenderDelay" data-config-key="psdAutoRenderDelay" min="300" max="3000" step="100" class="sudomock-range" />
+                                <span class="sudomock-range-value" data-config-key="psdAutoRenderDelay">800ms</span>
                             </div>
                             <p class="sudomock-text--muted sudomock-text--sm" style="margin-top:4px;">
                                 <?php esc_html_e( 'Wait time after last change before auto-rendering.', 'sudomock-product-customizer' ); ?>
@@ -1456,7 +1456,66 @@ final class SudoMock_Admin {
             wp_send_json_error( array( 'message' => isset( $result['error'] ) ? $result['error'] : __( 'Failed to load config.', 'sudomock-product-customizer' ) ) );
         }
 
-        wp_send_json_success( $result['data'] );
+        wp_send_json_success( array(
+            'config'         => self::read_studio_config( $result['data']['config'] ),
+            'config_version' => (int) $result['data']['config_version'],
+        ) );
+    }
+
+    /**
+     * The name each setting had before the config was split per editor
+     * (2026-07-28). GET still answers with both; a config saved under the
+     * older name alone is read through it.
+     */
+    const LEGACY_STUDIO_CONFIG_KEYS = array(
+        'psdPrimaryActionLabel' => 'buttonText',
+        'loadingText'           => 'addingText',
+        'secondaryActionLabel'  => 'renderButtonText',
+        'psdShowAdjustments'    => 'showAdjustments',
+        'psdShowColorOverlay'   => 'showColorOverlay',
+        'psdShowFitMode'        => 'showFitMode',
+        'psdShowPosition'       => 'showPosition',
+        'psdShowSize'           => 'showSize',
+        'psdShowRotation'       => 'showRotation',
+        'psdShowFlip'           => 'showFlip',
+        'psdShowExportOptions'  => 'showExportOptions',
+        'psdShowZoomControls'   => 'showZoomControls',
+        'psdShowUndoRedo'       => 'showUndoRedo',
+        'psdAutoRender'         => 'autoRender',
+        'psdAutoRenderDelay'    => 'autoRenderDelay',
+        'psdLayout'             => 'layout',
+    );
+
+    /**
+     * Before the split these settings drove the photo mockup editor too; a
+     * change saved here still reaches it.
+     */
+    const STUDIO_CONFIG_SHARED_WITH_TWO_D = array(
+        'psdPrimaryActionLabel' => 'twoDCustomizePrimaryActionLabel',
+        'psdShowExportOptions'  => 'twoDShowExport',
+        'psdShowZoomControls'   => 'twoDShowZoom',
+    );
+
+    /**
+     * The settings as GET /api/v1/studio/config answers them, under the
+     * current names, a legacy name standing in for a missing current one.
+     *
+     * @param mixed $config Config from the API.
+     * @return array
+     */
+    public static function read_studio_config( $config ) {
+        $config = is_array( $config ) ? $config : array();
+        $read   = $config;
+        foreach ( self::LEGACY_STUDIO_CONFIG_KEYS as $current => $legacy ) {
+            unset( $read[ $legacy ] );
+            if ( isset( $config[ $current ] ) ) {
+                continue;
+            }
+            if ( isset( $config[ $legacy ] ) ) {
+                $read[ $current ] = $config[ $legacy ];
+            }
+        }
+        return $read;
     }
 
     public function ajax_save_studio_config() {
@@ -1467,20 +1526,21 @@ final class SudoMock_Admin {
 
         $raw = isset( $_POST['config'] ) ? sanitize_text_field( wp_unslash( $_POST['config'] ) ) : '';
         $parsed = json_decode( $raw, true );
-        if ( ! is_array( $parsed ) ) {
+        $config_version = isset( $_POST['config_version'] ) ? sanitize_text_field( wp_unslash( $_POST['config_version'] ) ) : '';
+        if ( ! is_array( $parsed ) || ! preg_match( '/^\d+$/', $config_version ) ) {
             wp_send_json_error( array( 'message' => __( 'Invalid config data.', 'sudomock-product-customizer' ) ) );
         }
 
-        // Whitelist allowed keys
+        // Whitelist allowed keys. The settings tab sends only what changed.
         $allowed = array(
             'primaryColor', 'accentColor', 'successColor', 'backgroundColor', 'panelBackground',
             'textColor', 'borderColor', 'borderRadius', 'logoUrl', 'fontFamily',
-            'buttonText', 'renderButtonText', 'uploadText', 'headerText',
-            'addingText', 'successText',
-            'showAdjustments', 'showColorOverlay', 'showFitMode', 'showPosition',
-            'showSize', 'showRotation', 'showFlip', 'showExportOptions', 'showZoomControls', 'showUndoRedo',
+            'psdPrimaryActionLabel', 'secondaryActionLabel', 'uploadText', 'headerText',
+            'loadingText', 'successText',
+            'psdShowAdjustments', 'psdShowColorOverlay', 'psdShowFitMode', 'psdShowPosition',
+            'psdShowSize', 'psdShowRotation', 'psdShowFlip', 'psdShowExportOptions', 'psdShowZoomControls', 'psdShowUndoRedo',
             'showSeamCheck', 'showSeamFix',
-            'theme', 'layout', 'autoRender', 'autoRenderDelay', 'maxFileSize',
+            'theme', 'psdLayout', 'psdAutoRender', 'psdAutoRenderDelay', 'maxFileSize',
         );
         $config = array();
         foreach ( $allowed as $key ) {
@@ -1493,8 +1553,8 @@ final class SudoMock_Admin {
         $string_keys = array(
             'primaryColor', 'accentColor', 'successColor', 'backgroundColor', 'panelBackground',
             'textColor', 'borderColor', 'logoUrl', 'fontFamily',
-            'buttonText', 'renderButtonText', 'uploadText', 'headerText',
-            'addingText', 'successText', 'theme', 'layout',
+            'psdPrimaryActionLabel', 'secondaryActionLabel', 'uploadText', 'headerText',
+            'loadingText', 'successText', 'theme', 'psdLayout',
         );
         foreach ( $string_keys as $key ) {
             if ( isset( $config[ $key ] ) ) {
@@ -1506,8 +1566,8 @@ final class SudoMock_Admin {
         if ( isset( $config['borderRadius'] ) ) {
             $config['borderRadius'] = max( 0, min( 20, absint( $config['borderRadius'] ) ) );
         }
-        if ( isset( $config['autoRenderDelay'] ) ) {
-            $config['autoRenderDelay'] = max( 300, min( 3000, absint( $config['autoRenderDelay'] ) ) );
+        if ( isset( $config['psdAutoRenderDelay'] ) ) {
+            $config['psdAutoRenderDelay'] = max( 300, min( 3000, absint( $config['psdAutoRenderDelay'] ) ) );
         }
         if ( isset( $config['maxFileSize'] ) ) {
             $config['maxFileSize'] = max( 1, min( 50, absint( $config['maxFileSize'] ) ) );
@@ -1515,9 +1575,9 @@ final class SudoMock_Admin {
 
         // Sanitize boolean fields
         $bool_keys = array(
-            'showAdjustments', 'showColorOverlay', 'showFitMode', 'showPosition',
-            'showSize', 'showRotation', 'showFlip', 'showExportOptions', 'showZoomControls', 'showUndoRedo',
-            'showSeamCheck', 'showSeamFix', 'autoRender',
+            'psdShowAdjustments', 'psdShowColorOverlay', 'psdShowFitMode', 'psdShowPosition',
+            'psdShowSize', 'psdShowRotation', 'psdShowFlip', 'psdShowExportOptions', 'psdShowZoomControls', 'psdShowUndoRedo',
+            'showSeamCheck', 'showSeamFix', 'psdAutoRender',
         );
         foreach ( $bool_keys as $key ) {
             if ( isset( $config[ $key ] ) ) {
@@ -1530,12 +1590,31 @@ final class SudoMock_Admin {
             $config['showSeamFix'] = false;
         }
 
-        // Validate logo URL scheme
+        // Validate logo URL scheme. A cleared logo is sent as null, which removes it.
+        if ( array_key_exists( 'logoUrl', $config ) && '' === (string) $config['logoUrl'] ) {
+            $config['logoUrl'] = null;
+        }
         if ( ! empty( $config['logoUrl'] ) && 0 !== strpos( $config['logoUrl'], 'https://' ) ) {
             wp_send_json_error( array( 'message' => __( 'Logo URL must use HTTPS.', 'sudomock-product-customizer' ) ) );
         }
 
-        $result = SudoMock_API_Client::update_studio_config( $config );
+        foreach ( self::STUDIO_CONFIG_SHARED_WITH_TWO_D as $psd_key => $two_d_key ) {
+            if ( array_key_exists( $psd_key, $config ) ) {
+                $config[ $two_d_key ] = $config[ $psd_key ];
+            }
+        }
+
+        $result = SudoMock_API_Client::update_studio_config( $config, (int) $config_version );
+        if ( ! $result['ok'] && isset( $result['status'] ) && 409 === $result['status'] ) {
+            // Saved elsewhere since this tab read the settings: the tab reads them again.
+            wp_send_json_error(
+                array(
+                    'conflict' => true,
+                    'message'  => __( 'These settings were changed elsewhere. The latest saved settings are shown. Make your changes again and save.', 'sudomock-product-customizer' ),
+                ),
+                409
+            );
+        }
         if ( ! $result['ok'] ) {
             wp_send_json_error( array( 'message' => isset( $result['error'] ) ? $result['error'] : __( 'Failed to save config.', 'sudomock-product-customizer' ) ) );
         }

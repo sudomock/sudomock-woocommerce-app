@@ -460,14 +460,28 @@ final class SudoMock_API_Client {
     /**
      * Update Studio config on the backend.
      *
-     * @param array $config Studio configuration key-value pairs.
-     * @return array{ok: bool, data?: array, error?: string}
+     * @param array $config         Studio configuration key-value pairs that changed.
+     * @param int   $config_version Version the settings were read at; a save made
+     *                              elsewhere since then answers 409.
+     * @return array{ok: bool, data?: array, error?: string, status?: int}
      */
-    public static function update_studio_config( $config ) {
-        $response = self::request( 'PUT', '/api/v1/studio/config', array( 'config' => $config ) );
+    public static function update_studio_config( $config, $config_version ) {
+        $response = self::request(
+            'PUT',
+            '/api/v1/studio/config',
+            array(
+                'config_version' => (int) $config_version,
+                'config'         => (object) $config,
+            )
+        );
 
         if ( is_wp_error( $response ) ) {
-            return array( 'ok' => false, 'error' => $response->get_error_message() );
+            $error = $response->get_error_data();
+            return array(
+                'ok'     => false,
+                'error'  => $response->get_error_message(),
+                'status' => is_array( $error ) && isset( $error['status'] ) ? (int) $error['status'] : 0,
+            );
         }
 
         // Backend returns {success, config, config_version}
