@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
-## [1.5.0] - 2026-11-05
+## [1.5.0] - 2026-11-06
 
 ### Added
 - Seam check and Seam fix in the Settings tab, both on by default. The editor
